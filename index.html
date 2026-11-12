@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e9dfd1">
+<title>Сказка в хрустальном шаре</title>
+<style>
+:root{
+  --ink:#55483d;--muted:#88796b;--paper:#f5eee4;--cream:#eee2d2;
+  --taupe:#a68f78;--line:rgba(108,88,69,.16);--shadow:0 16px 45px rgba(87,67,48,.11);
+  --red:#b66c65;--gold:#b18b48;--peach:#b77d5e;--blue:#668ca5;--green:#7b8967;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+ radial-gradient(circle at 10% 5%,rgba(255,255,255,.8),transparent 28rem),
+ linear-gradient(180deg,#f5eee5 0%,#eee4d7 55%,#f6f0e8 100%);
+ color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.snow-layer{position:fixed;inset:0;pointer-events:none;z-index:10;overflow:hidden}
+.snowflake{position:absolute;top:-18px;color:#fff;opacity:.72;text-shadow:0 0 8px rgba(255,255,255,.9);animation:fall linear infinite}
+@keyframes fall{to{transform:translate3d(var(--drift),110vh,0) rotate(360deg)}}
+.topbar{max-width:1240px;margin:auto;padding:22px 28px 10px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fff,#e5d6c4);box-shadow:inset 0 0 0 1px #fff,0 5px 14px #c9b9a5;font-size:22px}
+.brand small{display:block;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;font-size:9px;font-weight:700}
+.brand strong{font-family:Georgia,serif;font-size:18px;font-weight:600}
+.top-actions{display:flex;gap:9px;align-items:center}
+.ghost-btn,.primary-btn{border:1px solid var(--line);border-radius:999px;padding:10px 15px;background:rgba(255,255,255,.55);color:var(--ink);font-size:12px;font-weight:700;transition:.2s}
+.ghost-btn:hover{background:#fff;transform:translateY(-1px)}
+.primary-btn{background:#806c59;color:#fff;border-color:#806c59}
+.primary-btn:hover{background:#6f5b49;transform:translateY(-1px)}
+.hero{max-width:1240px;margin:10px auto 26px;padding:42px 28px 30px;text-align:center;position:relative}
+.eyebrow{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:#9a8068;font-weight:800}
+h1{font:500 clamp(34px,5vw,58px)/1.05 Georgia,serif;margin:14px 0 12px;letter-spacing:-.035em}
+.hero p{margin:0 auto;color:var(--muted);font:italic 15px/1.7 Georgia,serif;max-width:560px}
+.hero-rule{width:100px;height:1px;background:linear-gradient(90deg,transparent,#b8a38c,transparent);margin:24px auto 0}
+.stats{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 28px 28px}
+.stat{background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.85);border-radius:16px;padding:14px 12px;text-align:center;box-shadow:0 8px 24px rgba(92,72,52,.04)}
+.stat b{display:block;font:600 24px Georgia,serif}
+.stat span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.section{max-width:1240px;margin:0 auto;padding:10px 28px 55px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px}
+.section-head h2{font:500 28px Georgia,serif;margin:0}
+.section-head p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.search{width:min(260px,100%);border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.65);padding:11px 15px;color:var(--ink);outline:none}
+.search:focus{border-color:#a58b70;box-shadow:0 0 0 3px rgba(165,139,112,.12)}
+.orbs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.orb-card{--accent:var(--red);background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.95);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;position:relative}
+.orb-card:hover{transform:translateY(-5px);box-shadow:0 22px 50px rgba(87,67,48,.15)}
+.orb-card:nth-child(2){--accent:var(--gold)}.orb-card:nth-child(3){--accent:var(--peach)}.orb-card:nth-child(4){--accent:var(--blue)}.orb-card:nth-child(5){--accent:var(--green)}
+.orb-art{height:245px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 34%,#f5eee4),color-mix(in srgb,var(--accent) 18%,#fff))}
+.orb-art:before{content:none}
+.orb-art:after{content:none}
+.orb-image{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 5px 8px rgba(65,48,35,.12))}
+.orb-glint{position:absolute;z-index:2;top:37px;left:calc(50% - 49px);font-size:13px;color:white;opacity:.9}
+.orb-title{padding:13px 12px 11px;text-align:center;font:600 14px Georgia,serif;min-height:54px;display:flex;align-items:center;justify-content:center}
+.orb-meta{background:var(--accent);color:white;display:grid;grid-template-columns:1fr auto;padding:9px 13px;font-size:10px;font-weight:800;letter-spacing:.04em}
+.orb-meta span:last-child{opacity:.9}
+.orb-bottom{padding:10px 13px 13px;display:flex;justify-content:space-between;align-items:center}
+.orb-bottom small{color:var(--muted);font-size:11px}
+.view-btn{border:0;background:transparent;color:var(--accent);font-size:11px;font-weight:800;padding:5px}
+.view-btn:hover{text-decoration:underline}
+.participants{margin-top:38px;background:rgba(255,255,255,.63);border:1px solid rgba(255,255,255,.95);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.participants-head{padding:22px 24px 15px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.participants-head h2{font:500 25px Georgia,serif;margin:0}
+.participants-head p{font-size:11px;color:var(--muted);margin:5px 0 0}
+.filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.filters select{border:1px solid var(--line);border-radius:999px;padding:9px 12px;background:#fff;color:var(--ink);font-size:11px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+thead{background:#a58d75;color:white}
+th{text-align:left;padding:12px 18px;font-size:10px;letter-spacing:.09em;text-transform:uppercase}
+td{padding:13px 18px;border-bottom:1px solid rgba(110,91,72,.09);font-size:12px}
+tbody tr:hover{background:rgba(238,226,210,.35)}
+.social{display:inline-flex;align-items:center;gap:7px;font-weight:800}
+.social-dot{width:7px;height:7px;border-radius:50%;background:#6e91b5}
+.social.ok .social-dot{background:#e2a34e}
+.ticket-pill{display:inline-block;background:#f0e5d7;border-radius:999px;padding:5px 10px;font-weight:800;color:#806b56}
+.empty{padding:30px;text-align:center;color:var(--muted);font:italic 14px Georgia,serif}
+.footer{max-width:1240px;margin:0 auto;padding:0 28px 35px;text-align:center;color:#9b8b7b;font:italic 12px Georgia,serif}
+.footer .star{font-style:normal;color:#b69a78}
+.modal-backdrop{position:fixed;inset:0;background:rgba(48,40,33,.35);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}
+.modal-backdrop.open{display:flex}
+.modal{width:min(520px,100%);max-height:90vh;overflow:auto;background:#f8f2e9;border:1px solid white;border-radius:22px;box-shadow:0 25px 80px rgba(35,27,20,.25);padding:23px}
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal h3{font:500 25px Georgia,serif;margin:0}
+.close{border:0;background:#e9dfd2;color:var(--ink);width:32px;height:32px;border-radius:50%;font-size:18px}
+.modal-note{font-size:12px;color:var(--muted);line-height:1.6}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid label{display:block;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.form-grid input,.form-grid select{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:10px;padding:11px;background:white;color:var(--ink);outline:none}
+.form-grid .full{grid-column:1/-1}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.admin-tools{display:flex;gap:8px;flex-wrap:wrap}
+.connection-note{max-width:760px;margin:0 auto 22px;padding:10px 16px;border:1px solid rgba(108,88,69,.14);border-radius:12px;background:rgba(255,255,255,.45);text-align:center;color:var(--muted);font-size:11px}
+.connection-note.error{color:#9d514b;background:#fff4f1}
+.admin-badge{display:inline-flex;margin-left:7px;padding:4px 8px;border-radius:999px;background:#e7efe2;color:#58704d;font-size:10px;font-weight:800}
+.admin-row-actions{display:flex;gap:6px;align-items:center}
+.admin-row-actions button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 9px;color:var(--ink);font-size:10px}
+.admin-row-actions button:hover{background:#f1e7da}
+[hidden]{display:none!important}
+.auth-form{display:grid;gap:12px;margin-top:18px}
+.auth-form label{display:grid;gap:6px;font-size:11px;color:var(--muted);font-weight:800}
+.auth-form input{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff;color:var(--ink)}
+@media(max-width:1000px){.orbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.topbar{padding:16px}.brand strong{font-size:15px}.top-actions .ghost-btn{display:none}.hero{padding:32px 18px 20px}.stats{padding:0 16px 24px;gap:7px}.stat{padding:12px 5px}.stat b{font-size:20px}.stat span{font-size:8px}.section{padding:8px 16px 40px}.section-head{align-items:stretch;flex-direction:column}.search{width:100%}.orbs{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.orb-art{height:205px}.orb-title{font-size:12px}.participants-head{padding:18px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="brand"><div class="brand-mark">❄</div><div><small>Зимнее событие</small><strong>Сказка в хрустальном шаре</strong></div></div>
+  <div class="top-actions">
+    <button class="ghost-btn" id="exportBtn">Экспорт данных</button>
+    <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
+    <button class="primary-btn" id="addBtn" hidden>＋ Участник</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">A winter collection · 2026</div>
+  <h1>Сказка в хрустальном шаре</h1>
+  <p>Пять маленьких миров, зимнее настроение и ваша коллекция заработанных билетов.</p>
+  <div class="hero-rule"></div>
+</section>
+
+<div class="connection-note" id="connectionNote" role="status">Загружаем общую базу участников…</div>
+
+<section class="stats" aria-label="Статистика">
+  <div class="stat"><b id="participantCount">0</b><span>Участников</span></div>
+  <div class="stat"><b id="ticketCount">0</b><span>Билетов всего</span></div>
+  <div class="stat"><b id="orbCount">5</b><span>Зимних шаров</span></div>
+</section>
+
+<main class="section">
+  <div class="section-head">
+    <div><h2>Коллекция шаров</h2><p>Выберите шар, чтобы посмотреть участников и билеты</p></div>
+    <input class="search" id="search" type="search" placeholder="⌕ Поиск по ID участника…">
+  </div>
+  <div class="orbs" id="orbs"></div>
+
+  <section class="participants" id="participants">
+    <div class="participants-head">
+      <div><h2 id="tableTitle">Участники и билеты</h2><p id="tableSubtitle">Общий список по всем пяти шарам</p></div>
+      <div class="filters">
+        <select id="orbFilter" aria-label="Фильтр по шару"><option value="all">Все шары</option></select>
+        <select id="socialFilter" aria-label="Фильтр по соцсети"><option value="all">Все соцсети</option><option value="ВК">ВКонтакте</option><option value="ОК">Одноклассники</option></select>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Шар</th><th>Соцсеть</th><th>ID участника</th><th>Билеты</th><th id="actionsHead"></th></tr></thead>
+        <tbody id="participantRows"></tbody>
+      </table>
+      <div class="empty" id="emptyState" hidden>Пока здесь никого нет. Добавьте первого участника.</div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><span class="star">✧</span> Пусть эта зима будет немного волшебнее <span class="star">✧</span></footer>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-top"><h3 id="modalTitle">Новый участник</h3><button class="close" id="closeModal" aria-label="Закрыть">×</button></div>
+    <p class="modal-note">Новая запись попадёт в общую базу и станет видна всем посетителям сайта.</p>
+    <form id="participantForm">
+      <div class="form-grid">
+        <label class="full">Новогодний шар<select id="formOrb" required></select></label>
+        <label>Соцсеть<select id="formSocial"><option>ВК</option><option>ОК</option></select></label>
+        <label>ID участника<input id="formId" required inputmode="numeric" placeholder="Например, 123456"></label>
+        <label class="full">Количество билетов<input id="formTickets" type="number" min="1" max="999" value="1" required></label>
+      </div>
+      <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelModal">Отмена</button><button class="primary-btn" type="submit">Сохранить участника</button></div>
+    </form>
+  </div>
+</div>
+
+
+<div class="modal-backdrop" id="authBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="modal-top"><h3 id="authTitle">Панель администратора</h3><button class="close" id="closeAuth" aria-label="Закрыть">×</button></div>
+    <p class="modal-note">Вход доступен только администратору. Участники сайта могут просматривать список, но не менять его.</p>
+    <form id="authForm" class="auth-form">
+      <label>Электронная почта<input id="authEmail" type="email" autocomplete="username" required placeholder="admin@example.com"></label>
+      <label>Пароль<input id="authPassword" type="password" autocomplete="current-password" required placeholder="Пароль администратора"></label>
+      <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelAuth">Отмена</button><button class="primary-btn" type="submit">Войти</button></div>
+      <p class="modal-note" id="authMessage" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script>
+const ORBS = [
+  {id:'snow_guest',name:'Снежный гость',image:'snow-guest.webp',tone:'#b66c65'},
+  {id:'gift_workshop',name:'Подарочная мастерская',image:'gift-workshop.webp',tone:'#b18b48'},
+  {id:'gingerbread_house',name:'Пряничный домик',image:'gingerbread-house.webp',tone:'#b77d5e'},
+  {id:'ice_castle',name:'Ледяной замок',image:'ice-castle.webp',tone:'#668ca5'},
+  {id:'new_year_magic',name:'Новогоднее волшебство',image:'new-year-magic.webp',tone:'#7b8967'}
+];
+const PREVIEW = [];
+const $=id=>document.getElementById(id);
+const orbById=id=>ORBS.find(o=>o.id===id);
+const configured = Boolean(window.APP_CONFIG?.SUPABASE_URL && window.APP_CONFIG?.SUPABASE_ANON_KEY &&
+  !window.APP_CONFIG.SUPABASE_URL.includes('YOUR_') && !window.APP_CONFIG.SUPABASE_ANON_KEY.includes('YOUR_'));
+let supabaseClient=null, records=PREVIEW.map(x=>({...x})), isAdmin=false, currentUser=null, selectedOrb='all', realtimeChannel=null;
+
+function setNote(message, error=false){
+  $('connectionNote').textContent=message;
+  $('connectionNote').classList.toggle('error',error);
+}
+function totalTickets(list=records){return list.reduce((s,r)=>s+Number(r.tickets||0),0);}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function renderOrbs(){
+  $('orbs').innerHTML=ORBS.map(o=>{
+    const list=records.filter(r=>r.orb===o.id);
+    return `<article class="orb-card" style="--accent:${o.tone}">
+      <div class="orb-art"><span class="orb-glint">✧</span><img class="orb-image" src="assets/${o.image}" alt="Шар «${o.name}»"></div>
+      <div class="orb-title">${o.name}</div>
+      <div class="orb-meta"><span>УЧАСТНИКИ</span><span>${list.length}</span></div>
+      <div class="orb-bottom"><small>${totalTickets(list)} бил. заработано</small><button class="view-btn" data-view="${o.id}">Открыть →</button></div>
+    </article>`;
+  }).join('');
+  $('orbs').querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{
+    selectedOrb=b.dataset.view;$('orbFilter').value=selectedOrb;renderRows();$('participants').scrollIntoView({behavior:'smooth'});
+  }));
+}
+function renderRows(){
+  const q=$('search').value.trim().toLowerCase(), social=$('socialFilter').value, orb=$('orbFilter').value;
+  const list=records.map((r,i)=>({...r,index:i})).filter(r=>
+    (orb==='all'||r.orb===orb)&&(social==='all'||r.social===social)&&(!q||String(r.id).toLowerCase().includes(q))
+  );
+  $('actionsHead').textContent=isAdmin?'Управление':'';
+  $('participantRows').innerHTML=list.map(r=>`<tr>
+    <td>${escapeHtml(orbById(r.orb)?.name||'—')}</td>
+    <td><span class="social ${r.social==='ОК'?'ok':''}"><i class="social-dot"></i>${escapeHtml(r.social)}</span></td>
+    <td>${escapeHtml(r.id)}</td><td><span class="ticket-pill">${Number(r.tickets)}</span></td>
+    <td>${isAdmin?`<div class="admin-row-actions"><button data-edit="${r.index}">Изменить билеты</button><button data-delete="${r.index}">Удалить</button></div>`:''}</td>
+  </tr>`).join('');
+  $('emptyState').hidden=list.length!==0;
+  $('participantRows').querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',async()=>{
+    const r=records[Number(b.dataset.edit)];
+    const value=prompt(`Новое количество билетов для ID ${r.id}:`,String(r.tickets));
+    if(value===null)return;
+    const tickets=Number(value);
+    if(!Number.isInteger(tickets)||tickets<1||tickets>999){alert('Укажи целое число от 1 до 999.');return;}
+    await updateRecord(r,tickets);
+  }));
+  $('participantRows').querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',async()=>{
+    const r=records[Number(b.dataset.delete)];
+    if(confirm(`Удалить запись ID ${r.id} из шара «${orbById(r.orb)?.name}»?`))await deleteRecord(r);
+  }));
+  $('tableTitle').textContent=orb==='all'?'Участники и билеты':orbById(orb).name;
+  $('tableSubtitle').textContent=`Показано записей: ${list.length}${isAdmin?' · режим администратора':''}`;
+}
+function renderStats(){
+  const unique=new Set(records.map(r=>r.social+':'+r.id));
+  $('participantCount').textContent=unique.size;
+  $('ticketCount').textContent=totalTickets();
+}
+function render(){
+  renderOrbs();renderRows();renderStats();
+  $('addBtn').hidden=!isAdmin;
+  $('adminBtn').textContent=isAdmin?'Выйти из панели':'Вход для администратора';
+}
+function openModal(){
+  if(!isAdmin)return;
+  $('formOrb').innerHTML=ORBS.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
+  $('modalBackdrop').classList.add('open');$('formId').focus();
+}
+function closeModal(){$('modalBackdrop').classList.remove('open');$('participantForm').reset();}
+function openAuth(){ $('authBackdrop').classList.add('open'); $('authMessage').textContent=''; }
+function closeAuth(){ $('authBackdrop').classList.remove('open'); $('authForm').reset(); }
+async function loadRecords(){
+  if(!configured||!supabaseClient)return;
+  const {data,error}=await supabaseClient.from('entries').select('id,globe_id,social_network,social_id,tickets,created_at').order('created_at',{ascending:true});
+  if(error){setNote('Не удалось загрузить общую базу: '+error.message,true);return;}
+  records=(data||[]).map(r=>({dbId:r.id,orb:r.globe_id,social:r.social_network==='VK'?'ВК':'ОК',id:r.social_id,tickets:r.tickets}));
+  render();
+  setNote(isAdmin?'Подключена общая база · вы вошли как администратор':'Подключена общая база · режим просмотра для участников');
+}
+async function updateRecord(record,tickets){
+  const {error}=await supabaseClient.from('entries').update({tickets}).eq('id',record.dbId);
+  if(error){alert('Не удалось изменить билеты: '+error.message);return;}
+  await loadRecords();
+}
+async function deleteRecord(record){
+  const {error}=await supabaseClient.from('entries').delete().eq('id',record.dbId);
+  if(error){alert('Не удалось удалить запись: '+error.message);return;}
+  await loadRecords();
+}
+async function addRecord(payload){
+  const {error}=await supabaseClient.from('entries').upsert({
+    globe_id:payload.orb,social_network:payload.social==='ВК'?'VK':'OK',social_id:payload.id,tickets:payload.tickets
+  },{onConflict:'globe_id,social_network,social_id'});
+  if(error){alert('Не удалось добавить участника: '+error.message);return;}
+  await loadRecords();
+}
+async function updateSession(session){
+  currentUser=session?.user||null;
+  isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
+  render();
+  if(configured)await loadRecords();
+}
+function subscribeRealtime(){
+  if(!supabaseClient||realtimeChannel)return;
+  realtimeChannel=supabaseClient.channel('entries-live')
+    .on('postgres_changes',{event:'*',schema:'public',table:'entries'},()=>loadRecords())
+    .subscribe();
+}
+$('addBtn').addEventListener('click',openModal);
+$('closeModal').addEventListener('click',closeModal);
+$('cancelModal').addEventListener('click',closeModal);
+$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))closeModal();});
+$('participantForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(!isAdmin)return;
+  const payload={orb:$('formOrb').value,social:$('formSocial').value,id:$('formId').value.trim(),tickets:Number($('formTickets').value)};
+  if(!payload.id){alert('Введи ID участника.');return;}
+  await addRecord(payload);closeModal();
+});
+$('search').addEventListener('input',renderRows);
+$('socialFilter').addEventListener('change',renderRows);
+$('orbFilter').addEventListener('change',renderRows);
+$('orbFilter').innerHTML='<option value="all">Все шары</option>'+ORBS.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
+$('exportBtn').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify({orbs:ORBS,entries:records.map(({dbId,...r})=>r)},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='skazka-data.json';a.click();URL.revokeObjectURL(a.href);
+});
+$('adminBtn').addEventListener('click',async()=>{
+  if(isAdmin){
+    await supabaseClient.auth.signOut();
+    await updateSession(null);
+  }else if(!configured){
+    alert('Сначала подключи Supabase: заполни config.js по инструкции в README.');
+  }else openAuth();
+});
+$('closeAuth').addEventListener('click',closeAuth);
+$('cancelAuth').addEventListener('click',closeAuth);
+$('authBackdrop').addEventListener('click',e=>{if(e.target===$('authBackdrop'))closeAuth();});
+$('authForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(!supabaseClient)return;
+  $('authMessage').textContent='Проверяем данные…';
+  const {data,error}=await supabaseClient.auth.signInWithPassword({
+    email:$('authEmail').value.trim(),password:$('authPassword').value
+  });
+  if(error){$('authMessage').textContent='Не удалось войти. Проверь почту и пароль.';return;}
+  closeAuth();await updateSession(data.session);
+});
+function makeSnow(){
+  const layer=$('snowLayer');
+  for(let i=0;i<34;i++){
+    const f=document.createElement('span');f.className='snowflake';f.textContent=Math.random()>.45?'✧':'•';
+    f.style.left=Math.random()*100+'%';f.style.fontSize=(Math.random()*8+7)+'px';
+    f.style.animationDuration=(Math.random()*13+12)+'s';f.style.animationDelay=(-Math.random()*24)+'s';
+    f.style.setProperty('--drift',(Math.random()*100-50)+'px');layer.appendChild(f);
+  }
+}
+async function init(){
+  makeSnow();
+  if(!configured){
+    setNote('Демонстрационный режим: для общей базы подключи Supabase по инструкции в README.',true);
+    render();return;
+  }
+  if(!window.supabase?.createClient){
+    setNote('Не загрузилась библиотека подключения к базе. Проверь интернет-соединение.',true);render();return;
+  }
+  supabaseClient=window.supabase.createClient(window.APP_CONFIG.SUPABASE_URL,window.APP_CONFIG.SUPABASE_ANON_KEY);
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error)setNote('Ошибка проверки входа: '+error.message,true);
+  await updateSession(data?.session||null);
+  supabaseClient.auth.onAuthStateChange((_event,session)=>{
+    currentUser=session?.user||null;
+    isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
+    render();
+    loadRecords();
+  });
+  subscribeRealtime();
+}
+init();
+</script>
+</body>
+</html>
