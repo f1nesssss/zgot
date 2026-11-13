@@ -664,7 +664,32 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     box-shadow:0 8px 15px rgba(70,50,35,.2);
 }
 
-@keyframes miracleGlow{
+.miracle-orb.is-shaking{
+    animation:miracleShake .9s ease-in-out;
+}
+
+.miracle-orb.is-shaking .miracle-orb-snow{
+    animation:miracleSnowShake .9s ease-in-out;
+}
+
+@keyframes miracleShake{
+    0%,100%{transform:translateX(0) rotate(0)}
+    15%{transform:translateX(-9px) rotate(-4deg)}
+    30%{transform:translateX(9px) rotate(4deg)}
+    45%{transform:translateX(-8px) rotate(-3deg)}
+    60%{transform:translateX(8px) rotate(3deg)}
+    75%{transform:translateX(-4px) rotate(-2deg)}
+    90%{transform:translateX(4px) rotate(2deg)}
+}
+
+@keyframes miracleSnowShake{
+    0%{transform:translateY(0) rotate(0) scale(1)}
+    25%{transform:translateY(-15px) rotate(35deg) scale(1.15)}
+    50%{transform:translateY(10px) rotate(90deg) scale(.9)}
+    75%{transform:translateY(-8px) rotate(145deg) scale(1.1)}
+    100%{transform:translateY(0) rotate(180deg) scale(1)}
+}
+  @keyframes miracleGlow{
     from{opacity:.5;transform:scale(.94)}
     to{opacity:1;transform:scale(1.06)}
 }
@@ -1168,7 +1193,25 @@ async function init(){
   });
   subscribeRealtime();
 }
-init();
+const miracleShakeBtn = document.getElementById('miracleShakeBtn');
+const miracleOrb = document.getElementById('miracleOrb');
+
+if (miracleShakeBtn && miracleOrb) {
+    miracleShakeBtn.addEventListener('click', () => {
+        if (miracleShakeBtn.disabled) return;
+
+        miracleShakeBtn.disabled = true;
+        miracleOrb.classList.remove('is-shaking');
+        void miracleOrb.offsetWidth;
+        miracleOrb.classList.add('is-shaking');
+
+        setTimeout(() => {
+            miracleOrb.classList.remove('is-shaking');
+            miracleShakeBtn.disabled = false;
+        }, 900);
+    });
+}
+  init();
 </script>
 </body>
 </html>
