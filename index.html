@@ -1262,21 +1262,31 @@ async function init(){
     loadRecords();
   });
   subscribeRealtime();
-}
 const miracleShakeBtn = document.getElementById('miracleShakeBtn');
 const miracleOrb = document.getElementById('miracleOrb');
+const miracleResult = document.getElementById('miracleResult');
 
-if (miracleShakeBtn && miracleOrb) {
+if (miracleShakeBtn && miracleOrb && miracleResult) {
     miracleShakeBtn.addEventListener('click', () => {
         if (miracleShakeBtn.disabled) return;
 
         miracleShakeBtn.disabled = true;
+        miracleResult.hidden = true;
+
         miracleOrb.classList.remove('is-shaking');
         void miracleOrb.offsetWidth;
         miracleOrb.classList.add('is-shaking');
 
         setTimeout(() => {
             miracleOrb.classList.remove('is-shaking');
+
+            miracleResult.querySelector('.miracle-result-title').textContent =
+                'Новогоднее чудо!';
+
+            miracleResult.querySelector('.miracle-result-description').textContent =
+                'Здесь появится твой результат';
+
+            miracleResult.hidden = false;
             miracleShakeBtn.disabled = false;
         }, 5000);
     });
