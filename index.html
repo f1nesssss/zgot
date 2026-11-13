@@ -114,10 +114,12 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 <header class="topbar">
   <div class="brand"><div class="brand-mark">❄</div><div><small>Зимнее событие</small><strong>Сказка в хрустальном шаре</strong></div></div>
   <div class="top-actions">
+  <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
+  <div class="admin-tools" id="adminTools" hidden>
+    <button class="ghost-btn" id="addBtn">+ Участник</button>
     <button class="ghost-btn" id="exportBtn">Экспорт данных</button>
-    <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
-    <button class="primary-btn" id="addBtn" hidden>＋ Участник</button>
   </div>
+</div>
 </header>
 
 <section class="hero">
@@ -264,7 +266,7 @@ function renderStats(){
 }
 function render(){
   renderOrbs();renderRows();renderStats();
-  $('addBtn').hidden=!isAdmin;
+  $('adminTools').hidden=!isAdmin;
   $('adminBtn').textContent=isAdmin?'Выйти из панели':'Вход для администратора';
 }
 function openModal(){
