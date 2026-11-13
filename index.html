@@ -721,6 +721,33 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   </div>
   <div class="orbs" id="orbs"></div>
   
+  <section class="participants" id="participants">
+    <div class="participants-head">
+      <div>
+    <h2 id="tableTitle">Участники и билеты</h2>
+    <p id="tableSubtitle" hidden></p>
+    <p id="lastUpdatedNote" class="updated-note"></p>
+</div>
+
+<div class="view-tabs" id="viewTabs" hidden>
+    <button type="button" class="view-tab" id="totalViewBtn">
+        ← Общее количество
+    </button>
+</div>
+
+      <div class="filters">
+        <select id="orbFilter" aria-label="Фильтр по шару"><option value="all">Все шары</option></select>
+        <select id="socialFilter" aria-label="Фильтр по соцсети"><option value="all">Все соцсети</option><option value="ВК">ВКонтакте</option><option value="ОК">Одноклассники</option></select>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+<thead><tr><th id="orbHeader">Шар</th><th>Соцсеть</th><th>ID участника</th><th>Билеты</th><th id="actionsHead"></th></tr></thead>
+        <tbody id="participantRows"></tbody>
+      </table>
+      <div class="empty" id="emptyState" hidden>Пока здесь никого нет. Добавьте первого участника.</div>
+    </div>
+  </section>
 <section class="miracle-section" id="miracleSection">
     <div class="miracle-card">
         <div class="miracle-content">
@@ -787,34 +814,6 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     </div>
 </section>
 
-
-  <section class="participants" id="participants">
-    <div class="participants-head">
-      <div>
-    <h2 id="tableTitle">Участники и билеты</h2>
-    <p id="tableSubtitle" hidden></p>
-    <p id="lastUpdatedNote" class="updated-note"></p>
-</div>
-
-<div class="view-tabs" id="viewTabs" hidden>
-    <button type="button" class="view-tab" id="totalViewBtn">
-        ← Общее количество
-    </button>
-</div>
-
-      <div class="filters">
-        <select id="orbFilter" aria-label="Фильтр по шару"><option value="all">Все шары</option></select>
-        <select id="socialFilter" aria-label="Фильтр по соцсети"><option value="all">Все соцсети</option><option value="ВК">ВКонтакте</option><option value="ОК">Одноклассники</option></select>
-      </div>
-    </div>
-    <div class="table-wrap">
-      <table>
-<thead><tr><th id="orbHeader">Шар</th><th>Соцсеть</th><th>ID участника</th><th>Билеты</th><th id="actionsHead"></th></tr></thead>
-        <tbody id="participantRows"></tbody>
-      </table>
-      <div class="empty" id="emptyState" hidden>Пока здесь никого нет. Добавьте первого участника.</div>
-    </div>
-  </section>
 </main>
 
 <footer class="footer"><span class="star">✧</span> Пусть эта зима будет немного волшебнее <span class="star">✧</span></footer>
