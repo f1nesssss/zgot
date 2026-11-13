@@ -665,11 +665,11 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 }
 
 .miracle-orb.is-shaking{
-    animation:miracleShake .9s ease-in-out;
+    animation:miracleShake 2.25s ease-in-out;
 }
 
 .miracle-orb.is-shaking .miracle-orb-snow{
-    animation:miracleSnowShake .9s ease-in-out;
+    animation:miracleSnowShake 2.25s ease-in-out;
 }
 
 @keyframes miracleShake{
@@ -1208,7 +1208,7 @@ if (miracleShakeBtn && miracleOrb) {
         setTimeout(() => {
             miracleOrb.classList.remove('is-shaking');
             miracleShakeBtn.disabled = false;
-        }, 900);
+        }, 2250);
     });
 }
   init();
