@@ -116,6 +116,9 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     margin: 18px 0 14px;
     flex-wrap: wrap;
 }
+  .view-tabs[hidden] {
+    display: none !important;
+}
 
 .view-tab {
     border: 1px solid var(--line);
@@ -180,9 +183,10 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     <div class="participants-head">
       <div><h2 id="tableTitle">Участники и билеты</h2><p id="tableSubtitle">Общий список по всем пяти шарам</p></div>
 
-<div class="view-tabs" role="tablist">
-    <button type="button" class="view-tab active" id="totalViewBtn">Общее количество</button>
-    <button type="button" class="view-tab" id="orbViewBtn">По шарам</button>
+<div class="view-tabs" id="viewTabs" hidden>
+    <button type="button" class="view-tab" id="totalViewBtn">
+        ← Общее количество
+    </button>
 </div>
 
       <div class="filters">
@@ -271,7 +275,7 @@ function renderOrbs(){
 }
 
 function renderRows(){
-    const totalMode=$('totalViewBtn').classList.contains('active');
+    const totalMode=selectedOrb==='all';
     const q=$('search').value.trim().toLowerCase();
     const social=$('socialFilter').value;
     const orb=$('orbFilter').value;
@@ -312,6 +316,7 @@ function renderRows(){
     $('orbHeader').hidden=totalMode;
     $('orbFilter').hidden=totalMode;
     $('actionsHead').hidden=totalMode||!isAdmin;
+  $('viewTabs').hidden=totalMode;
 
     $('participantRows').innerHTML=list.map(r=>`
         <tr>
@@ -439,14 +444,7 @@ $('participantForm').addEventListener('submit',async e=>{
 $('search').addEventListener('input',renderRows);
   
 $('totalViewBtn').addEventListener('click',()=>{
-    $('totalViewBtn').classList.add('active');
-    $('orbViewBtn').classList.remove('active');
-    renderRows();
-});
-
-$('orbViewBtn').addEventListener('click',()=>{
-    $('orbViewBtn').classList.add('active');
-    $('totalViewBtn').classList.remove('active');
+    selectedOrb='all';
     $('orbFilter').value='all';
     renderRows();
 });
