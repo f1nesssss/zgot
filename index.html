@@ -1281,11 +1281,38 @@ if (miracleShakeBtn && miracleOrb && miracleResult) {
         setTimeout(() => {
             miracleOrb.classList.remove('is-shaking');
 
-            miracleResult.querySelector('.miracle-result-title').textContent =
-                'Новогоднее чудо!';
+const demoPrizes = [
+    {
+        title: 'Мерч проекта!',
+        description: 'Поздравляем! Тебе достался мерч нашего проекта.',
+        image: 'assets/prize-merch.png'
+    },
+    {
+        title: '100 чашечек!',
+        description: 'Поздравляем! Ты выиграл 100 чашечек.',
+        image: 'assets/prize-cups.png'
+    },
+    {
+        title: 'Набор новогодних подарков!',
+        description: 'Поздравляем! Тебе достался набор новогодних подарков.',
+        image: 'assets/prize-gifts.png'
+    },
+    {
+        title: 'В этот раз шар решил сохранить интригу',
+        description: 'Не расстраивайся! Возможно, удача улыбнётся тебе в следующий раз.',
+        image: ''
+    }
+];
 
-            miracleResult.querySelector('.miracle-result-description').textContent =
-                'Здесь появится твой результат';
+const prize = demoPrizes[Math.floor(Math.random() * demoPrizes.length)];
+
+miracleResult.querySelector('.miracle-result-title').textContent = prize.title;
+miracleResult.querySelector('.miracle-result-description').textContent = prize.description;
+
+const prizeImage = miracleResult.querySelector('.miracle-result-image');
+prizeImage.innerHTML = prize.image
+    ? `<img src="${prize.image}" alt="${prize.title}">`
+    : '';
 
             miracleResult.hidden = false;
             miracleShakeBtn.disabled = false;
