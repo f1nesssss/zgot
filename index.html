@@ -25,7 +25,29 @@ button{cursor:pointer}
 @keyframes fall{to{transform:translate3d(var(--drift),110vh,0) rotate(360deg)}}
 .topbar{max-width:1240px;margin:auto;padding:22px 28px 10px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .brand{display:flex;align-items:center;gap:12px}
-.brand-mark{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fff,#e5d6c4);box-shadow:inset 0 0 0 1px #fff,0 5px 14px #c9b9a5;font-size:22px}
+.brand-mark{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:block;
+    object-fit:cover;
+    box-shadow:0 5px 14px rgba(92,72,52,.22);
+    transition:transform .25s ease,box-shadow .25s ease;
+}
+  .brand:hover .brand-mark{
+    transform:scale(1.08);
+    box-shadow:0 7px 18px rgba(92,72,52,.3);
+}
+
+.brand{
+    color:inherit;
+    text-decoration:none;
+    transition:opacity .2s ease;
+}
+
+.brand:hover{
+    opacity:.88;
+}
 .brand small{display:block;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;font-size:9px;font-weight:700}
 .brand strong{font-family:Georgia,serif;font-size:18px;font-weight:600}
 .top-actions{display:flex;gap:9px;align-items:center}
@@ -470,7 +492,10 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 <body>
 <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
 <header class="topbar">
-  <div class="brand"><div class="brand-mark">❄</div><div><strong>Здесь говорят о тебе | Аватария</strong></div></div>
+  <a class="brand" href="https://vk.ru/aboutyou_ava" target="_blank" rel="noopener noreferrer">
+    <img class="brand-mark" src="assets/vk-cover.png" alt="ЗГОТ">
+    <div><strong>Здесь говорят о тебе | Аватария</strong></div>
+</a>
   <div class="top-actions">
   <button class="ghost-btn" id="helpBtn">Помощь</button>
   <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
