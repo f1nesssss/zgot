@@ -108,6 +108,37 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .auth-form input{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff;color:var(--ink)}
 @media(max-width:1000px){.orbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:650px){.topbar{padding:16px}.brand strong{font-size:15px}.top-actions .ghost-btn{display:none}.hero{padding:32px 18px 20px}.stats{padding:0 16px 24px;gap:7px}.stat{padding:12px 5px}.stat b{font-size:20px}.stat span{font-size:8px}.section{padding:8px 16px 40px}.section-head{align-items:stretch;flex-direction:column}.search{width:100%}.orbs{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.orb-art{height:205px}.orb-title{font-size:12px}.participants-head{padding:18px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
+
+/* Переключение режимов таблицы */
+.view-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 18px 0 14px;
+    flex-wrap: wrap;
+}
+
+.view-tab {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 10px 18px;
+    background: rgba(255,255,255,.55);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.view-tab:hover {
+    background: #fff;
+}
+
+.view-tab.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+}
+
 </style>
 </head>
 <body>
@@ -148,6 +179,12 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   <section class="participants" id="participants">
     <div class="participants-head">
       <div><h2 id="tableTitle">Участники и билеты</h2><p id="tableSubtitle">Общий список по всем пяти шарам</p></div>
+
+<div class="view-tabs" role="tablist">
+    <button type="button" class="view-tab active" id="totalViewBtn">Общее количество</button>
+    <button type="button" class="view-tab" id="orbViewBtn">По шарам</button>
+</div>
+
       <div class="filters">
         <select id="orbFilter" aria-label="Фильтр по шару"><option value="all">Все шары</option></select>
         <select id="socialFilter" aria-label="Фильтр по соцсети"><option value="all">Все соцсети</option><option value="ВК">ВКонтакте</option><option value="ОК">Одноклассники</option></select>
@@ -155,7 +192,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Шар</th><th>Соцсеть</th><th>ID участника </th><th>Билеты</th><th id="actionsHead"></th></tr></thead>
+<thead><tr><th id="orbHeader">Шар</th><th>Соцсеть</th><th>ID участника</th><th>Билеты</th><th id="actionsHead"></th></tr></thead>
         <tbody id="participantRows"></tbody>
       </table>
       <div class="empty" id="emptyState" hidden>Пока здесь никого нет. Добавьте первого участника.</div>
@@ -232,34 +269,108 @@ function renderOrbs(){
     selectedOrb=b.dataset.view;$('orbFilter').value=selectedOrb;renderRows();$('participants').scrollIntoView({behavior:'smooth'});
   }));
 }
+
 function renderRows(){
-  const q=$('search').value.trim().toLowerCase(), social=$('socialFilter').value, orb=$('orbFilter').value;
-  const list=records.map((r,i)=>({...r,index:i})).filter(r=>
-    (orb==='all'||r.orb===orb)&&(social==='all'||r.social===social)&&(!q||String(r.id).toLowerCase().includes(q))
-  );
-  $('actionsHead').textContent=isAdmin?'Управление':'';
-  $('participantRows').innerHTML=list.map(r=>`<tr>
-    <td>${escapeHtml(orbById(r.orb)?.name||'—')}</td>
-    <td><span class="social ${r.social==='ОК'?'ok':''}"><i class="social-dot"></i>${escapeHtml(r.social)}</span></td>
-    <td>${escapeHtml(r.id)}</td><td><span class="ticket-pill">${Number(r.tickets)}</span></td>
-    <td>${isAdmin?`<div class="admin-row-actions"><button data-edit="${r.index}">Изменить билеты</button><button data-delete="${r.index}">Удалить</button></div>`:''}</td>
-  </tr>`).join('');
-  $('emptyState').hidden=list.length!==0;
-  $('participantRows').querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',async()=>{
-    const r=records[Number(b.dataset.edit)];
-    const value=prompt(`Новое количество билетов для ID ${r.id}:`,String(r.tickets));
-    if(value===null)return;
-    const tickets=Number(value);
-    if(!Number.isInteger(tickets)||tickets<1||tickets>999){alert('Укажи целое число от 1 до 999.');return;}
-    await updateRecord(r,tickets);
-  }));
-  $('participantRows').querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',async()=>{
-    const r=records[Number(b.dataset.delete)];
-    if(confirm(`Удалить запись ID ${r.id} из шара «${orbById(r.orb)?.name}»?`))await deleteRecord(r);
-  }));
-  $('tableTitle').textContent=orb==='all'?'Участники и билеты':orbById(orb).name;
-  $('tableSubtitle').textContent=`Показано записей: ${list.length}${isAdmin?' · режим администратора':''}`;
+    const totalMode=$('totalViewBtn').classList.contains('active');
+    const q=$('search').value.trim().toLowerCase();
+    const social=$('socialFilter').value;
+    const orb=$('orbFilter').value;
+
+    let list;
+
+    if(totalMode){
+        const grouped=new Map();
+
+        records.forEach(r=>{
+            const key=r.social+':'+r.id;
+
+            if(!grouped.has(key)){
+                grouped.set(key,{
+                    id:r.id,
+                    social:r.social,
+                    tickets:0
+                });
+            }
+
+            grouped.get(key).tickets+=Number(r.tickets)||0;
+        });
+
+        list=[...grouped.values()]
+            .filter(r=>
+                (social==='all'||r.social===social)&&
+                (!q||String(r.id).toLowerCase().includes(q))
+            )
+            .sort((a,b)=>b.tickets-a.tickets);
+    }else{
+        list=records.map((r,i)=>({...r,index:i})).filter(r=>
+            (orb==='all'||r.orb===orb)&&
+            (social==='all'||r.social===social)&&
+            (!q||String(r.id).toLowerCase().includes(q))
+        );
+    }
+
+    $('orbHeader').hidden=totalMode;
+    $('orbFilter').hidden=totalMode;
+    $('actionsHead').hidden=totalMode||!isAdmin;
+
+    $('participantRows').innerHTML=list.map(r=>`
+        <tr>
+            ${totalMode?'':`<td>${escapeHtml(orbById(r.orb)?.name||'—')}</td>`}
+            <td>
+                <span class="social ${r.social==='OK'?'ok':''}">
+                    <i class="social-dot"></i>${escapeHtml(r.social)}
+                </span>
+            </td>
+            <td>${escapeHtml(r.id)}</td>
+            <td><span class="ticket-pill">${Number(r.tickets)}</span></td>
+            ${!totalMode&&isAdmin?`
+                <td>
+                    <div class="admin-row-actions">
+                        <button data-edit="${r.index}">Изменить билеты</button>
+                        <button data-delete="${r.index}">Удалить</button>
+                    </div>
+                </td>
+            `:''}
+        </tr>
+    `).join('');
+
+    $('emptyState').hidden=list.length!==0;
+
+    if(!totalMode&&isAdmin){
+        $('participantRows').querySelectorAll('[data-edit]').forEach(b=>
+            b.addEventListener('click',async()=>{
+                const r=records[Number(b.dataset.edit)];
+                const value=prompt(`Новое количество билетов для ID ${r.id}:`,String(r.tickets));
+                if(value===null)return;
+
+                const tickets=Number(value);
+                if(!Number.isInteger(tickets)||tickets<1||tickets>999){
+                    alert('Укажи целое число от 1 до 999.');
+                    return;
+                }
+
+                await updateRecord(r,tickets);
+            })
+        );
+
+        $('participantRows').querySelectorAll('[data-delete]').forEach(b=>
+            b.addEventListener('click',async()=>{
+                const r=records[Number(b.dataset.delete)];
+                if(confirm(`Удалить запись ID ${r.id} из шара «${orbById(r.orb)?.name}»?`))
+                    await deleteRecord(r);
+            })
+        );
+    }
+
+    $('tableTitle').textContent=totalMode
+        ?'Общее количество'
+        :(orb==='all'?'Участники и билеты':orbById(orb)?.name||'Участники и билеты');
+
+    $('tableSubtitle').textContent=totalMode
+        ?`Участников: ${list.length} · Сумма билетов по всем шарам`
+        :`Показано записей: ${list.length}${isAdmin?' · режим администратора':''}`;
 }
+
 function renderStats(){
   const unique=new Set(records.map(r=>r.social+':'+r.id));
   $('participantCount').textContent=unique.size;
@@ -326,6 +437,20 @@ $('participantForm').addEventListener('submit',async e=>{
   await addRecord(payload);closeModal();
 });
 $('search').addEventListener('input',renderRows);
+  
+$('totalViewBtn').addEventListener('click',()=>{
+    $('totalViewBtn').classList.add('active');
+    $('orbViewBtn').classList.remove('active');
+    renderRows();
+});
+
+$('orbViewBtn').addEventListener('click',()=>{
+    $('orbViewBtn').classList.add('active');
+    $('totalViewBtn').classList.remove('active');
+    $('orbFilter').value='all';
+    renderRows();
+});
+
 $('socialFilter').addEventListener('change',renderRows);
 $('orbFilter').addEventListener('change',renderRows);
 $('orbFilter').innerHTML='<option value="all">Все шары</option>'+ORBS.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
