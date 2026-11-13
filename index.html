@@ -329,6 +329,13 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   .table-wrap table{
     min-width:650px;
   }
+
+  /* Центрирование последней карточки */
+  .orb-card:last-child:nth-child(odd){
+    grid-column:1 / -1;
+    width:calc((100% - 10px) / 2);
+    justify-self:center;
+  }
 }
 
 
