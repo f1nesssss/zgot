@@ -456,11 +456,6 @@ function renderRows(){
   $('lastUpdatedNote').textContent = lastUpdated
     ? `⏰ Обновлено в ${lastUpdated.toLocaleTimeString('ru-RU')}`
     : '';
-    ? `⏰ Обновлено в ${lastUpdated.toLocaleTimeString('ru-RU')} · ${
-        social === 'all' ? 'Все соцсети' :
-        social === 'VK' ? 'ВКонтакте' : 'Одноклассники'
-    }`
-    : '';
 }
 
 function renderStats(){}
