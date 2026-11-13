@@ -234,6 +234,57 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     text-decoration: none;
     padding: 11px 17px;
 }
+  /* Оформление окна с результатом */
+.prize-result-content {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.prize-result-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.prize-result-title {
+    margin: 0;
+    font: 600 25px Georgia, serif;
+    color: var(--ink);
+}
+
+.prize-result-description {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.prize-result-warning {
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: rgba(255,255,255,.55);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.prize-result-id {
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.65);
+    color: var(--ink);
+    font-size: 13px;
+    text-align: left;
+}
+
+.prize-result-id strong {
+    display: block;
+    margin-bottom: 5px;
+}
 
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .form-grid label{display:block;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
