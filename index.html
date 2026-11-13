@@ -1390,19 +1390,41 @@ const demoPrizes = [
 
 const prize = demoPrizes[Math.floor(Math.random() * demoPrizes.length)];
 
-miracleResult.querySelector('.miracle-result-title').textContent = prize.title;
-miracleResult.querySelector('.miracle-result-description').textContent = prize.description;
+document.getElementById('prizeResultTitle').textContent = 'Твой результат';
+document.getElementById('prizeResultName').textContent = prize.title;
+document.getElementById('prizeResultDescription').textContent = prize.description;
 
-const prizeImage = miracleResult.querySelector('.miracle-result-image');
-prizeImage.innerHTML = prize.image
+document.getElementById('prizeResultSocial').textContent =
+    'Социальная сеть: ' + document.getElementById('miracleSocial').value;
+
+document.getElementById('prizeResultGameId').textContent =
+    'Игровой ID: ' + document.getElementById('miracleGameId').value;
+
+const resultImage = document.getElementById('prizeResultImage');
+resultImage.innerHTML = prize.image
     ? `<img src="${prize.image}" alt="${prize.title}">`
     : '';
 
-            miracleResult.hidden = false;
-            miracleShakeBtn.disabled = false;
+document.getElementById('prizeResultBackdrop').classList.add('open');
+
+miracleShakeBtn.disabled = false;
         }, 5000);
     });
 }
+  const prizeResultBackdrop = document.getElementById('prizeResultBackdrop');
+
+function closePrizeResult() {
+    prizeResultBackdrop.classList.remove('open');
+}
+
+document.getElementById('closePrizeResult').addEventListener('click', closePrizeResult);
+document.getElementById('closePrizeResultBtn').addEventListener('click', closePrizeResult);
+
+prizeResultBackdrop.addEventListener('click', (event) => {
+    if (event.target === prizeResultBackdrop) {
+        closePrizeResult();
+    }
+});
   init();
 </script>
 </body>
