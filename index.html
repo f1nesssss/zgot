@@ -275,6 +275,27 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     padding:5px 0;
     white-space:nowrap;
   }
+
+  /* Мобильная таблица */
+  .table-wrap{
+    width:100%;
+    max-width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x;
+  }
+
+  .table-wrap table{
+    min-width:650px;
+    width:650px;
+  }
+
+  .table-wrap th,
+  .table-wrap td{
+    white-space:nowrap;
+  }
 }
 
 
