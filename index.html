@@ -1026,6 +1026,39 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
         </div>
     </div>
 </div>
+  <!-- Окно с результатом новогоднего чуда -->
+<div class="modal-backdrop" id="prizeResultBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="prizeResultTitle">
+
+        <div class="modal-top">
+            <h3 id="prizeResultTitle">Твой результат</h3>
+            <button class="close" id="closePrizeResult" aria-label="Закрыть">×</button>
+        </div>
+
+        <div class="prize-result-content">
+            <div class="prize-result-id">
+                <strong>Твои данные</strong>
+                <span id="prizeResultSocial"></span>
+                <span id="prizeResultGameId"></span>
+            </div>
+
+            <div class="prize-result-image" id="prizeResultImage"></div>
+
+            <h3 class="prize-result-title" id="prizeResultName"></h3>
+
+            <p class="prize-result-description" id="prizeResultDescription"></p>
+
+            <div class="prize-result-warning">
+                Сделай скриншот этого окна! На нём должны быть видны твоя награда, игровое ID и социальная сеть. Скриншот понадобится для подтверждения получения приза.
+            </div>
+
+            <button type="button" class="primary-btn" id="closePrizeResultBtn">
+                Понятно
+            </button>
+        </div>
+
+    </div>
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
