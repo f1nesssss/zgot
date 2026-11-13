@@ -90,6 +90,45 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .modal h3{font:500 25px Georgia,serif;margin:0}
 .close{border:0;background:#e9dfd2;color:var(--ink);width:32px;height:32px;border-radius:50%;font-size:18px}
 .modal-note{font-size:12px;color:var(--muted);line-height:1.6}
+  
+/* Оформление окна помощи */
+.help-content {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.help-item {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255,255,255,.65);
+}
+
+.help-item h4 {
+    margin: 0 0 9px;
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+}
+
+.help-item p {
+    margin: 0 0 15px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.help-item .primary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 11px 17px;
+}
+
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .form-grid label{display:block;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .form-grid input,.form-grid select{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:10px;padding:11px;background:white;color:var(--ink);outline:none}
@@ -237,7 +276,43 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Окно помощи -->
+<div class="modal-backdrop" id="helpBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+
+        <div class="modal-top">
+            <h3 id="helpTitle">Помощь</h3>
+            <button class="close" id="closeHelp" aria-label="Закрыть">×</button>
+        </div>
+
+        <div class="modal-note">
+            Здесь ты можешь получить помощь и связаться с администрацией проекта.
+        </div>
+
+        <div class="help-content">
+
+            <div class="help-item">
+                <h4>🔮 У тебя есть вопрос?</h4>
+                <p>Задай его в нашей беседе проекта ↓</p>
+                <a href="#" class="primary-btn" id="helpChatLink" target="_blank">
+                    Перейти в беседу →
+                </a>
+            </div>
+
+            <div class="help-item">
+                <h4>🔮 Есть проблемы с сайтом или есть вопрос к администрации?</h4>
+                <p>Обратись в личные сообщения нашей группы ↓</p>
+                <a href="#" class="primary-btn" id="helpMessagesLink" target="_blank">
+                    Написать →
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
 <script>
 const ORBS = [
