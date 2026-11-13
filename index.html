@@ -508,6 +508,22 @@ function subscribeRealtime(){
     .subscribe();
 }
 $('addBtn').addEventListener('click',openModal);
+  
+// Открытие и закрытие окна помощи
+$('helpBtn').addEventListener('click',()=>{
+    $('helpBackdrop').classList.add('open');
+});
+
+$('closeHelp').addEventListener('click',()=>{
+    $('helpBackdrop').classList.remove('open');
+});
+
+$('helpBackdrop').addEventListener('click',e=>{
+    if(e.target===$('helpBackdrop')){
+        $('helpBackdrop').classList.remove('open');
+    }
+});
+
 $('closeModal').addEventListener('click',closeModal);
 $('cancelModal').addEventListener('click',closeModal);
 $('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))closeModal();});
