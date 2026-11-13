@@ -90,6 +90,13 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .modal h3{font:500 25px Georgia,serif;margin:0}
 .close{border:0;background:#e9dfd2;color:var(--ink);width:32px;height:32px;border-radius:50%;font-size:18px}
 .modal-note{font-size:12px;color:var(--muted);line-height:1.6}
+  .updated-note {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
   
 /* Оформление окна помощи */
 .help-content {
@@ -206,12 +213,6 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 
 <div class="connection-note" id="connectionNote" role="status">Загружаем общую базу участников…</div>
 
-<section class="stats" aria-label="Статистика">
-  <div class="stat"><b id="participantCount">0</b><span>Участников</span></div>
-  <div class="stat"><b id="ticketCount">0</b><span>Билетов всего</span></div>
-  <div class="stat"><b id="orbCount">5</b><span>Зимних шаров</span></div>
-</section>
-
 <main class="section">
   <div class="section-head">
     <div><h2>Коллекция шаров</h2><p>Выберите шар, чтобы посмотреть участников и билеты</p></div>
@@ -221,7 +222,11 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 
   <section class="participants" id="participants">
     <div class="participants-head">
-      <div><h2 id="tableTitle">Участники и билеты</h2><p id="tableSubtitle">Общий список по всем пяти шарам</p></div>
+      <div>
+    <h2 id="tableTitle">Участники и билеты</h2>
+    <p id="tableSubtitle">Общий список по всем пяти шарам</p>
+    <p id="lastUpdatedNote" class="updated-note"></p>
+</div>
 
 <div class="view-tabs" id="viewTabs" hidden>
     <button type="button" class="view-tab" id="totalViewBtn">
@@ -324,7 +329,7 @@ const $=id=>document.getElementById(id);
 const orbById=id=>ORBS.find(o=>o.id===id);
 const configured = Boolean(window.APP_CONFIG?.SUPABASE_URL && window.APP_CONFIG?.SUPABASE_ANON_KEY &&
   !window.APP_CONFIG.SUPABASE_URL.includes('YOUR_') && !window.APP_CONFIG.SUPABASE_ANON_KEY.includes('YOUR_'));
-let supabaseClient=null, records=PREVIEW.map(x=>({...x})), isAdmin=false, currentUser=null, selectedOrb='all', realtimeChannel=null;
+let supabaseClient=null, records=PREVIEW.map(x=>({...x})), isAdmin=false, currentUser=null, selectedOrb='all', realtimeChannel=null, lastUpdated=null;
 
 function setNote(message, error=false){
   $('connectionNote').textContent=message;
@@ -447,13 +452,15 @@ function renderRows(){
     $('tableSubtitle').textContent=totalMode
         ?`Участников: ${list.length} · Сумма билетов по всем шарам`
         :`Показано записей: ${list.length}${isAdmin?' · режим администратора':''}`;
+  $('lastUpdatedNote').textContent = lastUpdated
+    ? `⏰ Обновлено в ${lastUpdated.toLocaleTimeString('ru-RU')} · ${
+        social === 'all' ? 'Все соцсети' :
+        social === 'VK' ? 'ВКонтакте' : 'Одноклассники'
+    }`
+    : '';
 }
 
-function renderStats(){
-  const unique=new Set(records.map(r=>r.social+':'+r.id));
-  $('participantCount').textContent=unique.size;
-  $('ticketCount').textContent=totalTickets();
-}
+function renderStats(){}
 function render(){
   renderOrbs();renderRows();renderStats();
   $('adminTools').hidden=!isAdmin;
@@ -472,8 +479,8 @@ async function loadRecords(){
   const {data,error}=await supabaseClient.from('entries').select('id,globe_id,social_network,social_id,tickets,created_at').order('created_at',{ascending:true});
   if(error){setNote('Не удалось загрузить общую базу: '+error.message,true);return;}
   records=(data||[]).map(r=>({dbId:r.id,orb:r.globe_id,social:r.social_network==='VK'?'ВК':'ОК',id:r.social_id,tickets:r.tickets}));
-  render();
-  setNote('Обновлено: '+new Date().toLocaleString('ru-RU'));
+  lastUpdated = new Date();
+render();
 }
 async function updateRecord(record,tickets){
   const {error}=await supabaseClient.from('entries').update({tickets}).eq('id',record.dbId);
