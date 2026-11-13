@@ -241,12 +241,54 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     margin-top: 20px;
     text-align: center;
 }
+  .prize-firework {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 20;
+    background: #d6a85f;
+    box-shadow:
+        0 0 8px 3px rgba(214, 168, 95, .7),
+        0 0 18px 5px rgba(255, 255, 255, .6);
+    animation: prizeFirework 1.5s ease-out forwards;
+}
+
+@keyframes prizeFirework {
+    0% {
+        opacity: 0;
+        transform: scale(.2);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1.4);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0) translateY(-20px);
+    }
+}
 
 .prize-result-image {
-    width: 150px;
-    height: 150px;
-    object-fit: contain;
+    width: 100%;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 0 auto;
+}
+
+.prize-result-image img {
+    display: block;
+    max-width: 180px;
+    max-height: 180px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  .prize-result-id span {
+    display: block;
+    margin-top: 4px;
 }
 
 .prize-result-title {
@@ -284,6 +326,44 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .prize-result-id strong {
     display: block;
     margin-bottom: 5px;
+}
+  #sendPrizeScreenshot[hidden] {
+    display: none !important;
+}
+  /* Анимация праздничных салютов */
+.prize-result-content {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.prize-firework {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+    background: #d6a85f;
+    box-shadow:
+        0 0 8px 3px rgba(214, 168, 95, .7),
+        0 0 18px 5px rgba(255, 255, 255, .6);
+    animation: prizeFirework 1.5s ease-out forwards;
+}
+
+@keyframes prizeFirework {
+    0% {
+        opacity: 0;
+        transform: scale(.2);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1.4);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0) translate(var(--move-x), var(--move-y));
+    }
 }
 
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -1051,7 +1131,16 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
             <div class="prize-result-warning">
                 Сделай скриншот этого окна! На нём должны быть видны твоя награда, ID и социальная сеть. Затем отправь этот скриншот в личные сообщения нашей группы для подтверждения приза ^^
             </div>
-
+<a
+    href="https://vk.com/im?sel=-91120784"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="primary-btn"
+    id="sendPrizeScreenshot"
+    hidden
+>
+    Отправить скриншот
+</a>
             <button type="button" class="primary-btn" id="closePrizeResultBtn">
                 Понятно
             </button>
@@ -1389,6 +1478,9 @@ const demoPrizes = [
 ];
 
 const prize = demoPrizes[Math.floor(Math.random() * demoPrizes.length)];
+          
+const sendPrizeScreenshot = document.getElementById('sendPrizeScreenshot');
+sendPrizeScreenshot.hidden = !prize.image;
 
 document.getElementById('prizeResultTitle').textContent = 'Твой результат';
 document.getElementById('prizeResultName').textContent = prize.title;
@@ -1406,6 +1498,7 @@ resultImage.innerHTML = prize.image
     : '';
 
 document.getElementById('prizeResultBackdrop').classList.add('open');
+          createPrizeFireworks();
 
 miracleShakeBtn.disabled = false;
         }, 5000);
@@ -1415,6 +1508,32 @@ miracleShakeBtn.disabled = false;
 
 function closePrizeResult() {
     prizeResultBackdrop.classList.remove('open');
+}
+  function createPrizeFireworks() {
+    const modal = document.querySelector('#prizeResultBackdrop .modal');
+    if (!modal) return;
+
+    const oldFireworks = modal.querySelectorAll('.prize-firework');
+    oldFireworks.forEach(item => item.remove());
+
+    const positions = [
+        [0, 10], [50, 0], [100, 10],
+        [100, 50], [100, 90], [50, 100],
+        [0, 90], [0, 50],
+        [25, 0], [75, 0], [25, 100], [75, 100]
+    ];
+
+    positions.forEach(([x, y], index) => {
+        setTimeout(() => {
+            const firework = document.createElement('span');
+            firework.className = 'prize-firework';
+            firework.style.left = x + '%';
+            firework.style.top = y + '%';
+            modal.appendChild(firework);
+
+            setTimeout(() => firework.remove(), 1600);
+        }, index * 120);
+    });
 }
 
 document.getElementById('closePrizeResult').addEventListener('click', closePrizeResult);
