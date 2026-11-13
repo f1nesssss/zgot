@@ -211,7 +211,6 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   <div class="hero-rule"></div>
 </section>
 
-<div class="connection-note" id="connectionNote" role="status">Загружаем общую базу участников…</div>
 
 <main class="section">
   <div class="section-head">
@@ -224,7 +223,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     <div class="participants-head">
       <div>
     <h2 id="tableTitle">Участники и билеты</h2>
-    <p id="tableSubtitle">Общий список по всем пяти шарам</p>
+    <p id="tableSubtitle" hidden></p>
     <p id="lastUpdatedNote" class="updated-note"></p>
 </div>
 
@@ -332,8 +331,10 @@ const configured = Boolean(window.APP_CONFIG?.SUPABASE_URL && window.APP_CONFIG?
 let supabaseClient=null, records=PREVIEW.map(x=>({...x})), isAdmin=false, currentUser=null, selectedOrb='all', realtimeChannel=null, lastUpdated=null;
 
 function setNote(message, error=false){
-  $('connectionNote').textContent=message;
-  $('connectionNote').classList.toggle('error',error);
+    const note = $('connectionNote');
+    if(!note) return;
+    note.textContent = message;
+    note.classList.toggle('error', error);
 }
 function totalTickets(list=records){return list.reduce((s,r)=>s+Number(r.tickets||0),0);}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -453,6 +454,8 @@ function renderRows(){
         ?`Участников: ${list.length} · Сумма билетов по всем шарам`
         :`Показано записей: ${list.length}${isAdmin?' · режим администратора':''}`;
   $('lastUpdatedNote').textContent = lastUpdated
+    ? `⏰ Обновлено в ${lastUpdated.toLocaleTimeString('ru-RU')}`
+    : '';
     ? `⏰ Обновлено в ${lastUpdated.toLocaleTimeString('ru-RU')} · ${
         social === 'all' ? 'Все соцсети' :
         social === 'VK' ? 'ВКонтакте' : 'Одноклассники'
