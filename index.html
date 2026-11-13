@@ -487,6 +487,206 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   }
 }
 
+  
+/* НОВОГОДНЕЕ ЧУДО */
+.miracle-section{
+    max-width:1240px;
+    margin:0 auto 38px;
+    padding:0 28px;
+}
+
+.miracle-card{
+    position:relative;
+    display:grid;
+    grid-template-columns:1.3fr .7fr;
+    align-items:center;
+    gap:30px;
+    overflow:hidden;
+    padding:38px;
+    border:1px solid rgba(255,255,255,.85);
+    border-radius:24px;
+    background:linear-gradient(135deg,#f8f0e6,#e6d7c5);
+    box-shadow:var(--shadow);
+}
+
+.miracle-content{position:relative;z-index:2}
+
+.miracle-label{
+    color:#a68b70;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+}
+
+.miracle-content h2{
+    margin:10px 0;
+    color:var(--ink);
+    font:500 clamp(27px,3vw,38px) Georgia,serif;
+}
+
+.miracle-description{
+    max-width:580px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7;
+}
+
+.miracle-info{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin:24px 0 16px;
+}
+
+.miracle-stat{
+    padding:13px 9px;
+    text-align:center;
+    border:1px solid rgba(108,88,69,.12);
+    border-radius:13px;
+    background:rgba(255,255,255,.48);
+}
+
+.miracle-stat strong,.miracle-stat span{display:block}
+.miracle-stat strong{font:600 20px Georgia,serif;color:var(--ink)}
+.miracle-stat span{margin-top:5px;font-size:10px;color:var(--muted)}
+
+.miracle-rewards{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.miracle-rewards span{
+    padding:7px 11px;
+    border-radius:999px;
+    background:rgba(255,255,255,.55);
+    color:#8b705a;
+    font-size:11px;
+    font-weight:700;
+}
+
+.miracle-status{
+    margin:12px 0;
+    color:#a66b58;
+    font-size:12px;
+    font-weight:800;
+}
+
+.miracle-form{
+    display:grid;
+    grid-template-columns:140px minmax(120px,1fr);
+    gap:9px;
+}
+
+.miracle-form select,.miracle-form input{
+    min-width:0;
+    padding:12px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:rgba(255,255,255,.75);
+    color:var(--ink);
+    outline:none;
+}
+
+.miracle-form button{
+    grid-column:1/-1;
+    padding:14px;
+    border:0;
+    border-radius:999px;
+    background:#806c59;
+    color:white;
+    font-weight:800;
+    cursor:pointer;
+    transition:transform .25s,background .25s,box-shadow .25s;
+}
+
+.miracle-form button:not(:disabled):hover{
+    background:#6f5b49;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(87,67,48,.2);
+}
+
+.miracle-form button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.miracle-footnote{
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.5;
+}
+
+.miracle-orb{
+    position:relative;
+    width:min(100%,280px);
+    aspect-ratio:1;
+    margin:auto;
+    display:grid;
+    place-items:center;
+    border:7px solid rgba(255,255,255,.72);
+    border-radius:50%;
+    background:
+        radial-gradient(circle at 30% 25%,rgba(255,255,255,.95),transparent 24%),
+        radial-gradient(circle at 65% 70%,rgba(255,255,255,.65),transparent 35%),
+        linear-gradient(145deg,#e9f5f6,#b9d0d5 55%,#f8eee1);
+    box-shadow:inset -12px -15px 30px rgba(75,105,115,.2),
+               inset 8px 8px 20px white,
+               0 15px 35px rgba(92,72,54,.2);
+}
+
+.miracle-orb-glow{
+    position:absolute;
+    inset:12%;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.8),transparent 70%);
+    animation:miracleGlow 3s ease-in-out infinite alternate;
+}
+
+.miracle-orb-snow{
+    position:relative;
+    z-index:1;
+    color:white;
+    font-size:100px;
+    text-shadow:0 0 18px white,0 0 35px #b7dce5;
+    animation:miracleFloat 3s ease-in-out infinite;
+}
+
+.miracle-orb-base{
+    position:absolute;
+    bottom:-15px;
+    width:55%;
+    height:25px;
+    border-radius:50%;
+    background:linear-gradient(#b18b65,#806c59);
+    box-shadow:0 8px 15px rgba(70,50,35,.2);
+}
+
+@keyframes miracleGlow{
+    from{opacity:.5;transform:scale(.94)}
+    to{opacity:1;transform:scale(1.06)}
+}
+
+@keyframes miracleFloat{
+    0%,100%{transform:translateY(0) rotate(-5deg)}
+    50%{transform:translateY(-10px) rotate(5deg)}
+}
+
+@media(max-width:650px){
+    .miracle-section{padding:0 16px;margin-bottom:28px}
+    .miracle-card{grid-template-columns:1fr;padding:23px 17px;gap:24px}
+    .miracle-orb{width:190px;grid-row:1}
+    .miracle-content{grid-row:2}
+    .miracle-info{gap:6px}
+    .miracle-stat{padding:11px 4px}
+    .miracle-stat strong{font-size:16px}
+    .miracle-stat span{font-size:9px}
+    .miracle-form{grid-template-columns:1fr}
+    .miracle-form button{grid-column:auto}
+}
+
 </style>
 </head>
 <body>
@@ -520,6 +720,73 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     <input class="search" id="search" type="search" placeholder="⌕ Поиск по ID">
   </div>
   <div class="orbs" id="orbs"></div>
+  
+<section class="miracle-section" id="miracleSection">
+    <div class="miracle-card">
+        <div class="miracle-content">
+            <div class="miracle-label">✦ Новогодняя активность ✦</div>
+            <h2>Новогоднее чудо</h2>
+            <p class="miracle-description">
+                В новогоднюю ночь даже самые обычные снежные шары могут хранить необычные секреты.
+                Попробуй встряхнуть свой шар и узнай, что приготовила для тебя эта зима!
+            </p>
+
+            <div class="miracle-info">
+                <div class="miracle-stat">
+                    <strong id="miracleParticipants">0 / 270</strong>
+                    <span>Участников</span>
+                </div>
+                <div class="miracle-stat">
+                    <strong>27</strong>
+                    <span>Особенных наград</span>
+                </div>
+                <div class="miracle-stat">
+                    <strong>24 часа</strong>
+                    <span>Время активности</span>
+                </div>
+            </div>
+
+            <div class="miracle-rewards">
+                <span>✦ Мерч проекта</span>
+                <span>✦ Новогодние подарки</span>
+                <span>✦ 100 чашечек</span>
+            </div>
+
+            <div class="miracle-status" id="miracleStatus">
+                Активность пока недоступна
+            </div>
+
+            <div class="miracle-form">
+                <select id="miracleSocial" aria-label="Выбери социальную сеть">
+                    <option value="VK">ВКонтакте</option>
+                    <option value="OK">Одноклассники</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="miracleGameId"
+                    placeholder="Введи свой игровой ID"
+                    inputmode="numeric"
+                >
+
+                <button type="button" id="miracleShakeBtn" disabled>
+                    ✦ Встряхнуть снежный шар
+                </button>
+            </div>
+
+            <p class="miracle-footnote">
+                Один игровой ID — одна попытка. Количество мест ограничено.
+            </p>
+        </div>
+
+        <div class="miracle-orb" id="miracleOrb">
+            <div class="miracle-orb-glow"></div>
+            <div class="miracle-orb-snow">❄</div>
+            <div class="miracle-orb-base"></div>
+        </div>
+    </div>
+</section>
+
 
   <section class="participants" id="participants">
     <div class="participants-head">
