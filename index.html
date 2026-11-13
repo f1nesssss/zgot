@@ -653,6 +653,56 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     text-shadow:0 0 18px white,0 0 35px #b7dce5;
     animation:miracleFloat 3s ease-in-out infinite;
 }
+  .miracle-orb-result{
+    position:absolute;
+    inset:18%;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    animation:miracleResultAppear .8s ease-out both;
+}
+
+.miracle-orb-result[hidden]{
+    display:none;
+}
+
+.miracle-result-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    color:#625044;
+}
+
+.miracle-result-title{
+    font-size:15px;
+    font-weight:800;
+}
+
+.miracle-result-image{
+    width:100px;
+    height:100px;
+    border-radius:16px;
+}
+
+.miracle-result-description{
+    margin:0;
+    font-size:12px;
+    font-weight:600;
+}
+
+@keyframes miracleResultAppear{
+    from{
+        opacity:0;
+        transform:scale(.5);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
 
 .miracle-orb-base{
     position:absolute;
@@ -847,7 +897,14 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
         <div class="miracle-orb" id="miracleOrb">
             <div class="miracle-orb-glow"></div>
             <div class="miracle-orb-snow">❄</div>
-            <div class="miracle-orb-base"></div>
+            <div class="miracle-orb-result" id="miracleResult" hidden>
+    <div class="miracle-result-content">
+        <span class="miracle-result-title"></span>
+        <div class="miracle-result-image"></div>
+        <p class="miracle-result-description"></p>
+    </div>
+</div>
+          <div class="miracle-orb-base"></div>
         </div>
     </div>
 </section>
