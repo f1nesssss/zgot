@@ -184,7 +184,17 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .footer .star{font-style:normal;color:#b69a78}
 .modal-backdrop{position:fixed;inset:0;background:rgba(48,40,33,.35);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}
 .modal-backdrop.open{display:flex}
-.modal{width:min(520px,100%);max-height:90vh;overflow:auto;background:#f8f2e9;border:1px solid white;border-radius:22px;box-shadow:0 25px 80px rgba(35,27,20,.25);padding:23px}
+.modal {
+    position: relative;
+    width: min(520px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    background: #f8f2e9;
+    border: 1px solid white;
+    border-radius: 22px;
+    box-shadow: 0 25px 80px rgba(35,27,20,.25);
+    padding: 23px;
+}
 .modal-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .modal h3{font:500 25px Georgia,serif;margin:0}
 .close{border:0;background:#e9dfd2;color:var(--ink);width:32px;height:32px;border-radius:50%;font-size:18px}
