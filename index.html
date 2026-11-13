@@ -284,7 +284,7 @@ async function loadRecords(){
   if(error){setNote('Не удалось загрузить общую базу: '+error.message,true);return;}
   records=(data||[]).map(r=>({dbId:r.id,orb:r.globe_id,social:r.social_network==='VK'?'ВК':'ОК',id:r.social_id,tickets:r.tickets}));
   render();
-  setNote(isAdmin?'Подключена общая база · вы вошли как администратор':'Подключена общая база · режим просмотра для участников');
+  setNote('Обновлено: '+new Date().toLocaleString('ru-RU'));
 }
 async function updateRecord(record,tickets){
   const {error}=await supabaseClient.from('entries').update({tickets}).eq('id',record.dbId);
