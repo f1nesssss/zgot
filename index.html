@@ -377,7 +377,17 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 }
 
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.form-grid label{display:grid;gap:6px;align-content:start;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.form-grid label {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
 .form-grid input,.form-grid select{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:10px;padding:11px;background:white;color:var(--ink);outline:none}
 .form-grid .full{grid-column:1/-1}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
