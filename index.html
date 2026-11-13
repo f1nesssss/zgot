@@ -21,7 +21,7 @@ linear-gradient(180deg,#E6D7C5 0%,#E6D7C5 55%,#E6D7C5 100%);
 button,input,select{font:inherit}
 button{cursor:pointer}
 .snow-layer{position:fixed;inset:0;pointer-events:none;z-index:10;overflow:hidden}
-.snowflake{position:absolute;top:-18px;color:#fff;opacity:.72;text-shadow:0 0 8px rgba(255,255,255,.9);animation:fall linear infinite}
+.snowflake{position:absolute;top:-18px;color:#fff;opacity:.95;text-shadow:0 0 8px rgba(255,255,255,.9);animation:fall linear infinite}
 @keyframes fall{to{transform:translate3d(var(--drift),110vh,0) rotate(360deg)}}
 .topbar{max-width:1240px;margin:auto;padding:22px 28px 10px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .brand{display:flex;align-items:center;gap:12px}
@@ -851,7 +851,7 @@ function makeSnow(){
   const layer=$('snowLayer');
   for(let i=0;i<34;i++){
     const f=document.createElement('span');f.className='snowflake';f.textContent=Math.random()>.45?'✧':'•';
-    f.style.left=Math.random()*100+'%';f.style.fontSize=(Math.random()*8+7)+'px';
+    f.style.left=Math.random()*100+'%';f.style.fontSize=(Math.random()*10+9)+'px';
     f.style.animationDuration=(Math.random()*13+12)+'s';f.style.animationDelay=(-Math.random()*24)+'s';
     f.style.setProperty('--drift',(Math.random()*100-50)+'px');layer.appendChild(f);
   }
