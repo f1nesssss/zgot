@@ -153,7 +153,93 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .auth-form label{display:grid;gap:6px;font-size:11px;color:var(--muted);font-weight:800}
 .auth-form input{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff;color:var(--ink)}
 @media(max-width:1000px){.orbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:650px){.topbar{padding:16px}.brand strong{font-size:15px}.top-actions .ghost-btn{display:none}.hero{padding:32px 18px 20px}.stats{padding:0 16px 24px;gap:7px}.stat{padding:12px 5px}.stat b{font-size:20px}.stat span{font-size:8px}.section{padding:8px 16px 40px}.section-head{align-items:stretch;flex-direction:column}.search{width:100%}.orbs{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.orb-art{height:205px}.orb-title{font-size:12px}.participants-head{padding:18px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
+
+@media(max-width:650px){
+  .topbar{
+    padding:16px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  .brand strong{
+    font-size:15px;
+  }
+
+  .top-actions{
+    display:flex;
+    width:100%;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .top-actions .ghost-btn{
+    display:inline-flex;
+    padding:9px 12px;
+    font-size:11px;
+    white-space:nowrap;
+  }
+
+  .hero{
+    padding:32px 18px 20px;
+  }
+
+  .stats{
+    padding:0 16px 24px;
+    gap:7px;
+  }
+
+  .stat{
+    padding:12px 5px;
+  }
+
+  .stat b{
+    font-size:20px;
+  }
+
+  .stat span{
+    font-size:8px;
+  }
+
+  .section{
+    padding:8px 16px 40px;
+  }
+
+  .section-head{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .search{
+    width:100%;
+  }
+
+  .orbs{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .orb-art{
+    height:205px;
+  }
+
+  .orb-title{
+    font-size:12px;
+  }
+
+  .participants-head{
+    padding:18px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid .full{
+    grid-column:auto;
+  }
+}
+
 
 /* Переключение режимов таблицы */
 .view-tabs {
