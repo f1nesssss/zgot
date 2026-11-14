@@ -2771,6 +2771,23 @@ function renderRows(){
         </tr>
     `).join('');
 
+    // Ограничиваем таблицу пятью видимыми строками; остальные доступны
+    // во внутренней прокрутке, а заголовок остаётся закреплённым.
+    const tableWrap=$('participantRows').closest('.table-wrap');
+    const tableHead=tableWrap?.querySelector('thead');
+    const renderedRows=[...$('participantRows').querySelectorAll('tr')];
+    if(tableWrap){
+        if(renderedRows.length>5){
+            const visibleRowsHeight=renderedRows.slice(0,5).reduce((sum,row)=>sum+row.getBoundingClientRect().height,0);
+            const headerHeight=tableHead?.getBoundingClientRect().height||0;
+            tableWrap.style.maxHeight=`${Math.ceil(visibleRowsHeight+headerHeight+2)}px`;
+            tableWrap.classList.add('has-row-scroll');
+        }else{
+            tableWrap.style.maxHeight='';
+            tableWrap.classList.remove('has-row-scroll');
+        }
+    }
+
     $('emptyState').hidden=list.length!==0;
 
     if(!totalMode&&isAdmin){
@@ -4261,6 +4278,12 @@ body.task-modal-open{overflow:hidden}
  .task-window-head-actions .task-help-button{padding:9px 12px;font-size:12px}
  .task-window-head-actions .market-close{flex-shrink:0}
 }
+
+/* Таблица участников: максимум пять видимых строк с независимой прокруткой. */
+.participants .table-wrap{overflow-x:auto;overflow-y:visible}
+.participants .table-wrap.has-row-scroll{overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.participants .table-wrap.has-row-scroll thead th{position:sticky;top:0;z-index:4}
+
 </style>
 </body>
 </html>
