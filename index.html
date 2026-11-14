@@ -2597,7 +2597,7 @@ function renderOrbs(){
       <div class="orb-title">${o.name}</div>
       <div class="orb-meta"><span>УЧАСТНИКИ</span><span>${list.length}</span></div>
       <div class="orb-schedule-status ${isClosed?'is-closed':''}" ${closedStyle}><strong>${escapeHtml(status)}</strong></div>
-      <div class="orb-bottom"><button class="view-btn" data-view="${o.id}" ${closed?'disabled aria-disabled="true"':''}>${closed?'Недоступен':'Открыть →'}</button></div>
+      <div class="orb-bottom"><button class="view-btn market-view-btn" data-view="${o.id}" ${closed?'disabled aria-disabled="true"':''}>${closed?'Недоступен':'Открыть →'}<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button></div>
     </article>`;
   }).join('');
   $('orbs').querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{
