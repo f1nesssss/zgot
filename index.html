@@ -1403,6 +1403,13 @@ body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-i
 
 
 /* Публичный статус и таймер каждого новогоднего шара */
+/* Настраиваемая надпись закрытых испытаний с цветным свечением */
+.orb-schedule-status.is-closed strong{color:var(--orb-closed-color,#c47a70);text-shadow:0 0 5px var(--orb-closed-glow,rgba(196,122,112,.55)),0 0 13px var(--orb-closed-glow,rgba(196,122,112,.35)),0 0 24px var(--orb-closed-glow,rgba(196,122,112,.2));}
+.orb-status-admin{display:grid;grid-template-columns:minmax(220px,1.5fr) minmax(180px,.8fr) auto;gap:10px;align-items:end;margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface-soft)}
+.orb-status-admin label{display:grid;gap:6px;font-size:12px;color:var(--muted)}
+.orb-status-admin input,.orb-status-admin select{min-width:0;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--text)}
+.orb-status-admin button{white-space:nowrap}
+@media(max-width:700px){.orb-status-admin{grid-template-columns:1fr}.orb-status-admin button{width:100%}}
 .orb-schedule-status{display:grid;gap:3px;padding:9px 10px 2px;text-align:center;color:var(--muted);font-size:11px;line-height:1.4}
 .orb-schedule-status strong{font-size:12px;color:var(--ink)}
 .orb-schedule-status.is-closed strong{color:#c47a70}
@@ -1789,7 +1796,7 @@ body[data-theme="light"] .top-actions .admin-access-button:hover{
     <article class="admin-cabinet-card admin-tool" data-tool="participants"><h3>Участники и дубликаты</h3><p>Фильтр VK/OK, поиск повторяющихся ID между шарами, проверка подозрительных записей.</p><div class="admin-inline-actions"><button type="button" id="adminDuplicatesBtn">Найти дубликаты</button><button type="button" id="adminIntegrityBtn">Проверить целостность</button><button type="button" id="adminHistoryBtn">История начислений</button></div><div id="adminDuplicateResults" class="admin-tool-results" aria-live="polite"></div></article>
     <article class="admin-cabinet-card admin-tool" data-tool="history"><h3>Журнал действий</h3><p>История изменений участников и товаров: кто, когда и что изменил.</p><div class="admin-inline-actions"><input type="date" id="adminHistoryDate"><button type="button" id="adminLoadHistory">Показать за день</button><button type="button" id="adminLoadAudit">Последние действия</button></div><div id="adminHistoryResults" class="admin-tool-results" aria-live="polite"></div></article>
     <article class="admin-cabinet-card admin-tool" data-tool="statistics"><h3>Статистика посещений</h3><p>Посещения за сегодня, неделю и месяц, пиковые интервалы и просмотры новостей.</p><div class="admin-stat-strip"><span>Сегодня <b id="adminVisitsToday">—</b></span><span>7 дней <b id="adminVisitsWeek">—</b></span><span>30 дней <b id="adminVisitsMonth">—</b></span></div><button type="button" id="adminLoadAnalytics">Обновить аналитику</button><div id="adminAnalyticsResults" class="admin-tool-results"></div></article>
-    <article class="admin-cabinet-card admin-tool" data-tool="globes"><h3>Таймеры и доступность шаров</h3><p>Управление сроками испытаний. Можно закрыть шар вручную или снова открыть его.</p><div id="adminOrbControls" class="admin-orb-controls"></div><p id="adminOrbNote" class="admin-cabinet-note" aria-live="polite"></p></article>
+    <article class="admin-cabinet-card admin-tool" data-tool="globes"><h3>Таймеры и доступность шаров</h3><p>Управление сроками испытаний. Можно закрыть шар вручную или снова открыть его.</p><div id="adminOrbControls" class="admin-orb-controls"></div><div class="orb-status-admin"><label>Текст для завершённых испытаний<input id="orbClosedText" type="text" maxlength="70" value="Испытания завершены" placeholder="Например, Испытания завершены"></label><label>Цвет свечения<select id="orbClosedGlow"><option value="rose">Розовый</option><option value="red">Красный</option><option value="orange">Оранжевый</option><option value="gold">Золотой</option><option value="lime">Лаймовый</option><option value="green">Зелёный</option><option value="cyan">Бирюзовый</option><option value="blue">Голубой</option><option value="violet">Фиолетовый</option><option value="white">Белый</option></select></label><button type="button" id="saveOrbClosedStyle">Сохранить оформление</button></div><p id="orbClosedStyleNote" class="admin-cabinet-note" aria-live="polite"></p><p id="adminOrbNote" class="admin-cabinet-note" aria-live="polite"></p></article>
     <article class="admin-cabinet-card admin-tool" data-tool="google sheets"><h3>Отчёт в Google Таблицы</h3><p>Создаёт таблицу с участниками, соцсетями, игровыми ID, шарами, билетами и итогами.</p><label for="googleSheetsEndpoint">Адрес Google Apps Script</label><input type="url" id="googleSheetsEndpoint" placeholder="https://script.google.com/macros/s/…/exec"><div class="admin-inline-actions"><button type="button" id="saveGoogleSheetsEndpoint">Сохранить адрес</button><button type="button" id="exportGoogleSheets">Создать Google Таблицу</button></div><p id="googleSheetsNote" class="admin-cabinet-note" aria-live="polite"></p></article>
     <article class="admin-cabinet-card admin-tool" data-tool="settings"><h3>Настройки кабинета</h3><p>Быстрый поиск по функциям и избранные действия сохраняются в этом браузере.</p><label><input type="checkbox" id="adminNotifyLowStock" checked> Показывать предупреждения о низком остатке наград</label><div id="adminSystemStatus" class="admin-tool-results">Проверка состояния разделов…</div></article>
    </div>
@@ -1973,12 +1980,14 @@ function renderOrbs(){
     const expired=timerOn&&remaining<=0;
     const closed=schedule.is_open===false||expired;
     const timerText=timerOn?(remaining>0?`${escapeHtml(schedule.label||'До окончания испытаний осталось')}: ${formatOrbCountdown(remaining)}`:'Срок испытаний завершён'):'';
-    const status=schedule.is_open===false?'Шар закрыт':expired?'Срок испытаний завершён':timerOn?timerText:'Испытания доступны';
+    const isClosed=schedule.is_open===false||expired;
+    const status=isClosed?orbClosedStyle.text:(timerOn?timerText:'Испытания доступны');
+    const closedStyle=isClosed?`style="--orb-closed-color:${orbClosedStyle.color};--orb-closed-glow:${orbClosedStyle.glow}"`:'';
     return `<article class="orb-card" style="--accent:${o.tone}">
       <div class="orb-art"><span class="orb-glint">✧</span><img class="orb-image" src="assets/${o.image}" alt="Шар «${o.name}»"></div>
       <div class="orb-title">${o.name}</div>
       <div class="orb-meta"><span>УЧАСТНИКИ</span><span>${list.length}</span></div>
-      <div class="orb-schedule-status ${closed?'is-closed':''}"><strong>${status}</strong></div>
+      <div class="orb-schedule-status ${isClosed?'is-closed':''}" ${closedStyle}><strong>${escapeHtml(status)}</strong></div>
       <div class="orb-bottom"><button class="view-btn" data-view="${o.id}" ${closed?'disabled aria-disabled="true"':''}>${closed?'Недоступен':'Открыть →'}</button></div>
     </article>`;
   }).join('');
@@ -2619,8 +2628,23 @@ async function checkAdminIntegrity(){
 async function loadAdminAnalytics(){
  try{adminOnly();const {data,error}=await supabaseClient.from('site_visits').select('created_at').order('created_at',{ascending:false}).limit(10000);if(error)throw error;const now=new Date(),day=86400000;const rows=data||[];const today=rows.filter(x=>new Date(x.created_at)>=new Date(now.getFullYear(),now.getMonth(),now.getDate())).length;const week=rows.filter(x=>now-new Date(x.created_at)<7*day).length;const month=rows.filter(x=>now-new Date(x.created_at)<30*day).length;$('adminVisitsToday').textContent=today;$('adminVisitsWeek').textContent=week;$('adminVisitsMonth').textContent=month;const bins=new Map();rows.forEach(x=>{const d=new Date(x.created_at);d.setMinutes(Math.floor(d.getMinutes()/15)*15,0,0);const k=d.toLocaleString('ru-RU');bins.set(k,(bins.get(k)||0)+1);});const peak=[...bins.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);adminOut('adminAnalyticsResults',peak.length?'<b>Пиковые 15-минутные интервалы:</b>'+peak.map(([t,n])=>`<div class="audit-row">${escapeHtml(t)} — ${n} посещ.</div>`).join(''):'Пока нет данных.');}catch(e){adminOut('adminAnalyticsResults',escapeHtml(e.message||String(e)));}
 }
+const ORB_CLOSED_PALETTES={
+ rose:{color:'#e98ab5',glow:'rgba(233,138,181,.62)'},red:{color:'#ff7777',glow:'rgba(255,75,75,.62)'},orange:{color:'#ffad68',glow:'rgba(255,145,65,.62)'},gold:{color:'#f2cf75',glow:'rgba(242,207,117,.68)'},lime:{color:'#d1e77b',glow:'rgba(209,231,123,.62)'},green:{color:'#83d69a',glow:'rgba(95,215,135,.62)'},cyan:{color:'#79e2d8',glow:'rgba(85,220,205,.62)'},blue:{color:'#83baff',glow:'rgba(100,165,255,.66)'},violet:{color:'#b79aff',glow:'rgba(165,125,255,.66)'},white:{color:'#fff3df',glow:'rgba(255,243,223,.72)'}
+};
+let orbClosedStyle={text:'Испытания завершены',color:ORB_CLOSED_PALETTES.rose.color,glow:ORB_CLOSED_PALETTES.rose.glow,palette:'rose'};
 let orbScheduleState={};
 let orbScheduleTick=null;
+async function loadOrbClosedStyle(){
+ if(!supabaseClient)return;
+ const {data,error}=await supabaseClient.from('site_orb_display_settings').select('*').eq('id',1).maybeSingle();
+ if(error){console.warn('Orb display settings load error:',error.message);return;}
+ if(data){const palette=ORB_CLOSED_PALETTES[data.glow_palette]||ORB_CLOSED_PALETTES.rose;orbClosedStyle={text:data.closed_text||'Испытания завершены',color:palette.color,glow:palette.glow,palette:data.glow_palette||'rose'};}
+ renderOrbs();
+}
+async function saveOrbClosedStyle(){
+ try{adminOnly();const textValue=$('orbClosedText').value.trim()||'Испытания завершены';const palette=$('orbClosedGlow').value;const {error}=await supabaseClient.from('site_orb_display_settings').upsert({id:1,closed_text:textValue,glow_palette:palette,updated_at:new Date().toISOString()},{onConflict:'id'});if(error)throw error;await loadOrbClosedStyle();$('orbClosedStyleNote').textContent='Текст и свечение сохранены.';}
+ catch(e){$('orbClosedStyleNote').textContent='Не удалось сохранить: '+(e.message||e);}
+}
 async function loadOrbSchedule(){
  if(!supabaseClient)return;
  const {data,error}=await supabaseClient.from('site_orb_schedule').select('*');
@@ -2645,6 +2669,7 @@ async function loadAdminOrbControls(){
     <button type="button" data-orb-toggle="${o.id}" data-open="${x.is_open===false?'0':'1'}">${x.is_open===false?'Открыть шар':'Закрыть шар'}</button>
    </div>`;
   }).join('');
+  $('orbClosedText').value=orbClosedStyle.text;$('orbClosedGlow').value=orbClosedStyle.palette;
  }catch(e){$('adminOrbControls').textContent='Не удалось загрузить настройки шаров: '+(e.message||e);}
 }
 $('adminOrbControls')?.addEventListener('click',async e=>{
@@ -2672,7 +2697,7 @@ function initAdminTools(){
  adminToolsInitialized=true;
  try{$('googleSheetsEndpoint').value=localStorage.getItem('zgot-google-sheets-endpoint')||'';$('adminNotifyLowStock').checked=localStorage.getItem('zgot-admin-low-stock')!=='false';}catch(e){}
  $('adminToolSearch').oninput=()=>{const q=$('adminToolSearch').value.trim().toLowerCase();document.querySelectorAll('.admin-tool').forEach(c=>c.hidden=!!q&&!((c.innerText||'').toLowerCase().includes(q)));};
- $('adminDuplicatesBtn').onclick=findAdminDuplicates;$('adminIntegrityBtn').onclick=checkAdminIntegrity;$('adminHistoryBtn').onclick=()=>loadAdminAudit();$('adminLoadHistory').onclick=()=>loadAdminAudit($('adminHistoryDate').value||null);$('adminLoadAudit').onclick=()=>loadAdminAudit();$('adminLoadAnalytics').onclick=loadAdminAnalytics;
+ $('saveOrbClosedStyle').onclick=saveOrbClosedStyle;$('adminDuplicatesBtn').onclick=findAdminDuplicates;$('adminIntegrityBtn').onclick=checkAdminIntegrity;$('adminHistoryBtn').onclick=()=>loadAdminAudit();$('adminLoadHistory').onclick=()=>loadAdminAudit($('adminHistoryDate').value||null);$('adminLoadAudit').onclick=()=>loadAdminAudit();$('adminLoadAnalytics').onclick=loadAdminAnalytics;
  $('adminNotifyLowStock').onchange=()=>{try{localStorage.setItem('zgot-admin-low-stock',String($('adminNotifyLowStock').checked));}catch(e){}};
  $('saveGoogleSheetsEndpoint').onclick=()=>{const url=$('googleSheetsEndpoint').value.trim();try{if(url&&!new URL(url).hostname.endsWith('google.com')&&!new URL(url).hostname.endsWith('googleusercontent.com'))throw new Error();localStorage.setItem('zgot-google-sheets-endpoint',url);$('googleSheetsNote').textContent='Адрес сохранён в этом браузере.';}catch(e){$('googleSheetsNote').textContent='Укажите корректный URL опубликованного Google Apps Script.';}};
  $('exportGoogleSheets').onclick=exportToGoogleSheets;
@@ -2696,7 +2721,7 @@ async function init(){
   const {data,error}=await supabaseClient.auth.getSession();
   if(error)setNote('Ошибка проверки входа: '+error.message,true);
   await updateSession(data?.session||null);
-  await Promise.all([countSiteVisit(),loadExchangeTimer(),loadOrbSchedule()]);
+  await Promise.all([countSiteVisit(),loadExchangeTimer(),loadOrbSchedule(),loadOrbClosedStyle()]);
   if(exchangeTimerInterval)clearInterval(exchangeTimerInterval);
   exchangeTimerInterval=setInterval(renderExchangeTimer,1000);
   exchangeTimerRefreshInterval=setInterval(()=>loadExchangeTimer(),60000);
