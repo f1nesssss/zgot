@@ -2431,17 +2431,25 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
             <div class="help-item">
                 <h4>🔮 У тебя есть вопрос?</h4>
                 <p>Задай его в нашей беседе проекта ↓</p>
-                <a href="https://vk.me/join/A/smXTxzLYjNwhvd_sGAPjk8bavW37h8zAE=" class="primary-btn" id="helpChatLink" target="_blank" rel="noopener noreferrer">
-                    Перейти в беседу →
-                </a>
+                <div class="help-actions">
+
+                    <a href="https://vk.me/join/A/smXTxzLYjNwhvd_sGAPjk8bavW37h8zAE=" class="primary-btn" id="helpChatLink" target="_blank" rel="noopener noreferrer">Перейти в беседу →</a>
+
+                    <a href="https://vk.ru/topic-91120784_35937543?offset=0" class="primary-btn help-rules-link" target="_blank" rel="noopener noreferrer">Ознакомиться с правилами →</a>
+
+                </div>
             </div>
 
             <div class="help-item">
                 <h4>🔮 Есть проблемы с сайтом или есть вопрос к администрации?</h4>
                 <p>Обратись в личные сообщения нашей группы ↓</p>
-                <a href="https://vk.com/im?sel=-91120784" class="primary-btn" id="helpMessagesLink" target="_blank" rel="noopener noreferrer">
-                    Написать →
-                </a>
+                <div class="help-actions">
+
+                    <a href="https://vk.com/im?sel=-91120784" class="primary-btn" id="helpMessagesLink" target="_blank" rel="noopener noreferrer">Написать →</a>
+
+                    <a href="https://vk.ru/topic-91120784_31823311" class="primary-btn help-rules-link" target="_blank" rel="noopener noreferrer">Ознакомиться с правилами группы →</a>
+
+                </div>
             </div>
 
         </div>
@@ -3938,6 +3946,20 @@ table th,thead th,.miracle-admin-table th{
 .miracle-rewards span{border-radius:999px!important}
 
 body.task-modal-open{overflow:hidden}
+
+/* Кнопки в окне помощи располагаются в одну строку */
+.help-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.help-actions .primary-btn{margin:0}
+.help-actions .help-rules-link{
+ background:linear-gradient(135deg,#24536f,#2f7894)!important;
+ border:1px solid rgba(139,199,226,.38)!important;
+ color:#eef8ff!important;
+}
+.help-actions .help-rules-link:hover{
+ background:linear-gradient(135deg,#2b6685,#3889a8)!important;
+ transform:translateY(-2px);
+}
+@media(max-width:520px){.help-actions{gap:8px}.help-actions .primary-btn{font-size:12px;padding:10px 13px}}
 </style>
 </body>
 </html>
