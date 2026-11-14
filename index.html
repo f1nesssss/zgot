@@ -977,6 +977,80 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .miracle-admin-message{font-size:13px;color:var(--muted);min-height:20px}
 @media(max-width:600px){.miracle-admin-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.miracle-admin-modal{padding:18px}}
 
+
+/* Уведомления и переключение темы */
+.icon-btn{
+  position:relative;display:inline-grid;place-items:center;width:40px;height:40px;
+  border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.58);
+  color:var(--ink);font-size:20px;line-height:1;transition:transform .2s,background .2s;
+}
+.icon-btn:hover{transform:translateY(-1px);background:#fff}
+.notification-dot{
+  position:absolute;right:5px;top:5px;width:8px;height:8px;border-radius:50%;
+  background:#b85e52;border:1px solid #fff;box-shadow:0 0 0 2px rgba(184,94,82,.12)
+}
+.notifications-modal{width:min(620px,100%);max-height:88vh;overflow:auto}
+.announcement-list{display:grid;gap:10px;margin:18px 0;max-height:42vh;overflow:auto}
+.announcement-card{padding:15px 16px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.58)}
+.announcement-card h4{margin:0 0 6px;font:600 17px Georgia,serif;color:var(--ink)}
+.announcement-card p{margin:0;color:var(--ink);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.announcement-date{display:block;margin-top:9px;color:var(--muted);font-size:10px}
+.announcement-empty{padding:24px 12px;text-align:center;color:var(--muted);font-size:13px}
+.announcement-form{border-top:1px solid var(--line);padding-top:17px;margin-top:15px;display:grid;gap:10px}
+.announcement-form h4{margin:0;font:600 17px Georgia,serif}
+.announcement-form label{display:grid;gap:6px;color:var(--muted);font-size:11px;font-weight:700}
+.announcement-form input,.announcement-form textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:rgba(255,255,255,.8);color:var(--ink);outline:none;resize:vertical}
+.announcement-form input:focus,.announcement-form textarea:focus{border-color:#a58b70;box-shadow:0 0 0 3px rgba(165,139,112,.12)}
+.announcement-admin-note{min-height:16px;margin:0;color:var(--muted);font-size:11px}
+body[data-theme="dark"]{
+  --ink:#eee6dc;--muted:#b8aa9b;--paper:#211f1d;--cream:#302a25;
+  --taupe:#9b8067;--line:rgba(235,220,202,.16);--shadow:0 16px 45px rgba(0,0,0,.28);
+  background:radial-gradient(circle at 10% 5%,rgba(95,79,65,.22),transparent 28rem),linear-gradient(180deg,#211f1d 0%,#292522 100%);
+  color:var(--ink)
+}
+body[data-theme="dark"] .participants,
+body[data-theme="dark"] .orb-card,
+body[data-theme="dark"] .announcement-card,
+body[data-theme="dark"] .help-item,
+body[data-theme="dark"] .stat{
+  background:rgba(57,49,43,.88);border-color:rgba(235,220,202,.14)
+}
+body[data-theme="dark"] .miracle-card{background:linear-gradient(135deg,#39312b,#292522);border-color:rgba(235,220,202,.16)}
+body[data-theme="dark"] .participants-head,
+body[data-theme="dark"] .modal{background:#302a25;color:var(--ink);border-color:rgba(235,220,202,.16)}
+body[data-theme="dark"] .filters select,
+body[data-theme="dark"] .search,
+body[data-theme="dark"] .miracle-form select,
+body[data-theme="dark"] .miracle-form input,
+body[data-theme="dark"] .form-grid input,
+body[data-theme="dark"] .form-grid select,
+body[data-theme="dark"] .auth-form input,
+body[data-theme="dark"] .announcement-form input,
+body[data-theme="dark"] .announcement-form textarea{
+  background:#211f1d;color:var(--ink);border-color:var(--line)
+}
+body[data-theme="dark"] .ghost-btn,
+body[data-theme="dark"] .icon-btn{background:rgba(70,60,52,.8);color:var(--ink);border-color:var(--line)}
+body[data-theme="dark"] .ghost-btn:hover,
+body[data-theme="dark"] .icon-btn:hover{background:#51453b}
+body[data-theme="dark"] .orb-title,
+body[data-theme="dark"] .orb-bottom,
+body[data-theme="dark"] td{color:var(--ink)}
+body[data-theme="dark"] tbody tr:hover{background:rgba(255,255,255,.045)}
+body[data-theme="dark"] .empty,
+body[data-theme="dark"] .announcement-empty{color:var(--muted)}
+body[data-theme="dark"] .prize-result-warning,
+body[data-theme="dark"] .prize-result-id,
+body[data-theme="dark"] .miracle-stat{background:rgba(255,255,255,.06);border-color:var(--line);color:var(--ink)}
+body[data-theme="dark"] .miracle-result-content{color:#f5eee4}
+body[data-theme="dark"] .close{background:#51453b;color:var(--ink)}
+@media(max-width:650px){
+  .top-actions{align-items:center}
+  .top-actions .icon-btn{width:36px;height:36px;flex:0 0 36px}
+  .notifications-modal{padding:18px}
+  .announcement-list{max-height:38vh}
+}
+
 </style>
 </head>
 <body>
@@ -987,6 +1061,10 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     <div><strong>Здесь говорят о тебе | Аватария</strong></div>
 </a>
   <div class="top-actions">
+  <button class="icon-btn notification-toggle" id="notificationsBtn" type="button" aria-label="Открыть уведомления" title="Уведомления">
+    <span aria-hidden="true">♧</span><i class="notification-dot" id="notificationDot" hidden></i>
+  </button>
+  <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Включить тёмную тему" title="Тёмная тема" aria-pressed="false">☾</button>
   <button class="ghost-btn" id="helpBtn">Помощь</button>
   <button class="ghost-btn music-toggle" id="musicToggle" type="button" aria-label="Включить музыку" aria-pressed="false" title="Включить музыку">♫</button>
   <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
@@ -1008,7 +1086,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 
 <main class="section">
   <div class="section-head">
-    <div><h2>Коллекция снежных шаров</h2><p>Выберите шар, чтобы посмотреть участников и количество заработанных билетов</p></div>
+    <div><h2>Коллекция шаров</h2><p>Выберите шар, чтобы посмотреть участников и количество заработанных билетов</p></div>
   </div>
   <div class="orbs" id="orbs"></div>
   
@@ -1239,6 +1317,25 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   </div>
 </div>
 
+  <div class="modal-backdrop" id="notificationsBackdrop">
+    <div class="modal notifications-modal" role="dialog" aria-modal="true" aria-labelledby="notificationsTitle">
+      <div class="modal-top">
+        <h3 id="notificationsTitle">Уведомления</h3>
+        <button class="close" id="closeNotifications" type="button" aria-label="Закрыть">×</button>
+      </div>
+      <p class="modal-note">Важные объявления и обращения администрации проекта.</p>
+      <div class="announcement-list" id="announcementList" aria-live="polite">
+        <div class="announcement-empty">Загрузка уведомлений…</div>
+      </div>
+      <form id="announcementForm" class="announcement-form" hidden>
+        <h4>Новое обращение для всех посетителей</h4>
+        <label>Заголовок<input id="announcementTitle" maxlength="100" required placeholder="Например, Важная информация"></label>
+        <label>Текст обращения<textarea id="announcementMessage" maxlength="2000" rows="4" required placeholder="Напишите сообщение, которое увидят посетители сайта…"></textarea></label>
+        <div class="modal-actions"><button class="primary-btn" type="submit" id="publishAnnouncementBtn">Опубликовать</button></div>
+        <p class="announcement-admin-note" id="announcementAdminNote" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
   <audio id="siteMusic" src="assets/jingle-bells-instrumental.mp3" preload="none" loop></audio>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
@@ -1390,6 +1487,7 @@ function render(){
   renderOrbs();renderRows();renderStats();
   $('adminTools').hidden=!isAdmin;
   $('adminBtn').textContent=isAdmin?'Выйти из панели':'Вход для администратора';
+  if($('announcementForm'))$('announcementForm').hidden=!isAdmin;
 }
 function openModal(){
   if(!isAdmin)return;
@@ -1436,6 +1534,109 @@ function subscribeRealtime(){
     .on('postgres_changes',{event:'*',schema:'public',table:'entries'},()=>loadRecords())
     .subscribe();
 }
+
+// Переключение светлой и тёмной темы с сохранением выбора посетителя.
+const themeToggle=$('themeToggle');
+function applyTheme(theme){
+  const dark=theme==='dark';
+  document.body.dataset.theme=dark?'dark':'light';
+  themeToggle.textContent=dark?'☀':'☾';
+  themeToggle.setAttribute('aria-pressed',String(dark));
+  themeToggle.setAttribute('aria-label',dark?'Включить светлую тему':'Включить тёмную тему');
+  themeToggle.title=dark?'Светлая тема':'Тёмная тема';
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.content=dark?'#211f1d':'#e9dfd1';
+}
+let savedTheme='light';
+try{savedTheme=localStorage.getItem('zgot-site-theme')||'light';}catch(error){}
+applyTheme(savedTheme);
+themeToggle.addEventListener('click',()=>{
+  const next=document.body.dataset.theme==='dark'?'light':'dark';
+  applyTheme(next);
+  try{localStorage.setItem('zgot-site-theme',next);}catch(error){}
+});
+
+// Общие объявления хранятся в Supabase, чтобы их видели все посетители, а не только один браузер.
+let announcementChannel=null;
+function formatAnnouncementDate(value){
+  const date=new Date(value);
+  return Number.isNaN(date.getTime())?'':date.toLocaleString('ru-RU',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function renderAnnouncements(rows){
+  const list=$('announcementList');
+  if(!rows?.length){
+    list.innerHTML='<div class="announcement-empty">Пока нет новых объявлений.</div>';
+    $('notificationDot').hidden=true;
+    return;
+  }
+  list.innerHTML=rows.map(item=>`
+    <article class="announcement-card">
+      <h4>${escapeHtml(item.title)}</h4>
+      <p>${escapeHtml(item.message)}</p>
+      <time class="announcement-date">${escapeHtml(formatAnnouncementDate(item.created_at))}</time>
+    </article>`).join('');
+  const newest=rows[0]?.created_at||'';
+  let seen='';
+  try{seen=localStorage.getItem('zgot-announcements-seen')||'';}catch(error){}
+  $('notificationDot').hidden=Boolean(seen && new Date(seen)>=new Date(newest));
+}
+async function loadAnnouncements(){
+  const list=$('announcementList');
+  if(!supabaseClient){
+    list.innerHTML='<div class="announcement-empty">Уведомления временно недоступны. Попробуйте обновить страницу позже.</div>';
+    return;
+  }
+  const {data,error}=await supabaseClient.from('site_announcements')
+    .select('id,title,message,created_at').order('created_at',{ascending:false}).limit(30);
+  if(error){
+    console.error('site_announcements:',error);
+    list.innerHTML='<div class="announcement-empty">Не удалось загрузить объявления. Возможно, требуется выполнить SQL-настройку уведомлений.</div>';
+    return;
+  }
+  renderAnnouncements(data||[]);
+}
+$('notificationsBtn').addEventListener('click',async()=>{
+  $('notificationsBackdrop').classList.add('open');
+  await loadAnnouncements();
+  const first=$('announcementList').querySelector('.announcement-date');
+  if(first){
+    const rows=await supabaseClient.from('site_announcements').select('created_at').order('created_at',{ascending:false}).limit(1);
+    if(!rows.error && rows.data?.[0]?.created_at){
+      try{localStorage.setItem('zgot-announcements-seen',rows.data[0].created_at);}catch(error){}
+      $('notificationDot').hidden=true;
+    }
+  }
+});
+$('closeNotifications').addEventListener('click',()=>$('notificationsBackdrop').classList.remove('open'));
+$('notificationsBackdrop').addEventListener('click',event=>{
+  if(event.target===$('notificationsBackdrop'))$('notificationsBackdrop').classList.remove('open');
+});
+function updateAnnouncementAdminVisibility(){
+  $('announcementForm').hidden=!isAdmin;
+}
+$('announcementForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  if(!isAdmin||!supabaseClient)return;
+  const title=$('announcementTitle').value.trim();
+  const message=$('announcementMessage').value.trim();
+  const submit=$('publishAnnouncementBtn');
+  if(!title||!message)return;
+  submit.disabled=true;
+  $('announcementAdminNote').textContent='Публикуем обращение…';
+  const {error}=await supabaseClient.from('site_announcements').insert({
+    title,message,created_by:currentUser.id
+  });
+  submit.disabled=false;
+  if(error){
+    console.error('Announcement publish failed:',error);
+    $('announcementAdminNote').textContent='Не удалось опубликовать. Проверь SQL-настройку и права администратора.';
+    return;
+  }
+  $('announcementForm').reset();
+  $('announcementAdminNote').textContent='Обращение опубликовано и доступно всем посетителям.';
+  await loadAnnouncements();
+});
+
 const siteMusic=$('siteMusic');
 const musicToggle=$('musicToggle');
 musicToggle.addEventListener('click',async()=>{
@@ -1551,6 +1752,9 @@ async function init(){
     loadRecords();
   });
   subscribeRealtime();
+  announcementChannel=supabaseClient.channel('site-announcements-live')
+    .on('postgres_changes',{event:'*',schema:'public',table:'site_announcements'},()=>loadAnnouncements())
+    .subscribe();
   await refreshMiracleStatus();
   setInterval(refreshMiracleStatus,30000);
 }
