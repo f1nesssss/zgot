@@ -291,12 +291,13 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 
 .prize-result-image img {
     display: block;
-    max-width: 180px;
-    max-height: 180px;
-    width: auto;
-    height: auto;
+    width: 180px;
+    height: 180px;
+    max-width: 100%;
     object-fit: contain;
-  .prize-result-id span {
+}
+
+.prize-result-id span {
     display: block;
     margin-top: 4px;
 }
@@ -341,39 +342,33 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     display: none !important;
 }
   /* Анимация праздничных салютов */
-.prize-result-content {
+#prizeResultBackdrop .modal {
     position: relative;
     overflow: hidden;
+}
+
+#prizeResultBackdrop .prize-result-content {
+    position: relative;
+    overflow: visible;
     isolation: isolate;
 }
 
 .prize-firework {
     position: absolute;
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     pointer-events: none;
     z-index: 5;
     background: #d6a85f;
-    box-shadow:
-        0 0 8px 3px rgba(214, 168, 95, .7),
-        0 0 18px 5px rgba(255, 255, 255, .6);
-    animation: prizeFirework 1.5s ease-out forwards;
+    box-shadow: 0 0 8px 3px rgba(214,168,95,.7), 0 0 18px 5px rgba(255,255,255,.6);
+    animation: prizeFirework 1.25s ease-out forwards;
 }
 
 @keyframes prizeFirework {
-    0% {
-        opacity: 0;
-        transform: scale(.2);
-    }
-    20% {
-        opacity: 1;
-        transform: scale(1.4);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0) translate(var(--move-x), var(--move-y));
-    }
+    0% { opacity: 0; transform: translate(0,0) scale(.2); }
+    18% { opacity: 1; transform: translate(0,0) scale(1.35); }
+    100% { opacity: 0; transform: translate(var(--move-x),var(--move-y)) scale(0); }
 }
 
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -620,8 +615,10 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     background: var(--ink);
     color: #fff;
     border-color: var(--ink);
+}
 
-  /* Мобильные фильтры */
+/* Мобильные фильтры */
+@media(max-width:650px){
   .filters{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -1533,14 +1530,13 @@ function closePrizeResult() {
     const modal = document.querySelector('#prizeResultBackdrop .modal');
     if (!modal) return;
 
-    const oldFireworks = modal.querySelectorAll('.prize-firework');
-    oldFireworks.forEach(item => item.remove());
+    modal.querySelectorAll('.prize-firework').forEach(item => item.remove());
 
     const positions = [
-        [0, 10], [50, 0], [100, 10],
-        [100, 50], [100, 90], [50, 100],
-        [0, 90], [0, 50],
-        [25, 0], [75, 0], [25, 100], [75, 100]
+        [4, 12], [50, 3], [96, 12], [97, 50],
+        [96, 88], [50, 97], [4, 88], [3, 50],
+        [22, 3], [78, 3], [22, 97], [78, 97],
+        [3, 28], [97, 28], [3, 72], [97, 72]
     ];
 
     positions.forEach(([x, y], index) => {
@@ -1549,10 +1545,13 @@ function closePrizeResult() {
             firework.className = 'prize-firework';
             firework.style.left = x + '%';
             firework.style.top = y + '%';
+            const dx = (Math.random() * 42 - 21).toFixed(1);
+            const dy = (Math.random() * 42 - 21).toFixed(1);
+            firework.style.setProperty('--move-x', dx + 'px');
+            firework.style.setProperty('--move-y', dy + 'px');
             modal.appendChild(firework);
-
-            setTimeout(() => firework.remove(), 1600);
-        }, index * 120);
+            setTimeout(() => firework.remove(), 1350);
+        }, index * 85);
     });
 }
 
