@@ -2158,6 +2158,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 
 
 
+<style id="soft-modal-top-light">
 /* Единое мягкое верхнее освещение для окон «Новости» и «Музыка» */
 #notificationsBackdrop .notifications-modal:before,
 #musicBackdrop .music-modal:before{
@@ -2180,6 +2181,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
   filter:blur(1.2px);
   border-radius:0 0 50% 50%;
 }
+</style>
 </head>
 <body>
 <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
@@ -2234,7 +2236,6 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
       <div class="filters">
         <select id="orbFilter" aria-label="Фильтр по шару"><option value="all">Все шары</option></select>
         <select id="socialFilter" aria-label="Фильтр по соцсети"><option value="all">Все соцсети</option><option value="ВК">ВКонтакте</option><option value="ОК">Одноклассники</option></select>
-        <input class="filter-search" id="search" type="search" placeholder="⌕ Поиск по ID" aria-label="Поиск по ID">
       </div>
     </div>
     <div class="table-wrap">
@@ -2706,7 +2707,7 @@ function formatOrbCountdown(ms){const d=Math.floor(ms/86400000),h=Math.floor(ms%
 
 function renderRows(){
     const totalMode=selectedOrb==='all';
-    const q=$('search').value.trim().toLowerCase();
+    const q=''; // Поиск по ID временно отключён по запросу пользователя.
     const social=$('socialFilter').value;
     const orb=$('orbFilter').value;
 
@@ -3315,7 +3316,6 @@ $('participantForm').addEventListener('submit',async e=>{
   if(!payload.id){alert('Введи ID участника.');return;}
   await addRecord(payload);closeModal();
 });
-$('search').addEventListener('input',renderRows);
   
 $('totalViewBtn').addEventListener('click',()=>{
     selectedOrb='all';
