@@ -2073,8 +2073,11 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 <style id="music-modal-centered-butterflies">
   #musicBackdrop{
     position:fixed!important; inset:0!important;
-    display:flex!important; align-items:center!important; justify-content:center!important;
+    display:none!important; align-items:center!important; justify-content:center!important;
     padding:24px!important; box-sizing:border-box!important;
+  }
+  #musicBackdrop.open{
+    display:flex!important;
   }
   #musicBackdrop .music-modal,
   #musicBackdrop .music-panel,
