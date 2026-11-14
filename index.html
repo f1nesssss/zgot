@@ -1398,9 +1398,25 @@ body[data-theme="dark"] .admin-cabinet-window::-webkit-scrollbar-thumb{backgroun
 .admin-tool-results .audit-row{padding:8px 0;border-top:1px solid var(--line)}.admin-inline-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.admin-inline-actions input[type=date],.admin-cabinet-card input[type=url]{min-width:0;max-width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--text)}
 .admin-stat-strip{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}.admin-stat-strip span{padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.admin-stat-strip b{display:block;font-size:20px}
 .admin-favorites-list{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}.admin-favorites-list button{background:var(--surface-soft)!important;color:var(--text)!important}.admin-orb-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(130px,1fr) auto auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}.admin-orb-row input{min-width:0;width:100%;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--input-bg);color:var(--text)}
-.admin-tool[hidden]{display:none!important}.admin-cabinet-card button.is-favorite{outline:2px solid #b89b6f}.admin-cabinet-card .admin-fav-toggle{padding:5px 9px!important;margin-left:6px;font-size:12px}
-@media(max-width:700px){.admin-tools-grid{grid-template-columns:1fr}.admin-orb-row{grid-template-columns:1fr 1fr}.admin-orb-row button{grid-column:auto}}
+.admin-tool[hidden]{display:none!important}@media(max-width:700px){.admin-tools-grid{grid-template-columns:1fr}.admin-orb-row{grid-template-columns:1fr 1fr}.admin-orb-row button{grid-column:auto}}
 body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-inline-actions input,body[data-theme="dark"] .admin-orb-row input{background:#211f1d;color:#eee6dc;border-color:rgba(235,220,202,.18)}
+
+/* Кабинет администратора: широкая компоновка без горизонтальной прокрутки */
+.admin-cabinet-backdrop{padding:18px;overflow-y:auto;overflow-x:hidden}
+.admin-cabinet-window{width:min(1560px,calc(100vw - 36px));max-width:1560px;max-height:calc(100vh - 36px);overflow-x:hidden;overflow-y:auto;padding:30px 32px}
+.admin-cabinet-grid{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-cabinet-card,.admin-tool{min-width:0;max-width:100%}
+.admin-tools-wrap{width:100%;min-width:0}
+.admin-tools-grid{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-tools-head{min-width:0}
+.admin-tools-head input{max-width:100%}
+.admin-inline-actions{min-width:0}
+.admin-inline-actions>*{max-width:100%;min-width:0}
+.admin-orb-row{grid-template-columns:minmax(130px,1.2fr) minmax(150px,1fr) auto auto}
+.admin-tool-results{overflow-wrap:anywhere}
+@media(max-width:900px){.admin-cabinet-window{width:calc(100vw - 24px);padding:22px 20px}.admin-cabinet-grid,.admin-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-orb-row{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.admin-cabinet-backdrop{padding:8px}.admin-cabinet-window{width:100%;max-height:calc(100vh - 16px);padding:18px 14px}.admin-cabinet-grid,.admin-tools-grid{grid-template-columns:1fr}.admin-cabinet-head{flex-wrap:wrap}.admin-cabinet-head .admin-cabinet-actions{flex-wrap:wrap}.admin-orb-row{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -1676,7 +1692,6 @@ body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-i
   </div>
   <div class="admin-tools-wrap">
    <div class="admin-tools-head"><h3>Центр управления</h3><input id="adminToolSearch" type="search" placeholder="Поиск по функциям кабинета…" aria-label="Поиск по функциям кабинета"></div>
-   <div class="admin-tools-favorites"><strong>Избранное</strong><div id="adminFavorites" class="admin-favorites-list"><span>Закрепляйте часто используемые инструменты кнопкой ☆.</span></div></div>
    <div class="admin-tools-grid">
     <article class="admin-cabinet-card admin-tool" data-tool="participants"><h3>Участники и дубликаты</h3><p>Фильтр VK/OK, поиск повторяющихся ID между шарами, проверка подозрительных записей.</p><div class="admin-inline-actions"><button type="button" id="adminDuplicatesBtn">Найти дубликаты</button><button type="button" id="adminIntegrityBtn">Проверить целостность</button><button type="button" id="adminHistoryBtn">История начислений</button></div><div id="adminDuplicateResults" class="admin-tool-results" aria-live="polite"></div></article>
     <article class="admin-cabinet-card admin-tool" data-tool="history"><h3>Журнал действий</h3><p>История изменений участников и товаров: кто, когда и что изменил.</p><div class="admin-inline-actions"><input type="date" id="adminHistoryDate"><button type="button" id="adminLoadHistory">Показать за день</button><button type="button" id="adminLoadAudit">Последние действия</button></div><div id="adminHistoryResults" class="admin-tool-results" aria-live="polite"></div></article>
@@ -2502,8 +2517,6 @@ function initAdminTools(){
  if(adminToolsInitialized){loadAdminOrbControls();loadAdminAnalytics();loadAdminAudit();return;}
  adminToolsInitialized=true;
  try{$('googleSheetsEndpoint').value=localStorage.getItem('zgot-google-sheets-endpoint')||'';$('adminNotifyLowStock').checked=localStorage.getItem('zgot-admin-low-stock')!=='false';}catch(e){}
- const favKey='zgot-admin-favorites';let fav=[];try{fav=JSON.parse(localStorage.getItem(favKey)||'[]');}catch(e){}
- document.querySelectorAll('.admin-tool').forEach(card=>{const h=card.querySelector('h3');if(!h||card.querySelector('.admin-fav-toggle'))return;const b=document.createElement('button');b.type='button';b.className='admin-fav-toggle';b.textContent=fav.includes(card.dataset.tool)?'★':'☆';b.title='Добавить или убрать из избранного';h.appendChild(b);b.addEventListener('click',()=>{fav=fav.includes(card.dataset.tool)?fav.filter(x=>x!==card.dataset.tool):[...fav,card.dataset.tool];try{localStorage.setItem(favKey,JSON.stringify(fav));}catch(e){}b.textContent=fav.includes(card.dataset.tool)?'★':'☆';renderAdminFavorites(fav);});});renderAdminFavorites(fav);
  $('adminToolSearch').oninput=()=>{const q=$('adminToolSearch').value.trim().toLowerCase();document.querySelectorAll('.admin-tool').forEach(c=>c.hidden=!!q&&!((c.innerText||'').toLowerCase().includes(q)));};
  $('adminDuplicatesBtn').onclick=findAdminDuplicates;$('adminIntegrityBtn').onclick=checkAdminIntegrity;$('adminHistoryBtn').onclick=()=>loadAdminAudit();$('adminLoadHistory').onclick=()=>loadAdminAudit($('adminHistoryDate').value||null);$('adminLoadAudit').onclick=()=>loadAdminAudit();$('adminLoadAnalytics').onclick=loadAdminAnalytics;
  $('adminNotifyLowStock').onchange=()=>{try{localStorage.setItem('zgot-admin-low-stock',String($('adminNotifyLowStock').checked));}catch(e){}};
@@ -2512,7 +2525,6 @@ function initAdminTools(){
  loadAdminOrbControls();loadAdminAnalytics();loadAdminAudit();
  $('adminSystemStatus').innerHTML='<div class="audit-row">Участники: подключены</div><div class="audit-row">Розыгрыш: '+(supabaseClient?'подключён':'нет подключения')+'</div><div class="audit-row">Ярмарка: проверяется при открытии</div><div class="audit-row">Новости: подключены</div>';
 }
-function renderAdminFavorites(fav){const host=$('adminFavorites');if(!host)return;const cards=[...document.querySelectorAll('.admin-tool')].filter(c=>fav.includes(c.dataset.tool));host.innerHTML=cards.length?cards.map(c=>`<button type="button" data-fav-tool="${escapeHtml(c.dataset.tool)}">${escapeHtml(c.querySelector('h3').childNodes[0].textContent.trim())}</button>`).join(''):'<span>Закрепляйте часто используемые инструменты кнопкой ☆.</span>';host.querySelectorAll('[data-fav-tool]').forEach(b=>b.onclick=()=>{const c=document.querySelector(`.admin-tool[data-tool="${b.dataset.favTool}"]`);if(c){c.hidden=false;c.scrollIntoView({behavior:'smooth',block:'center'});}});}
 async function exportToGoogleSheets(){
  try{adminOnly();const url=$('googleSheetsEndpoint').value.trim();if(!url)throw new Error('Сначала укажите адрес Google Apps Script.');const {data:sessionData}=await supabaseClient.auth.getSession();const token=sessionData?.session?.access_token;if(!token)throw new Error('Сессия администратора истекла. Войдите заново.');$('googleSheetsNote').textContent='Формируем отчёт…';const entries=records.map(r=>({orb:orbById(r.orb)?.name||r.orb,social:r.social,id:String(r.id),tickets:Number(r.tickets||0)}));const response=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({access_token:token,entries,generated_at:new Date().toISOString(),project:'ЗГОТ — Новогоднее чудо'})});const result=await response.json();if(!response.ok||!result.success)throw new Error(result.message||'Google Apps Script не подтвердил создание таблицы.');$('googleSheetsNote').innerHTML=`Отчёт создан: <a href="${escapeHtml(result.url)}" target="_blank" rel="noopener">Открыть Google Таблицу</a>`;}catch(e){$('googleSheetsNote').textContent='Не удалось создать таблицу: '+(e.message||e);}
 }
