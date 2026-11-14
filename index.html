@@ -2279,6 +2279,16 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
           <div class="market-editor-grid"><label>Отметка товара<input id="marketProductBadge" type="text" maxlength="30" placeholder="Новинка / Эксклюзив"></label><label class="market-visibility-option"><input id="marketProductBadgeVisible" type="checkbox"> Показывать отметку</label></div>
           <label class="market-visibility-option"><input id="marketProductVisible" type="checkbox" checked> Отображать награду в списке для посетителей</label>
           <label>Изображение товара<input id="marketProductImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
+          <label class="market-visibility-option"><input id="marketProductRemoveImage" type="checkbox"> Убрать изображение у товара</label>
+          <div class="market-crop-tools" id="marketCropTools" hidden>
+            <div class="market-crop-preview-wrap"><img id="marketCropPreview" alt="Предпросмотр кадрирования"></div>
+            <div class="market-crop-controls">
+              <label>Масштаб изображения<input id="marketCropZoom" type="range" min="1" max="3" step="0.05" value="1"></label>
+              <label>По горизонтали<input id="marketCropX" type="range" min="0" max="100" step="1" value="50"></label>
+              <label>По вертикали<input id="marketCropY" type="range" min="0" max="100" step="1" value="50"></label>
+            </div>
+            <small>Перемещайте область ползунками и настройте масштаб. В карточке изображение будет круглым.</small>
+          </div>
           <label>Размер изображения в карточке
             <select id="marketProductImageSize"><option value="small">Маленький</option><option value="medium" selected>Средний</option><option value="large">Большой</option><option value="full">На всю ширину</option></select>
           </label>
@@ -3652,12 +3662,55 @@ prizeResultBackdrop.addEventListener('click', (event) => {
   $m('marketProductVisible').checked=p.is_visible!==false;
   $m('marketProductImageSize').value=p.image_size||'medium';
   $m('marketProductImage').value='';
+  $m('marketProductRemoveImage').checked=false;
+  $m('marketCropTools').hidden=true;
+  $m('marketCropPreview').removeAttribute('src');
+  $m('marketCropZoom').value=1;$m('marketCropX').value=50;$m('marketCropY').value=50;
   $m('marketEditorCurrentImage').hidden=!p.image_url;
-  $m('marketEditorCurrentImage').innerHTML=p.image_url?`<img src="${esc(p.image_url)}" alt="Текущее изображение"><small>Текущее изображение</small>`:'';
+  $m('marketEditorCurrentImage').innerHTML=p.image_url?`<div class="market-current-round"><img src="${esc(p.image_url)}" alt="Текущее изображение"></div><small>Текущее изображение</small>`:'';
   $m('marketEditorNote').textContent='Изображение до 5 МБ. Поддерживаются JPG, PNG, WebP и GIF.';
   closeDetail();editorBg.classList.add('open');editorBg.setAttribute('aria-hidden','false');
  }
- function closeEditor(){editorBg.classList.remove('open');editorBg.setAttribute('aria-hidden','true');}
+ function closeEditor(){editorBg.classList.remove('open');editorBg.setAttribute('aria-hidden','true');cropSourceImage=null;if(cropObjectUrl){URL.revokeObjectURL(cropObjectUrl);cropObjectUrl=null;}}
+
+ let cropSourceImage=null, cropObjectUrl=null;
+ function updateCropPreview(){
+  const img=$m('marketCropPreview'); if(!cropSourceImage)return;
+  const zoom=Number($m('marketCropZoom').value)||1, x=Number($m('marketCropX').value)||50, y=Number($m('marketCropY').value)||50;
+  const box=180, base=Math.max(box/cropSourceImage.naturalWidth,box/cropSourceImage.naturalHeight);
+  const w=cropSourceImage.naturalWidth*base*zoom, h=cropSourceImage.naturalHeight*base*zoom;
+  img.style.width=w+'px';img.style.height=h+'px';
+  img.style.left=((box-w)*(x/100))+'px';img.style.top=((box-h)*(y/100))+'px';
+ }
+ function cropSelectedImage(){
+  return new Promise((resolve,reject)=>{
+   if(!cropSourceImage){resolve(null);return;}
+   const size=512, zoom=Number($m('marketCropZoom').value)||1, x=(Number($m('marketCropX').value)||50)/100, y=(Number($m('marketCropY').value)||50)/100;
+   const scale=Math.max(size/cropSourceImage.naturalWidth,size/cropSourceImage.naturalHeight)*zoom;
+   const sw=size/scale, sh=size/scale;
+   const sx=Math.max(0,Math.min(cropSourceImage.naturalWidth-sw,(cropSourceImage.naturalWidth-sw)*x));
+   const sy=Math.max(0,Math.min(cropSourceImage.naturalHeight-sh,(cropSourceImage.naturalHeight-sh)*y));
+   const canvas=document.createElement('canvas');canvas.width=size;canvas.height=size;
+   const ctx=canvas.getContext('2d');ctx.drawImage(cropSourceImage,sx,sy,sw,sh,0,0,size,size);
+   canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Не удалось подготовить изображение.')),'image/png',.92);
+  });
+ }
+ $m('marketProductImage').addEventListener('change',()=>{
+  const file=$m('marketProductImage').files?.[0];cropSourceImage=null;
+  if(cropObjectUrl)URL.revokeObjectURL(cropObjectUrl);
+  if(!file){$m('marketCropTools').hidden=true;return;}
+  if(file.size>5*1024*1024){$m('marketEditorNote').textContent='Файл больше 5 МБ.';$m('marketProductImage').value='';return;}
+  cropObjectUrl=URL.createObjectURL(file);
+  const img=new Image();
+  img.onload=()=>{cropSourceImage=img;$m('marketCropTools').hidden=false;$m('marketCropPreview').src=cropObjectUrl;updateCropPreview();};
+  img.onerror=()=>{$m('marketEditorNote').textContent='Не удалось открыть изображение.';};
+  img.src=cropObjectUrl;
+ });
+ ['marketCropZoom','marketCropX','marketCropY'].forEach(id=>$m(id).addEventListener('input',updateCropPreview));
+ $m('marketProductRemoveImage').addEventListener('change',e=>{
+  if(e.target.checked){$m('marketProductImage').value='';cropSourceImage=null;$m('marketCropTools').hidden=true;$m('marketEditorCurrentImage').hidden=true;}
+  else $m('marketEditorCurrentImage').hidden=!activeProduct?.image_url;
+ });
  async function saveProduct(e){
   e.preventDefault();if(!admin())return;
   const id=Number($m('marketProductId').value);
@@ -3667,14 +3720,15 @@ prizeResultBackdrop.addEventListener('click', (event) => {
   if(typeof supabaseClient==='undefined'||!supabaseClient){alert('Нет подключения к Supabase. Изменения не сохранены.');return;}
   const note=$m('marketEditorNote');note.textContent='Сохраняю товар...';
   const current=products.find(p=>Number(p.id)===id)||{};
-  let imageUrl=current.image_url||null;
+  let imageUrl=$m('marketProductRemoveImage').checked?null:(current.image_url||null);
   const file=$m('marketProductImage').files?.[0];
   if(file){
    if(file.size>5*1024*1024){note.textContent='Файл больше 5 МБ.';return;}
    if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type)){note.textContent='Неподдерживаемый формат изображения.';return;}
-   const ext=({ 'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'})[file.type];
+   let uploadBlob=file, contentType=file.type, ext=({ 'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'})[file.type];
+   if(cropSourceImage){try{uploadBlob=await cropSelectedImage();contentType='image/png';ext='png';}catch(err){note.textContent=err.message;return;}}
    const path=`${id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-   const {error:upErr}=await supabaseClient.storage.from('zgot-market-images').upload(path,file,{upsert:false,contentType:file.type,cacheControl:'3600'});
+   const {error:upErr}=await supabaseClient.storage.from('zgot-market-images').upload(path,uploadBlob,{upsert:false,contentType,cacheControl:'3600'});
    if(upErr){note.textContent='Не удалось загрузить изображение: '+upErr.message;return;}
    const {data:pub}=supabaseClient.storage.from('zgot-market-images').getPublicUrl(path);imageUrl=pub.publicUrl;
   }
@@ -3699,6 +3753,99 @@ prizeResultBackdrop.addEventListener('click', (event) => {
  loadProducts();
 })();
 </script>
+
+
+<style id="zgot-final-blue-fixes">
+/* Единственная палитра: глубокий синий, ледяной голубой и бирюза. */
+:root{--winter-button:linear-gradient(135deg,#24536f,#2f7894)!important;--winter-button-hover:linear-gradient(135deg,#2e6c89,#3b91a8)!important;--taupe:#2b6684!important;--gold:#91cde7!important}
+button,.primary-btn,.ghost-btn,.market-visit,.market-view-btn,.market-edit-btn,
+.market-primary-btn,.market-secondary-btn,.market-buy-btn,.admin-tools button,
+.admin-row-actions button,.modal-actions button,.market-detail-close,.close,
+.admin-cabinet-window button,.market-window button{
+ background:linear-gradient(135deg,#24536f,#2f7894)!important;color:#f1f9ff!important;
+ border:1px solid rgba(139,199,226,.36)!important;
+}
+button:hover,.primary-btn:hover,.ghost-btn:hover,.market-visit:hover,.market-view-btn:hover,
+.market-edit-btn:hover,.market-primary-btn:hover,.market-secondary-btn:hover,
+.market-buy-btn:hover,.admin-tools button:hover,.admin-row-actions button:hover,
+.admin-cabinet-window button:hover{
+ background:linear-gradient(135deg,#2e6c89,#3b91a8)!important;
+ box-shadow:0 7px 20px rgba(0,8,20,.3),0 0 16px rgba(98,183,220,.16)!important;
+}
+.top-actions .music-toggle,.top-actions #helpBtn,.top-actions .icon-btn{
+ background:linear-gradient(135deg,#173a55,#214e6b)!important;color:#eaf6ff!important;border-color:rgba(144,205,232,.3)!important;
+}
+.top-actions #adminLoginBtn,.top-actions #adminBtn{
+ background:linear-gradient(135deg,#28617d,#347e9c)!important;border-color:rgba(157,220,244,.55)!important;
+}
+.market-product-badge,.market-product-status,.announcement-pinned-label,.miracle-start-date,
+.miracle-rewards span,.task-count,.task-ticket{
+ background:rgba(47,120,148,.28)!important;color:#dff4ff!important;border:1px solid rgba(143,205,232,.28)!important;
+}
+.market-product-badge{background:rgba(47,120,148,.32)!important;color:#e8f7ff!important}
+table th,thead th,.miracle-admin-table th{
+ background:linear-gradient(90deg,#173c56,#204e6b)!important;color:#e9f6ff!important;
+ border-color:rgba(139,199,226,.2)!important;
+}
+#searchId,.search-id,input[placeholder*="Поиск по ID"],.participants input[type="search"]{
+ background:#0b2033!important;color:#eaf6ff!important;border:1px solid rgba(139,199,226,.32)!important;
+}
+.admin-cabinet-window{
+ background:linear-gradient(145deg,#17364e,#0a1e32)!important;border:1px solid rgba(124,204,239,.58)!important;
+ box-shadow:0 0 0 1px rgba(116,195,231,.2),0 0 24px rgba(74,174,221,.24),0 24px 70px rgba(0,5,15,.58)!important;
+}
+.admin-cabinet-window .admin-cabinet-card,.admin-cabinet-window .admin-tool-card,
+.admin-cabinet-window .admin-panel,.admin-cabinet-window .admin-section-card{
+ background:rgba(12,34,53,.88)!important;border-color:rgba(143,199,226,.22)!important;
+}
+.admin-cabinet-window .admin-cabinet-head{background:linear-gradient(110deg,#173a55,#102b42)!important}
+.admin-cabinet-window .admin-grid,.admin-cabinet-window .admin-tools-grid{min-width:0}
+.admin-cabinet-window button{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.admin-cabinet-window .admin-cabinet-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;min-width:0}
+.admin-cabinet-window .admin-cabinet-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+@media(max-width:760px){.admin-cabinet-window .admin-cabinet-grid,.admin-cabinet-window .admin-tools-grid{grid-template-columns:1fr!important}.admin-cabinet-window{overflow-y:auto!important;overflow-x:hidden!important}.admin-cabinet-window .admin-cabinet-head{position:sticky;top:0;z-index:5;flex-wrap:wrap}}
+/* В окне новостей админская форма не должна иметь тёмно-коричневую заливку. */
+.announcement-form,.announcement-form .editor-toolbar,.announcement-form .announcement-editor-toolbar,
+#announcementForm,#announcementForm .editor-toolbar{
+ background:rgba(19,48,70,.94)!important;color:#eaf6ff!important;border-color:rgba(139,199,226,.25)!important;
+}
+.announcement-form textarea,.announcement-form input,.announcement-form select,
+#announcementForm textarea,#announcementForm input,#announcementForm select{
+ background:#0b2033!important;color:#eaf6ff!important;border-color:rgba(139,199,226,.32)!important;
+}
+/* Окна: единая вертикальная прокрутка на телефонах и компьютерах. */
+.market-backdrop,.market-detail-backdrop,.market-editor-backdrop{
+ align-items:flex-start!important;justify-content:center!important;overflow-y:auto!important;overflow-x:hidden!important;
+ padding:18px 12px max(24px,env(safe-area-inset-bottom))!important;
+}
+.market-window,.market-detail-window,.market-editor-window{
+ max-height:none!important;height:auto!important;overflow:visible!important;margin:auto!important;
+}
+.market-window{max-height:calc(100dvh - 36px)!important;overflow-y:auto!important;overscroll-behavior:contain}
+.market-editor-window,.market-detail-window{max-height:calc(100dvh - 36px)!important;overflow-y:auto!important;overscroll-behavior:contain}
+@media(max-width:650px){
+ .market-backdrop,.market-detail-backdrop,.market-editor-backdrop{align-items:flex-start!important;padding:10px 8px max(18px,env(safe-area-inset-bottom))!important}
+ .market-window,.market-detail-window,.market-editor-window{width:100%!important;max-height:calc(100dvh - 20px)!important;overflow-y:auto!important}
+}
+#helpBackdrop{align-items:center!important;justify-content:center!important;overflow-y:auto!important;padding:20px!important}
+#helpBackdrop>.modal{position:relative!important;margin:auto!important;flex:0 1 auto!important;max-height:calc(100dvh - 40px)!important;overflow-y:auto!important}
+#helpBackdrop .help-butterflies{position:absolute!important;inset:0!important}
+/* Круглые изображения товаров, без квадратных превью */
+.market-prize-image{width:clamp(112px,18vw,164px)!important;height:clamp(112px,18vw,164px)!important;aspect-ratio:1/1!important;object-fit:cover!important;border-radius:50%!important;margin:12px auto!important;display:block!important;border:2px solid rgba(176,224,245,.55)!important;box-shadow:0 0 0 5px rgba(74,144,178,.12),0 8px 22px rgba(0,7,18,.3)!important}
+.market-prize-image.size-full{width:clamp(112px,18vw,164px)!important;height:clamp(112px,18vw,164px)!important;object-fit:cover!important}
+.market-detail-window img{border-radius:50%!important;object-fit:cover!important}
+.market-editor-current-image{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.market-current-round{width:116px;height:116px;border-radius:50%;overflow:hidden;border:2px solid rgba(176,224,245,.55);box-shadow:0 0 0 5px rgba(74,144,178,.12)}
+.market-current-round img{width:100%;height:100%;object-fit:cover}
+.market-crop-tools{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:14px;border:1px solid rgba(139,199,226,.28);border-radius:16px;background:rgba(10,31,49,.55)}
+.market-crop-tools[hidden]{display:none!important}
+.market-crop-preview-wrap{width:180px;height:180px;position:relative;overflow:hidden;border-radius:50%;flex:0 0 180px;border:3px solid #9dd9f2;box-shadow:0 0 0 6px rgba(89,165,201,.13)}
+.market-crop-preview-wrap img{position:absolute;max-width:none;object-fit:fill}
+.market-crop-controls{flex:1;min-width:180px;display:grid;gap:10px}
+.market-crop-controls label{display:grid;gap:5px}
+.market-crop-controls input[type=range]{width:100%;accent-color:#55a9ce}
+.market-editor-current-image img{max-width:116px;max-height:116px}
+</style>
 
 </body>
 </html>
