@@ -95,7 +95,7 @@ h1{font:500 clamp(34px,5vw,58px)/1.05 Georgia,serif;margin:14px 0 12px;letter-sp
 .orb-title{padding:13px 12px 11px;text-align:center;font:600 14px Georgia,serif;min-height:54px;display:flex;align-items:center;justify-content:center}
 .orb-meta{background:var(--accent);color:white;display:grid;grid-template-columns:1fr auto;padding:9px 13px;font-size:10px;font-weight:800;letter-spacing:.04em}
 .orb-meta span:last-child{opacity:.9}
-.orb-bottom{padding:10px 13px 13px;display:flex;justify-content:space-between;align-items:center}
+.orb-bottom{padding:10px 13px 13px;display:flex;justify-content:center;align-items:center}
 .orb-bottom small{color:var(--muted);font-size:11px}
 .view-btn{border:0;background:transparent;color:var(--accent);font-size:11px;font-weight:800;padding:5px}
 .view-btn:hover{text-decoration:underline}
@@ -1280,12 +1280,21 @@ body[data-theme="dark"] .market-window{background:#302a25;color:#f1e8dc;border-c
 .market-editor-form label{display:grid;gap:7px;color:var(--muted);font-size:13px;font-weight:600}
 .market-editor-form input,.market-editor-form textarea,.market-editor-form select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;background:var(--input-bg,rgba(0,0,0,.12));color:var(--text);padding:12px 14px;font:inherit}
 .market-editor-form input[type=file]{padding:10px}
+.market-editor-form .market-visibility-option{display:flex!important;align-items:center;gap:11px;width:100%;box-sizing:border-box;min-width:0;white-space:normal;overflow-wrap:anywhere;padding:13px 15px;border:1px solid var(--line);border-radius:13px;background:var(--surface-soft)}
+.market-editor-form .market-visibility-option input[type=checkbox]{width:18px!important;height:18px;min-width:18px;flex:0 0 18px;margin:0;accent-color:var(--accent)}
 .market-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .market-editor-note{font-size:12px;color:var(--muted);margin:0}
 .market-editor-current-image img{max-width:180px;max-height:120px;object-fit:contain;border-radius:10px}
 .market-editor-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
 @media(max-width:700px){.market-prizes{grid-template-columns:repeat(2,minmax(0,1fr))}.market-detail-window,.market-editor-window{padding:22px 16px}.market-editor-grid{grid-template-columns:1fr}.market-admin-toolbar{align-items:flex-start;flex-direction:column}}
 @media(max-width:420px){.market-prizes{grid-template-columns:1fr}}
+
+/* Общий таймер обмена и кабинет администратора */
+.exchange-timer{display:none;width:min(760px,calc(100% - 48px));margin:0 auto 26px;padding:14px 20px;border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--text);text-align:center;box-shadow:var(--shadow)}
+.exchange-timer.is-visible{display:block}.exchange-timer-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800}.exchange-timer-value{display:flex;justify-content:center;gap:clamp(10px,3vw,28px);margin-top:8px;font-variant-numeric:tabular-nums}.exchange-timer-unit strong{display:block;font:600 clamp(22px,4vw,32px) Georgia,serif}.exchange-timer-unit small{font-size:10px;color:var(--muted)}
+.admin-cabinet-backdrop{position:fixed;inset:0;z-index:140;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(18,15,13,.72);backdrop-filter:blur(9px)}.admin-cabinet-backdrop.open{display:flex}.admin-cabinet-window{width:min(850px,96vw);max-height:90vh;overflow:auto;padding:26px;border:1px solid var(--line);border-radius:24px;background:var(--panel);color:var(--text);box-shadow:0 28px 90px rgba(0,0,0,.35)}.admin-cabinet-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}.admin-cabinet-head h2{font:600 27px Georgia,serif;margin:0}.admin-cabinet-close{width:40px;height:40px;border:0;border-radius:50%;background:var(--surface-soft);color:var(--text);font-size:24px;cursor:pointer}.admin-cabinet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-cabinet-card{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface-soft);min-width:0}.admin-cabinet-card h3{font:600 17px Georgia,serif;margin:0 0 10px}.admin-cabinet-card p{font-size:12px;color:var(--muted);margin:5px 0 12px}.admin-cabinet-card button{border:1px solid var(--line);border-radius:999px;background:var(--accent);color:var(--button-text,#fff);padding:10px 15px;font-weight:700;cursor:pointer}.admin-cabinet-card input[type=datetime-local],.admin-cabinet-card input[type=text]{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--text);font:inherit;margin:5px 0 10px}.admin-cabinet-card label{display:flex;gap:9px;align-items:center;font-size:12px;color:var(--muted);margin:8px 0}.admin-stat-number{font:600 28px Georgia,serif;display:block;margin:3px 0}.admin-score-list{max-height:180px;overflow:auto;font-size:12px;color:var(--muted);line-height:1.7}.admin-cabinet-actions{display:flex;gap:8px;flex-wrap:wrap}.admin-cabinet-note{font-size:11px;color:var(--muted);min-height:16px;margin:8px 0 0}
+@media(max-width:650px){.exchange-timer{width:calc(100% - 28px);padding:12px 10px}.admin-cabinet-grid{grid-template-columns:1fr}.admin-cabinet-window{padding:19px 14px}.admin-cabinet-head h2{font-size:23px}}
+
 </style>
 </head>
 <body>
@@ -1303,11 +1312,7 @@ body[data-theme="dark"] .market-window{background:#302a25;color:#f1e8dc;border-c
   </button>
   <button class="ghost-btn" id="helpBtn">Помощь<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
-  <div class="admin-tools" id="adminTools" hidden>
-    <button class="ghost-btn" id="addBtn">+ Участник</button>
-    <button class="ghost-btn" id="miracleAdminBtn">Управление розыгрышем</button>
-    <button class="ghost-btn" id="exportBtn">Экспорт данных</button>
-  </div>
+  <button class="ghost-btn" id="adminCabinetBtn" hidden>Кабинет администратора</button>
 </div>
 </header>
 
@@ -1318,6 +1323,10 @@ body[data-theme="dark"] .market-window{background:#302a25;color:#f1e8dc;border-c
   <div class="hero-rule"></div>
 </section>
 
+<section class="exchange-timer" id="exchangeTimer" aria-live="off">
+  <div class="exchange-timer-label" id="exchangeTimerLabel">До окончания обмена билетами осталось</div>
+  <div class="exchange-timer-value" id="exchangeTimerValue"></div>
+</section>
 
 <main class="section">
   <div class="section-head">
@@ -1539,6 +1548,27 @@ body[data-theme="dark"] .market-window{background:#302a25;color:#f1e8dc;border-c
 </div>
 
 
+<!-- Кабинет администратора: доступен только после авторизации -->
+<div class="admin-cabinet-backdrop" id="adminCabinetBackdrop" aria-hidden="true">
+ <section class="admin-cabinet-window" role="dialog" aria-modal="true" aria-labelledby="adminCabinetTitle">
+  <div class="admin-cabinet-head"><h2 id="adminCabinetTitle">Кабинет администратора</h2><div class="admin-cabinet-actions"><button type="button" id="adminLogoutBtn">Выйти из панели</button><button class="admin-cabinet-close" id="closeAdminCabinet" type="button" aria-label="Закрыть">×</button></div></div>
+  <div class="admin-cabinet-grid">
+   <article class="admin-cabinet-card"><h3>Участники</h3><p>Добавление и редактирование записей участников.</p><button type="button" id="addBtn">+ Участник</button></article>
+   <article class="admin-cabinet-card"><h3>Розыгрыш</h3><p>Настройка и контроль новогоднего розыгрыша.</p><button type="button" id="miracleAdminBtn">Управление розыгрышем</button></article>
+   <article class="admin-cabinet-card"><h3>Экспорт</h3><p>Выгрузка текущих данных участников.</p><button type="button" id="exportBtn">Экспорт данных</button></article>
+   <article class="admin-cabinet-card"><h3>Общее количество баллов</h3><strong class="admin-stat-number" id="adminTotalPoints">0</strong><p>Сумма всех билетов, начисленных участникам по всем шарам.</p><div class="admin-score-list" id="adminScoreList">Нет данных.</div></article>
+   <article class="admin-cabinet-card"><h3>Посещения сайта</h3><strong class="admin-stat-number" id="adminVisitCount">—</strong><p>Общее число загрузок сайта с момента включения счётчика.</p><button type="button" id="refreshAdminVisits">Обновить статистику</button></article>
+   <article class="admin-cabinet-card"><h3>Таймер обмена билетами</h3><p>Задайте дату и время окончания обмена. Можно скрыть таймер от посетителей.</p>
+    <label><input type="checkbox" id="exchangeTimerEnabled"> Показывать таймер на сайте</label>
+    <label for="exchangeTimerAdminLabel">Подпись таймера</label><input type="text" id="exchangeTimerAdminLabel" maxlength="100" value="До окончания обмена билетами осталось">
+    <label for="exchangeTimerEnd">Дата и время окончания</label><input type="datetime-local" id="exchangeTimerEnd">
+    <div class="admin-cabinet-actions"><button type="button" id="saveExchangeTimer">Сохранить таймер</button><button type="button" id="hideExchangeTimer">Скрыть таймер</button></div>
+    <p class="admin-cabinet-note" id="exchangeTimerAdminNote" aria-live="polite"></p>
+   </article>
+  </div>
+ </section>
+</div>
+
 <!-- Окно помощи -->
 <div class="modal-backdrop help-backdrop" id="helpBackdrop">
     <div class="help-butterflies" aria-hidden="true">
@@ -1712,7 +1742,7 @@ function renderOrbs(){
       <div class="orb-art"><span class="orb-glint">✧</span><img class="orb-image" src="assets/${o.image}" alt="Шар «${o.name}»"></div>
       <div class="orb-title">${o.name}</div>
       <div class="orb-meta"><span>УЧАСТНИКИ</span><span>${list.length}</span></div>
-      <div class="orb-bottom"><small>${totalTickets(list)} бил. заработано</small><button class="view-btn" data-view="${o.id}">Открыть →</button></div>
+      <div class="orb-bottom"><button class="view-btn" data-view="${o.id}">Открыть →</button></div>
     </article>`;
   }).join('');
   $('orbs').querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{
@@ -1825,11 +1855,13 @@ function renderRows(){
     : '';
 }
 
-function renderStats(){}
+function renderStats(){if(isAdmin)renderAdminScoreStats();}
 function render(){
   renderOrbs();renderRows();renderStats();
-  $('adminTools').hidden=!isAdmin;
-  $('adminBtn').textContent=isAdmin?'Выйти из панели':'Вход для администратора';
+  $('adminBtn').hidden=isAdmin;
+  $('adminCabinetBtn').hidden=!isAdmin;
+  $('adminBtn').textContent='Вход для администратора';
+  if(isAdmin) renderAdminScoreStats();
   if($('announcementForm'))$('announcementForm').hidden=!isAdmin;
 }
 function openModal(){
@@ -2259,6 +2291,70 @@ function makeSnow(){
     f.style.setProperty('--drift',(Math.random()*100-50)+'px');layer.appendChild(f);
   }
 }
+// Кабинет администратора: статистика, посещения и управление таймером.
+function renderAdminScoreStats(){
+  if(!isAdmin)return;
+  const total=totalTickets(records);
+  const totalNode=$('adminTotalPoints'); if(totalNode) totalNode.textContent=String(total);
+  const grouped=new Map();
+  records.forEach(r=>{const key=`${r.social} · ${r.id}`;grouped.set(key,(grouped.get(key)||0)+Number(r.tickets||0));});
+  const list=$('adminScoreList');
+  if(list){const rows=[...grouped.entries()].sort((a,b)=>b[1]-a[1]);list.innerHTML=rows.length?rows.map(([name,score])=>`<div>${escapeHtml(name)} — <strong>${score}</strong></div>`).join(''):'Нет данных.';}
+}
+const cabinetBackdrop=$('adminCabinetBackdrop');
+$('adminCabinetBtn')?.addEventListener('click',async()=>{if(!isAdmin)return;cabinetBackdrop.classList.add('open');cabinetBackdrop.setAttribute('aria-hidden','false');renderAdminScoreStats();await loadAdminVisitCount();await loadExchangeTimer(true);});
+function closeAdminCabinet(){cabinetBackdrop?.classList.remove('open');cabinetBackdrop?.setAttribute('aria-hidden','true');}
+$('closeAdminCabinet')?.addEventListener('click',closeAdminCabinet);
+$('adminLogoutBtn')?.addEventListener('click',async()=>{if(!isAdmin||!supabaseClient)return;await supabaseClient.auth.signOut();await updateSession(null);closeAdminCabinet();});
+cabinetBackdrop?.addEventListener('click',e=>{if(e.target===cabinetBackdrop)closeAdminCabinet();});
+async function loadAdminVisitCount(){
+ if(!isAdmin||!supabaseClient)return;
+ const node=$('adminVisitCount');if(node)node.textContent='…';
+ const {count,error}=await supabaseClient.from('site_visits').select('id',{count:'exact',head:true});
+ if(node)node.textContent=error?'Недоступно':Number(count||0).toLocaleString('ru-RU');
+}
+$('refreshAdminVisits')?.addEventListener('click',loadAdminVisitCount);
+let exchangeTimerConfig=null,exchangeTimerInterval=null,exchangeTimerRefreshInterval=null;
+function renderExchangeTimer(){
+ const box=$('exchangeTimer');if(!box)return;
+ if(!exchangeTimerConfig?.is_enabled||!exchangeTimerConfig?.ends_at){box.classList.remove('is-visible');return;}
+ const end=new Date(exchangeTimerConfig.ends_at).getTime();
+ if(!Number.isFinite(end)){box.classList.remove('is-visible');return;}
+ box.classList.add('is-visible');$('exchangeTimerLabel').textContent=exchangeTimerConfig.label||'До окончания обмена билетами осталось';
+ const diff=Math.max(0,end-Date.now());
+ const days=Math.floor(diff/86400000),hours=Math.floor(diff%86400000/3600000),minutes=Math.floor(diff%3600000/60000),seconds=Math.floor(diff%60000/1000);
+ $('exchangeTimerValue').innerHTML=[[days,'дней'],[hours,'часов'],[minutes,'минут'],[seconds,'секунд']].map(([n,l])=>`<span class="exchange-timer-unit"><strong>${String(n).padStart(2,'0')}</strong><small>${l}</small></span>`).join('');
+}
+async function loadExchangeTimer(fillAdmin=false){
+ if(!supabaseClient)return;
+ const {data,error}=await supabaseClient.from('site_exchange_timer').select('*').eq('id',1).maybeSingle();
+ if(error){console.warn('Exchange timer load error:',error.message);return;}
+ exchangeTimerConfig=data||{id:1,label:'До окончания обмена билетами осталось',ends_at:null,is_enabled:false};
+ renderExchangeTimer();
+ if(fillAdmin&&isAdmin){$('exchangeTimerEnabled').checked=!!exchangeTimerConfig.is_enabled;$('exchangeTimerAdminLabel').value=exchangeTimerConfig.label||'';$('exchangeTimerEnd').value=exchangeTimerConfig.ends_at?new Date(exchangeTimerConfig.ends_at).toLocaleString('sv-SE',{timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone}).replace(' ','T').slice(0,16):'';}
+}
+$('saveExchangeTimer')?.addEventListener('click',async()=>{
+ if(!isAdmin||!supabaseClient)return;
+ const raw=$('exchangeTimerEnd').value;const ends=raw?new Date(raw):null;
+ if(!ends||!Number.isFinite(ends.getTime())){$('exchangeTimerAdminNote').textContent='Укажите корректную дату и время окончания.';return;}
+ const payload={id:1,label:$('exchangeTimerAdminLabel').value.trim()||'До окончания обмена билетами осталось',ends_at:ends.toISOString(),is_enabled:$('exchangeTimerEnabled').checked,updated_at:new Date().toISOString()};
+ const {error}=await supabaseClient.from('site_exchange_timer').update(payload).eq('id',1);
+ $('exchangeTimerAdminNote').textContent=error?'Не удалось сохранить: '+error.message:'Настройки таймера сохранены.';
+ if(!error){exchangeTimerConfig=payload;renderExchangeTimer();}
+});
+$('hideExchangeTimer')?.addEventListener('click',async()=>{
+ if(!isAdmin||!supabaseClient)return;
+ const payload={...(exchangeTimerConfig||{id:1}),id:1,is_enabled:false,updated_at:new Date().toISOString()};
+ const {error}=await supabaseClient.from('site_exchange_timer').update(payload).eq('id',1);
+ $('exchangeTimerAdminNote').textContent=error?'Не удалось скрыть: '+error.message:'Таймер скрыт от посетителей.';
+ if(!error){exchangeTimerConfig=payload;renderExchangeTimer();$('exchangeTimerEnabled').checked=false;}
+});
+async function countSiteVisit(){
+ if(!supabaseClient)return;
+ const {error}=await supabaseClient.from('site_visits').insert({});
+ if(error)console.warn('Site visit was not counted:',error.message);
+}
+
 async function init(){
   makeSnow();
   if(!configured){
@@ -2272,6 +2368,10 @@ async function init(){
   const {data,error}=await supabaseClient.auth.getSession();
   if(error)setNote('Ошибка проверки входа: '+error.message,true);
   await updateSession(data?.session||null);
+  await Promise.all([countSiteVisit(),loadExchangeTimer()]);
+  if(exchangeTimerInterval)clearInterval(exchangeTimerInterval);
+  exchangeTimerInterval=setInterval(renderExchangeTimer,1000);
+  exchangeTimerRefreshInterval=setInterval(()=>loadExchangeTimer(),60000);
   supabaseClient.auth.onAuthStateChange((_event,session)=>{
     currentUser=session?.user||null;
     isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
@@ -2696,7 +2796,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
  $m('cancelMarketEditor')?.addEventListener('click',closeEditor);
  editorBg?.addEventListener('click',e=>{if(e.target===editorBg)closeEditor();});
  $m('marketEditorForm')?.addEventListener('submit',saveProduct);
- document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeEditor();}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeEditor();closeAdminCabinet?.();}});
  const marketOpen=$m('visitMarketBtn');
  marketOpen?.addEventListener('click',()=>{loadProducts();});
  // Re-render when auth status changes or admin logs in.
