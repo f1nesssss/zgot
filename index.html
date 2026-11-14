@@ -2156,6 +2156,30 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
   }
 </style>
 
+
+
+/* Единое мягкое верхнее освещение для окон «Новости» и «Музыка» */
+#notificationsBackdrop .notifications-modal:before,
+#musicBackdrop .music-modal:before{
+  content:""!important;
+  position:absolute!important;
+  top:0!important;
+  left:5%!important;
+  right:auto!important;
+  width:90%!important;
+  height:18px!important;
+  pointer-events:none!important;
+  z-index:2!important;
+  opacity:.82!important;
+  background:
+    radial-gradient(ellipse 72% 100% at 50% 0%,
+      rgba(239,249,255,.48) 0%,
+      rgba(205,231,246,.24) 42%,
+      rgba(177,215,237,.08) 70%,
+      transparent 100%)!important;
+  filter:blur(1.2px);
+  border-radius:0 0 50% 50%;
+}
 </head>
 <body>
 <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
@@ -2626,7 +2650,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
       <p class="music-status" id="musicStatus" aria-live="polite">Музыка будет повторяться автоматически.</p>
     </div>
   </div>
-  <audio id="siteMusic" src="assets/jingle-bells-instrumental.mp3" preload="none" loop></audio>
+  <audio id="siteMusic" src="assets/jingle-bells-instrumental.mp3" preload="auto" loop></audio>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
 <script>
@@ -3088,15 +3112,23 @@ function syncMusicControls(){
   musicPlayBtn.textContent=playing?'Выключить музыку':'Включить музыку';
   $('musicStateLabel').textContent=playing?'Музыка включена':'Музыка выключена';
 }
+let musicAutoplayUnlocked=false;
 async function startSiteMusic(){
   try{
     await siteMusic.play();
+    musicAutoplayUnlocked=true;
     $('musicStatus').textContent='Музыка воспроизводится и будет повторяться автоматически.';
+    syncMusicControls();
+    return true;
   }catch(error){
-    $('musicStatus').textContent='Не удалось загрузить музыку. Проверьте файл assets/jingle-bells-instrumental.mp3.';
-    console.error('Music playback failed:',error);
+    const blocked=error?.name==='NotAllowedError';
+    $('musicStatus').textContent=blocked
+      ?'Браузер ограничил автоматический запуск. Музыка включится при первом взаимодействии со страницей.'
+      :'Не удалось загрузить музыку. Проверьте файл assets/jingle-bells-instrumental.mp3.';
+    if(!blocked) console.error('Music playback failed:',error);
+    syncMusicControls();
+    return false;
   }
-  syncMusicControls();
 }
 function stopSiteMusic(){siteMusic.pause();syncMusicControls();$('musicStatus').textContent='Музыка выключена.';}
 $('musicToggle').addEventListener('click',()=>{musicBackdrop.classList.add('open');syncMusicControls();});
@@ -3113,6 +3145,23 @@ siteMusic.addEventListener('play',syncMusicControls);
 siteMusic.addEventListener('pause',syncMusicControls);
 siteMusic.addEventListener('ended',()=>{if(siteMusic.loop)startSiteMusic();else syncMusicControls();});
 syncMusicControls();
+
+// Пытаемся запустить музыку сразу при загрузке. Если браузер запрещает
+// звук без жеста пользователя, повторяем попытку при первом взаимодействии.
+if(!musicAutoplayUnlocked){
+  startSiteMusic().then(playing=>{
+    if(playing) return;
+    const unlockMusicOnGesture=()=>{
+      if(siteMusic.paused) startSiteMusic();
+      document.removeEventListener('pointerdown',unlockMusicOnGesture,true);
+      document.removeEventListener('keydown',unlockMusicOnGesture,true);
+      document.removeEventListener('touchstart',unlockMusicOnGesture,true);
+    };
+    document.addEventListener('pointerdown',unlockMusicOnGesture,true);
+    document.addEventListener('keydown',unlockMusicOnGesture,true);
+    document.addEventListener('touchstart',unlockMusicOnGesture,true);
+  });
+}
 
 // Индивидуальные испытания открываются из кнопки «Открыть» соответствующего шара.
 const TASK_ORBS=[
@@ -4012,7 +4061,17 @@ table th,thead th,.miracle-admin-table th{
  border-color:rgba(139,199,226,.2)!important;
 }
 #searchId,.search-id,input[placeholder*="Поиск по ID"],.participants input[type="search"]{
- background:#0b2033!important;color:#eaf6ff!important;border:1px solid rgba(139,199,226,.32)!important;
+ background:linear-gradient(135deg,#24536f,#2f7894)!important;
+ color:#f1f9ff!important;
+ border:1px solid rgba(139,199,226,.36)!important;
+}
+#searchId::placeholder,.search-id::placeholder,input[placeholder*="Поиск по ID"]::placeholder,
+.participants input[type="search"]::placeholder{color:rgba(241,249,255,.78)!important}
+#searchId:focus,.search-id:focus,input[placeholder*="Поиск по ID"]:focus,
+.participants input[type="search"]:focus{
+ background:linear-gradient(135deg,#2e6c89,#3b91a8)!important;
+ border-color:rgba(157,220,244,.7)!important;
+ box-shadow:0 0 0 3px rgba(98,183,220,.16),0 5px 16px rgba(0,8,20,.18)!important;
 }
 .admin-cabinet-window{
  background:linear-gradient(145deg,#17364e,#0a1e32)!important;border:1px solid rgba(124,204,239,.58)!important;
