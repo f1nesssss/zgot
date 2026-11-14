@@ -57,7 +57,7 @@ button{cursor:pointer}
 .primary-btn:hover{background:#6f5b49;transform:translateY(-1px)}
   
 /* Единая деликатная анимация праздничных кнопок */
-.top-actions .icon-btn,.top-actions #helpBtn,.top-actions .music-toggle{position:relative;overflow:visible}
+.top-actions .icon-btn,.top-actions #helpBtn{position:relative;overflow:visible}
 .button-sparkles{position:absolute;inset:0;pointer-events:none;overflow:visible}
 .button-sparkles i{position:absolute;font-style:normal;font-size:13px;line-height:1;opacity:0;filter:drop-shadow(0 2px 3px rgba(60,40,20,.18));transition:opacity .18s,transform .35s cubic-bezier(.2,.8,.2,1)}
 .button-sparkles i:nth-child(1){left:-5px;top:-10px;transform:translate(4px,8px) rotate(-22deg) scale(.5)}
@@ -65,9 +65,9 @@ button{cursor:pointer}
 .button-sparkles i:nth-child(3){left:12%;bottom:-10px;transform:translate(0,-5px) rotate(12deg) scale(.5)}
 .button-sparkles i:nth-child(4){right:13%;bottom:-9px;transform:translate(0,-5px) rotate(-15deg) scale(.5)}
 .button-sparkles i:nth-child(5){left:48%;top:-15px;transform:translateY(7px) scale(.5)}
-.top-actions .icon-btn:hover .button-sparkles i,.top-actions #helpBtn:hover .button-sparkles i,.top-actions .music-toggle:hover .button-sparkles i{opacity:1;transform:translate(0,0) rotate(var(--tilt,0deg)) scale(1)}
-.top-actions .icon-btn,.top-actions #helpBtn,.top-actions .music-toggle{transition:transform .22s,background .22s,box-shadow .22s}
-.top-actions .icon-btn:hover,.top-actions #helpBtn:hover,.top-actions .music-toggle:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(87,67,48,.13)}
+.top-actions .icon-btn:hover .button-sparkles i,.top-actions #helpBtn:hover .button-sparkles i{opacity:1;transform:translate(0,0) rotate(var(--tilt,0deg)) scale(1)}
+.top-actions .icon-btn,.top-actions #helpBtn{transition:transform .22s,background .22s,box-shadow .22s}
+.top-actions .icon-btn:hover,.top-actions #helpBtn:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(87,67,48,.13)}
 .hero{max-width:1240px;margin:10px auto 26px;padding:42px 28px 30px;text-align:center;position:relative}
 .eyebrow{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:#9a8068;font-weight:800}
 h1{font:500 clamp(34px,5vw,58px)/1.05 Georgia,serif;margin:14px 0 12px;letter-spacing:-.035em}
@@ -390,8 +390,8 @@ body[data-theme="dark"] .tasks-admin-note{background:rgba(255,255,255,.05)}
 }
 .filters .filter-search:focus{border-color:#a58b70;box-shadow:0 0 0 3px rgba(165,139,112,.12)}
 .theme-toggle{font-size:21px;line-height:1;display:grid;place-items:center}
-.music-toggle{min-width:40px;width:40px;height:40px;padding:0;font-size:20px;line-height:1}
-.music-toggle.is-playing{background:#806c59;color:#fff;border-color:#806c59}
+
+
 .miracle-start-date{
   display:inline-block;
   margin:10px 0 0;
@@ -408,7 +408,7 @@ body[data-theme="dark"] .tasks-admin-note{background:rgba(255,255,255,.05)}
 .miracle-section{width:100%}
 @media(max-width:650px){
   .filters .filter-search{width:100%;min-width:0;grid-column:1/-1}
-  .music-toggle{width:38px;min-width:38px;height:38px}
+  
   .miracle-start-date{border-radius:12px;font-size:11px}
 }
 
@@ -1085,7 +1085,7 @@ button:focus-visible{outline:2px solid #b79a78;outline-offset:3px}
 #adminTools .ghost-btn{min-height:42px;white-space:normal;padding:9px 13px}
 #adminTools #exportBtn{grid-column:1/-1;justify-self:stretch}
 /* Кнопки шапки имеют одинаковую высоту */
-.top-actions>.ghost-btn,.top-actions>.icon-btn,.top-actions>.music-toggle{min-height:42px;display:inline-flex;align-items:center;justify-content:center}
+.top-actions>.ghost-btn,.top-actions>.icon-btn{min-height:42px;display:inline-flex;align-items:center;justify-content:center}
 /* Сдержанные тематические полосы прокрутки */
 *{scrollbar-width:thin;scrollbar-color:#a58f79 transparent}
 *::-webkit-scrollbar{width:9px;height:9px}
@@ -1544,7 +1544,7 @@ body:before{
 .brand-mark{box-shadow:0 0 0 3px rgba(255,255,255,.82),0 5px 18px rgba(26,68,100,.22)}
 .brand small{color:#66879d}
 .brand strong{color:#15344c;text-shadow:0 1px #fff}
-.ghost-btn,.icon-btn,.music-toggle{
+.ghost-btn,.icon-btn{
  background:rgba(249,253,255,.78);color:#24465e;border:1px solid rgba(120,166,192,.35);
  box-shadow:0 5px 16px rgba(31,76,108,.08);backdrop-filter:blur(12px);
 }
@@ -1819,8 +1819,8 @@ button,.ghost-btn,.primary-btn,.market-visit,.market-view-btn,.market-edit-btn,
  background:var(--winter-button-hover)!important;color:#fff!important;
  box-shadow:0 8px 22px rgba(0,8,18,.3),0 0 18px rgba(226,182,95,.18)!important;
 }
-.icon-btn,.music-toggle,.notification-toggle{background:rgba(30,69,96,.78)!important;color:#eaf6ff!important;border:1px solid rgba(144,201,230,.24)!important}
-.icon-btn:hover,.music-toggle:hover,.notification-toggle:hover{background:#285675!important}
+.icon-btn,.notification-toggle{background:rgba(30,69,96,.78)!important;color:#eaf6ff!important;border:1px solid rgba(144,201,230,.24)!important}
+.icon-btn:hover,.notification-toggle:hover{background:#285675!important}
 .top-actions{gap:9px}
 .top-actions .ghost-btn{background:linear-gradient(135deg,#9a7958,#b28b62)!important}
 .top-actions .notification-toggle{background:linear-gradient(135deg,#194361,#245b79)!important}
@@ -2013,7 +2013,7 @@ button,.ghost-btn,.primary-btn,.market-visit,.market-view-btn,.market-edit-btn,
 .task-orb-tab,.market-buy-btn,.miracle-start-date,.miracle-card .prize-tag{
  transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease!important;
 }
-.top-actions .ghost-btn,.top-actions .music-toggle,.top-actions .icon-btn{
+.top-actions .ghost-btn,.top-actions .icon-btn{
  background:linear-gradient(135deg,#173a55,#214e6b)!important;
  color:#eaf6ff!important;
  border:1px solid rgba(135,194,222,.32)!important;
@@ -2025,7 +2025,7 @@ button,.ghost-btn,.primary-btn,.market-visit,.market-view-btn,.market-edit-btn,
  border:1px solid rgba(165,215,235,.48)!important;
  box-shadow:0 5px 18px rgba(0,8,20,.3),0 0 15px rgba(92,180,218,.13)!important;
 }
-.top-actions .ghost-btn:hover,.top-actions .music-toggle:hover,.top-actions .icon-btn:hover{
+.top-actions .ghost-btn:hover,.top-actions .icon-btn:hover{
  background:linear-gradient(135deg,#24536f,#2f7894)!important;
  transform:translateY(-2px);
 }
@@ -2078,7 +2078,6 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
     <div><strong>Здесь говорят о тебе | Аватария</strong></div>
 </a>
   <div class="top-actions">
-  <button class="ghost-btn music-toggle" id="musicToggle" type="button" aria-label="Открыть настройки музыки" aria-pressed="false" title="Настройки музыки">🎵<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="icon-btn notification-toggle" id="notificationsBtn" type="button" aria-label="Открыть новости" title="Новости">
     <span class="notification-label">Новости 📰</span><i class="notification-dot" id="notificationDot" hidden></i><span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
   </button>
@@ -2955,7 +2954,6 @@ $('announcementForm').addEventListener('submit',async event=>{
 });
 
 const siteMusic=$('siteMusic');
-const musicToggle=$('musicToggle');
 const musicBackdrop=$('musicBackdrop');
 const musicPlayBtn=$('musicPlayBtn');
 const musicVolume=$('musicVolume');
@@ -2965,10 +2963,6 @@ musicVolume.value=Math.round(siteMusic.volume*100);
 $('musicVolumeValue').textContent=musicVolume.value+'%';
 function syncMusicControls(){
   const playing=!siteMusic.paused;
-  musicToggle.classList.toggle('is-playing',playing);
-  musicToggle.setAttribute('aria-pressed',String(playing));
-  musicToggle.setAttribute('aria-label',playing?'Настройки музыки':'Открыть настройки музыки');
-  musicToggle.title=playing?'Настройки музыки — воспроизводится':'Настройки музыки';
   musicPlayBtn.textContent=playing?'Выключить музыку':'Включить музыку';
   $('musicStateLabel').textContent=playing?'Музыка включена':'Музыка выключена';
 }
@@ -2983,7 +2977,6 @@ async function startSiteMusic(){
   syncMusicControls();
 }
 function stopSiteMusic(){siteMusic.pause();syncMusicControls();$('musicStatus').textContent='Музыка выключена.';}
-musicToggle.addEventListener('click',()=>{musicBackdrop.classList.add('open');syncMusicControls();});
 $('closeMusic').addEventListener('click',()=>musicBackdrop.classList.remove('open'));
 musicBackdrop.addEventListener('click',e=>{if(e.target===musicBackdrop)musicBackdrop.classList.remove('open');});
 musicPlayBtn.addEventListener('click',()=>{if(siteMusic.paused)startSiteMusic();else stopSiteMusic();});
@@ -3772,7 +3765,7 @@ button:hover,.primary-btn:hover,.ghost-btn:hover,.market-visit:hover,.market-vie
  background:linear-gradient(135deg,#2e6c89,#3b91a8)!important;
  box-shadow:0 7px 20px rgba(0,8,20,.3),0 0 16px rgba(98,183,220,.16)!important;
 }
-.top-actions .music-toggle,.top-actions #helpBtn,.top-actions .icon-btn{
+.top-actions #helpBtn,.top-actions .icon-btn{
  background:linear-gradient(135deg,#173a55,#214e6b)!important;color:#eaf6ff!important;border-color:rgba(144,205,232,.3)!important;
 }
 .top-actions #adminLoginBtn,.top-actions #adminBtn{
@@ -3845,36 +3838,6 @@ table th,thead th,.miracle-admin-table th{
 .market-crop-controls label{display:grid;gap:5px}
 .market-crop-controls input[type=range]{width:100%;accent-color:#55a9ce}
 .market-editor-current-image img{max-width:116px;max-height:116px}
-</style>
-
-<style id="music-button-match-help">
-.top-actions .music-toggle{
-  background:linear-gradient(135deg,#173a55,#214e6b)!important;
-  color:#eaf6ff!important;
-  border:1px solid rgba(144,205,232,.3)!important;
-  box-shadow:0 5px 16px rgba(0,8,20,.24),inset 0 1px rgba(255,255,255,.12)!important;
-}
-.top-actions .music-toggle:hover{
-  background:linear-gradient(135deg,#24536f,#2f7894)!important;
-  border-color:rgba(144,205,232,.42)!important;
-}
-</style>
-<style id="music-button-playing-state-fix">
-/* Цвет кнопки музыки одинаков в обычном и включённом состоянии */
-.top-actions .music-toggle,
-.top-actions .music-toggle.is-playing,
-.top-actions .music-toggle[aria-pressed="true"]{
-  background:linear-gradient(135deg,#173a55,#214e6b)!important;
-  color:#eaf6ff!important;
-  border:1px solid rgba(144,205,232,.3)!important;
-  box-shadow:0 5px 16px rgba(0,8,20,.24),inset 0 1px rgba(255,255,255,.12)!important;
-}
-.top-actions .music-toggle:hover,
-.top-actions .music-toggle.is-playing:hover,
-.top-actions .music-toggle[aria-pressed="true"]:hover{
-  background:linear-gradient(135deg,#24536f,#2f7894)!important;
-  border-color:rgba(144,205,232,.42)!important;
-}
 </style>
 </body>
 </html>
