@@ -923,6 +923,23 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
     .miracle-form button{grid-column:auto}
 }
 
+
+/* Управление активностью «Новогоднее чудо» */
+.miracle-admin-modal{width:min(760px,100%);max-height:88vh;overflow:auto}
+.miracle-admin-toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.miracle-admin-toolbar button{padding:10px 14px;border:0;border-radius:10px;background:#806c59;color:#fff;font-weight:700;cursor:pointer}
+.miracle-admin-toolbar button:disabled{opacity:.5;cursor:not-allowed}
+.miracle-admin-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
+.miracle-admin-summary div{padding:10px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.45);font-size:12px}
+.miracle-admin-summary strong{display:block;font-size:18px;margin-bottom:4px}
+.miracle-admin-table-wrap{overflow:auto;max-height:42vh;border:1px solid var(--line);border-radius:10px}
+.miracle-admin-table{width:100%;border-collapse:collapse;font-size:12px}
+.miracle-admin-table th,.miracle-admin-table td{padding:9px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+.miracle-admin-table th{position:sticky;top:0;background:#f5eee4;z-index:1}
+.miracle-admin-table button{padding:6px 9px;border:0;border-radius:8px;background:#806c59;color:#fff;cursor:pointer}
+.miracle-admin-message{font-size:13px;color:var(--muted);min-height:20px}
+@media(max-width:600px){.miracle-admin-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.miracle-admin-modal{padding:18px}}
+
 </style>
 </head>
 <body>
@@ -937,6 +954,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
   <div class="admin-tools" id="adminTools" hidden>
     <button class="ghost-btn" id="addBtn">+ Участник</button>
+    <button class="ghost-btn" id="miracleAdminBtn">Управление розыгрышем</button>
     <button class="ghost-btn" id="exportBtn">Экспорт данных</button>
   </div>
 </div>
@@ -1164,6 +1182,22 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
         </div>
 
     </div>
+</div>
+
+
+<div class="modal-backdrop" id="miracleAdminBackdrop">
+  <div class="modal miracle-admin-modal" role="dialog" aria-modal="true" aria-labelledby="miracleAdminTitle">
+    <div class="modal-top"><h3 id="miracleAdminTitle">Управление «Новогодним чудом»</h3><button class="close" id="closeMiracleAdmin" aria-label="Закрыть">×</button></div>
+    <p class="modal-note">Управление доступно только вошедшему администратору. Результаты выдаются сервером и не могут быть изменены участником.</p>
+    <div class="miracle-admin-toolbar">
+      <button type="button" id="miracleEnableBtn">Включить розыгрыш</button>
+      <button type="button" id="miracleRefreshBtn">Обновить данные</button>
+    </div>
+    <div class="miracle-admin-summary" id="miracleAdminSummary"></div>
+    <p class="miracle-admin-message" id="miracleAdminMessage" aria-live="polite"></p>
+    <h4>Участники и результаты</h4>
+    <div class="miracle-admin-table-wrap"><table class="miracle-admin-table"><thead><tr><th>Соцсеть</th><th>Игровой ID</th><th>Результат</th><th>Дата</th><th>Выдача</th></tr></thead><tbody id="miracleAdminRows"><tr><td colspan="5">Загрузка…</td></tr></tbody></table></div>
+  </div>
 </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1452,75 +1486,179 @@ async function init(){
     loadRecords();
   });
   subscribeRealtime();
+  await refreshMiracleStatus();
+  setInterval(refreshMiracleStatus,30000);
 }
-  const miracleShakeBtn = document.getElementById('miracleShakeBtn');
-const miracleOrb = document.getElementById('miracleOrb');
-const miracleResult = document.getElementById('miracleResult');
+  const miracleShakeBtn = $('miracleShakeBtn');
+  const miracleOrb = $('miracleOrb');
+  const miracleResult = $('miracleResult');
+  let miracleStatus = null;
+  let miracleAdminBusy = false;
 
-if (miracleShakeBtn && miracleOrb && miracleResult) {
-    miracleShakeBtn.addEventListener('click', () => {
-        if (miracleShakeBtn.disabled) return;
+  const prizeDetails = {
+    merch: {title:'Мерч проекта!', description:'Поздравляем! Тебе достался мерч нашего проекта.', image:'assets/prize-merch.png'},
+    gifts: {title:'Набор новогодних подарков!', description:'Поздравляем! Тебе достался набор новогодних подарков.', image:'assets/prize-gifts.png'},
+    cups: {title:'100 чашечек!', description:'Поздравляем! Ты выиграл 100 чашечек.', image:'assets/prize-cups.png'},
+    no_prize: {title:'В этот раз шар решил сохранить интригу', description:'Не расстраивайся! Возможно, удача улыбнётся тебе в следующий раз.', image:''}
+  };
 
-        miracleShakeBtn.disabled = true;
-        miracleResult.hidden = true;
+  function miracleErrorMessage(error){
+    const message = String(error?.message || error || 'Неизвестная ошибка');
+    const code = ['MIRACLE_INVALID_INPUT','MIRACLE_DISABLED','MIRACLE_NOT_STARTED','MIRACLE_ENDED','MIRACLE_ALREADY_PARTICIPATED','MIRACLE_CAPACITY_REACHED','MIRACLE_POOL_EMPTY','MIRACLE_ADMIN_ONLY'];
+    const found = code.find(item => message.includes(item));
+    const messages = {
+      MIRACLE_INVALID_INPUT:'Проверь социальную сеть и игровой ID. ID должен содержать от 1 до 30 цифр.',
+      MIRACLE_DISABLED:'Розыгрыш сейчас отключён организатором.',
+      MIRACLE_NOT_STARTED:'Розыгрыш ещё не начался. Попробуй в указанное время.',
+      MIRACLE_ENDED:'Время розыгрыша завершилось.',
+      MIRACLE_ALREADY_PARTICIPATED:'Для этой социальной сети и игрового ID попытка уже использована.',
+      MIRACLE_CAPACITY_REACHED:'Все 270 мест уже заняты.',
+      MIRACLE_POOL_EMPTY:'Результаты розыгрыша закончились. Обратись к администрации.',
+      MIRACLE_ADMIN_ONLY:'Недостаточно прав администратора.'
+    };
+    return found ? messages[found] : message;
+  }
 
-        miracleOrb.classList.remove('is-shaking');
-        void miracleOrb.offsetWidth;
-        miracleOrb.classList.add('is-shaking');
+  function renderMiracleStatus(data){
+    miracleStatus = data || null;
+    if(!data){ $('miracleStatus').textContent='Не удалось получить статус активности.'; miracleShakeBtn.disabled=true; return; }
+    const count = Number(data.participants_count || 0);
+    const capacity = Number(data.capacity || 270);
+    $('miracleParticipants').textContent = `${count} / ${capacity}`;
+    const now = Date.now();
+    const start = new Date(data.starts_at).getTime();
+    const end = new Date(data.ends_at).getTime();
+    let message = 'Активность пока недоступна';
+    if(!data.enabled) message='Розыгрыш временно отключён организатором.';
+    else if(now < start) message='Розыгрыш ещё не начался.';
+    else if(now >= end) message='Время розыгрыша завершилось.';
+    else if(count >= capacity) message='Все места заняты. Приём участников завершён.';
+    else message='Розыгрыш открыт! Введи свои данные и встряхни шар.';
+    $('miracleStatus').textContent=message;
+    miracleShakeBtn.disabled=!(data.enabled && now>=start && now<end && count<capacity);
+  }
 
-        setTimeout(() => {
-            miracleOrb.classList.remove('is-shaking');
+  async function refreshMiracleStatus(){
+    if(!supabaseClient || !configured){ renderMiracleStatus(null); return; }
+    const {data,error}=await supabaseClient.rpc('miracle_public_status');
+    if(error){ console.error('miracle_public_status:',error); renderMiracleStatus(null); $('miracleStatus').textContent='Не удалось загрузить статус розыгрыша. Обнови страницу позже.'; return; }
+    renderMiracleStatus(data);
+  }
 
-const demoPrizes = [
-    {
-        title: 'Мерч проекта!',
-        description: 'Поздравляем! Тебе достался мерч нашего проекта.',
-        image: 'assets/prize-merch.png'
-    },
-    {
-        title: '100 чашечек!',
-        description: 'Поздравляем! Ты выиграл 100 чашечек.',
-        image: 'assets/prize-cups.png'
-    },
-    {
-        title: 'Набор новогодних подарков!',
-        description: 'Поздравляем! Тебе достался набор новогодних подарков.',
-        image: 'assets/prize-gifts.png'
-    },
-    {
-        title: 'В этот раз шар решил сохранить интригу',
-        description: 'Не расстраивайся! Возможно, удача улыбнётся тебе в следующий раз.',
-        image: ''
+  function showMiracleResult(prizeType, social, gameId){
+    const prize=prizeDetails[prizeType] || prizeDetails.no_prize;
+    $('sendPrizeScreenshot').hidden=!prize.image;
+    $('prizeResultTitle').textContent='Твой результат';
+    $('prizeResultName').textContent=prize.title;
+    $('prizeResultDescription').textContent=prize.description;
+    $('prizeResultSocial').textContent='Социальная сеть: '+(social==='VK'?'ВКонтакте':'Одноклассники');
+    $('prizeResultGameId').textContent='ID: '+gameId;
+    $('prizeResultImage').innerHTML=prize.image?`<img src="${prize.image}" alt="${prize.title}">`:'';
+    $('prizeResultBackdrop').classList.add('open');
+    createPrizeFireworks();
+    if(miracleResult){
+      miracleResult.querySelector('.miracle-result-title').textContent=prize.title;
+      miracleResult.querySelector('.miracle-result-description').textContent=prize.description;
+      const image=miracleResult.querySelector('.miracle-result-image');
+      image.innerHTML=prize.image?`<img src="${prize.image}" alt="${prize.title}">`:'';
+      miracleResult.hidden=false;
     }
-];
+  }
 
-const prize = demoPrizes[Math.floor(Math.random() * demoPrizes.length)];
-          
-const sendPrizeScreenshot = document.getElementById('sendPrizeScreenshot');
-sendPrizeScreenshot.hidden = !prize.image;
-
-document.getElementById('prizeResultTitle').textContent = 'Твой результат';
-document.getElementById('prizeResultName').textContent = prize.title;
-document.getElementById('prizeResultDescription').textContent = prize.description;
-
-document.getElementById('prizeResultSocial').textContent =
-    'Социальная сеть: ' + document.getElementById('miracleSocial').value;
-
-document.getElementById('prizeResultGameId').textContent =
-    'ID: ' + document.getElementById('miracleGameId').value;
-
-const resultImage = document.getElementById('prizeResultImage');
-resultImage.innerHTML = prize.image
-    ? `<img src="${prize.image}" alt="${prize.title}">`
-    : '';
-
-document.getElementById('prizeResultBackdrop').classList.add('open');
-          createPrizeFireworks();
-
-miracleShakeBtn.disabled = false;
-        }, 5000);
+  if(miracleShakeBtn && miracleOrb && miracleResult){
+    miracleShakeBtn.addEventListener('click', async ()=>{
+      if(miracleShakeBtn.disabled || !supabaseClient) return;
+      const social=$('miracleSocial').value;
+      const gameId=$('miracleGameId').value.trim();
+      if(!/^[0-9]{1,30}$/.test(gameId)){
+        $('miracleStatus').textContent='Введи игровой ID: от 1 до 30 цифр.';
+        $('miracleGameId').focus(); return;
+      }
+      miracleShakeBtn.disabled=true;
+      $('miracleStatus').textContent='Шар перемешивает снежинки…';
+      miracleOrb.classList.remove('is-shaking'); void miracleOrb.offsetWidth; miracleOrb.classList.add('is-shaking');
+      try{
+        const drawPromise=supabaseClient.rpc('miracle_draw',{p_social_network:social,p_game_id:gameId});
+        await new Promise(resolve=>setTimeout(resolve,1800));
+        const {data,error}=await drawPromise;
+        miracleOrb.classList.remove('is-shaking');
+        if(error) throw error;
+        const result=typeof data==='string'?JSON.parse(data):data;
+        if(!result?.prize_type) throw new Error('Сервер вернул неизвестный формат результата.');
+        showMiracleResult(result.prize_type,social,gameId);
+        $('miracleGameId').value='';
+        await refreshMiracleStatus();
+      }catch(error){
+        miracleOrb.classList.remove('is-shaking');
+        $('miracleStatus').textContent=miracleErrorMessage(error);
+        await refreshMiracleStatus();
+      }finally{
+        miracleShakeBtn.disabled=true;
+        if(miracleStatus) renderMiracleStatus(miracleStatus);
+      }
     });
-}
+  }
+
+  function prizeLabel(type){return ({merch:'Мерч',gifts:'Новогодний набор',cups:'100 чашечек',no_prize:'Без выигрыша'})[type]||type||'—';}
+  function formatMiracleDate(value){return value?new Date(value).toLocaleString('ru-RU'):'—';}
+
+  async function loadMiracleAdmin(){
+    if(!isAdmin || !supabaseClient) return;
+    $('miracleAdminMessage').textContent='Загружаем данные…';
+    const [statusResult,listResult]=await Promise.all([
+      supabaseClient.rpc('miracle_admin_status'),
+      supabaseClient.rpc('miracle_admin_list')
+    ]);
+    if(statusResult.error){$('miracleAdminMessage').textContent=miracleErrorMessage(statusResult.error);return;}
+    if(listResult.error){$('miracleAdminMessage').textContent=miracleErrorMessage(listResult.error);return;}
+    const st=statusResult.data||{};
+    $('miracleEnableBtn').textContent=st.enabled?'Отключить розыгрыш':'Включить розыгрыш';
+    $('miracleAdminSummary').innerHTML=[
+      ['Статус',st.enabled?'Включён':'Отключён'],
+      ['Участники',`${st.participants_count||0} / ${st.capacity||270}`],
+      ['Мерч осталось',st.remaining_merch??'—'],
+      ['Наборов осталось',st.remaining_gifts??'—'],
+      ['Чашечек осталось',st.remaining_cups??'—'],
+      ['Без выигрыша',st.remaining_no_prize??'—'],
+      ['Начало',formatMiracleDate(st.starts_at)],
+      ['Окончание',formatMiracleDate(st.ends_at)]
+    ].map(([label,value])=>`<div><strong>${escapeHtml(value)}</strong>${escapeHtml(label)}</div>`).join('');
+    const rows=Array.isArray(listResult.data)?listResult.data:[];
+    $('miracleAdminRows').innerHTML=rows.length?rows.map(row=>{
+      const won=row.prize_type!=='no_prize';
+      return `<tr><td>${escapeHtml(row.social_network==='VK'?'ВКонтакте':'Одноклассники')}</td><td>${escapeHtml(row.game_id)}</td><td>${escapeHtml(prizeLabel(row.prize_type))}</td><td>${escapeHtml(formatMiracleDate(row.created_at))}</td><td>${won?(row.reward_issued?'Выдан':'<button type="button" data-issued="'+escapeHtml(row.id)+'">Отметить выдачу</button>'):'—'}</td></tr>`;
+    }).join(''):'<tr><td colspan="5">Пока нет участников.</td></tr>';
+    $('miracleAdminRows').querySelectorAll('[data-issued]').forEach(button=>button.addEventListener('click',async()=>{
+      if(!confirm('Отметить эту награду как выданную?')) return;
+      button.disabled=true;
+      const {error}=await supabaseClient.rpc('miracle_mark_reward_issued',{p_participant_id:button.dataset.issued});
+      if(error){$('miracleAdminMessage').textContent=miracleErrorMessage(error);button.disabled=false;return;}
+      $('miracleAdminMessage').textContent='Выдача награды отмечена.';
+      await loadMiracleAdmin();
+    }));
+    $('miracleAdminMessage').textContent='Данные обновлены.';
+  }
+
+  $('miracleAdminBtn')?.addEventListener('click',async()=>{
+    if(!isAdmin) return;
+    $('miracleAdminBackdrop').classList.add('open');
+    await loadMiracleAdmin();
+  });
+  $('closeMiracleAdmin')?.addEventListener('click',()=>$('miracleAdminBackdrop').classList.remove('open'));
+  $('miracleAdminBackdrop')?.addEventListener('click',event=>{if(event.target===$('miracleAdminBackdrop'))$('miracleAdminBackdrop').classList.remove('open');});
+  $('miracleRefreshBtn')?.addEventListener('click',loadMiracleAdmin);
+  $('miracleEnableBtn')?.addEventListener('click',async()=>{
+    if(!isAdmin || miracleAdminBusy) return;
+    const currentlyEnabled=$('miracleEnableBtn').textContent.includes('Отключить');
+    const nextEnabled=!currentlyEnabled;
+    if(!confirm(nextEnabled?'Включить приём попыток в установленные даты?':'Отключить приём новых попыток?')) return;
+    miracleAdminBusy=true; $('miracleEnableBtn').disabled=true;
+    const {error}=await supabaseClient.rpc('miracle_set_enabled',{p_enabled:nextEnabled});
+    miracleAdminBusy=false; $('miracleEnableBtn').disabled=false;
+    if(error){$('miracleAdminMessage').textContent=miracleErrorMessage(error);return;}
+    await loadMiracleAdmin(); await refreshMiracleStatus();
+  });
+
   const prizeResultBackdrop = document.getElementById('prizeResultBackdrop');
 
 function closePrizeResult() {
