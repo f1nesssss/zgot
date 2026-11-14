@@ -2069,6 +2069,49 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 }
 
 </style>
+
+<style id="music-modal-centered-butterflies">
+  #musicBackdrop{
+    position:fixed!important; inset:0!important;
+    display:flex!important; align-items:center!important; justify-content:center!important;
+    padding:24px!important; box-sizing:border-box!important;
+  }
+  #musicBackdrop .music-modal,
+  #musicBackdrop .music-panel,
+  #musicBackdrop .modal-content{
+    margin:auto!important;
+  }
+  #musicBackdrop .music-butterflies{
+    position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0;
+  }
+  #musicBackdrop .music-butterflies i{
+    position:absolute; display:block; width:46px; height:58px;
+    background-image:url("assets/butterfly.png");
+    background-size:contain; background-repeat:no-repeat; background-position:center;
+    opacity:.88; filter:drop-shadow(0 0 8px rgba(150,190,255,.48));
+    animation:musicButterflyFloat 7s ease-in-out infinite;
+  }
+  #musicBackdrop .music-butterflies i:nth-child(1){left:calc(50% - 330px);top:28%;animation-delay:-1s}
+  #musicBackdrop .music-butterflies i:nth-child(2){left:calc(50% + 285px);top:25%;animation-delay:-3s}
+  #musicBackdrop .music-butterflies i:nth-child(3){left:calc(50% - 345px);top:70%;animation-delay:-5s}
+  #musicBackdrop .music-butterflies i:nth-child(4){left:calc(50% + 300px);top:72%;animation-delay:-2s}
+  #musicBackdrop .music-modal,
+  #musicBackdrop .music-panel,
+  #musicBackdrop .modal-content{position:relative;z-index:1}
+  @keyframes musicButterflyFloat{
+    0%,100%{transform:translate3d(0,0,0) rotate(-7deg)}
+    50%{transform:translate3d(12px,-18px,0) rotate(8deg)}
+  }
+  @media(max-width:600px){
+    #musicBackdrop{padding:16px!important}
+    #musicBackdrop .music-butterflies i{width:34px;height:44px}
+    #musicBackdrop .music-butterflies i:nth-child(1){left:3%;top:18%}
+    #musicBackdrop .music-butterflies i:nth-child(2){left:auto;right:3%;top:20%}
+    #musicBackdrop .music-butterflies i:nth-child(3){left:2%;top:78%}
+    #musicBackdrop .music-butterflies i:nth-child(4){left:auto;right:2%;top:76%}
+  }
+</style>
+
 </head>
 <body>
 <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
@@ -2498,6 +2541,10 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
     </div>
   </div>
   <div class="modal-backdrop" id="musicBackdrop">
+    <div class="music-butterflies" aria-hidden="true">
+      <i></i><i></i><i></i><i></i>
+    </div>
+
     <div class="modal music-modal" role="dialog" aria-modal="true" aria-labelledby="musicTitle">
       <div class="modal-top"><h3 id="musicTitle">Музыка сайта</h3><button class="close" id="closeMusic" type="button" aria-label="Закрыть">×</button></div>
       <p class="modal-note">Включите новогоднее музыкальное сопровождение и настройте комфортную громкость.</p>
