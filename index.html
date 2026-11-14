@@ -2288,6 +2288,20 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
       <button class="market-close" id="closeTaskBtn" type="button" aria-label="Закрыть">×</button>
     </div>
     <div class="task-list" id="taskList"></div>
+    <section class="task-admin-tools" id="taskAdminTools" hidden>
+      <div class="task-admin-tools-head">
+        <div><strong>Управление текстами испытаний</strong><small>Изменения сохраняются в общей базе и видны всем посетителям</small></div>
+        <button type="button" class="task-admin-edit-btn" id="toggleTaskEditor">Редактировать тексты</button>
+      </div>
+      <form id="taskEditorForm" class="task-editor-form" hidden>
+        <div id="taskEditorFields"></div>
+        <div class="task-editor-actions">
+          <span id="taskEditorStatus" role="status"></span>
+          <button type="button" class="task-admin-cancel-btn" id="cancelTaskEditor">Отмена</button>
+          <button type="submit" class="task-admin-save-btn">Сохранить изменения</button>
+        </div>
+      </form>
+    </section>
   </section>
 </div>
 
@@ -2772,6 +2786,7 @@ async function updateSession(session){
   window.dispatchEvent(new Event('zgot-auth-updated'));
   if(configured)await loadRecords();
   if($('tasksAdminNote')) $('tasksAdminNote').hidden=!isAdmin;
+  if($('taskAdminTools')) $('taskAdminTools').hidden=!isAdmin;
 }
 function subscribeRealtime(){
   if(!supabaseClient||realtimeChannel)return;
@@ -3059,13 +3074,106 @@ const TASK_ORBS=[
   {id:'ice_castle',name:'Ледяной замок'},
   {id:'new_year_magic',name:'Новогоднее волшебство'}
 ];
+const TASK_CONTENT_DEFAULTS = {
+  snow_guest:{kicker:'Праздничные испытания',title:'Шар «Снежный гость»',description:'В этом шаре предусмотрено три задания. Подробные условия и правила выполнения будут добавлены на следующем этапе.',tasks:[1,2,3].map(n=>({number:`Испытание ${n}`,title:`Задание ${n}`,description:'Описание задания появится здесь. Здесь будут указаны условия выполнения и важные детали для участников.'}))},
+  gift_workshop:{kicker:'Праздничные испытания',title:'Шар «Подарочная мастерская»',description:'В этом шаре предусмотрено три задания. Подробные условия и правила выполнения будут добавлены на следующем этапе.',tasks:[1,2,3].map(n=>({number:`Испытание ${n}`,title:`Задание ${n}`,description:'Описание задания появится здесь. Здесь будут указаны условия выполнения и важные детали для участников.'}))},
+  gingerbread_house:{kicker:'Праздничные испытания',title:'Шар «Пряничный домик»',description:'В этом шаре предусмотрено три задания. Подробные условия и правила выполнения будут добавлены на следующем этапе.',tasks:[1,2,3].map(n=>({number:`Испытание ${n}`,title:`Задание ${n}`,description:'Описание задания появится здесь. Здесь будут указаны условия выполнения и важные детали для участников.'}))},
+  ice_castle:{kicker:'Праздничные испытания',title:'Шар «Ледяной замок»',description:'В этом шаре предусмотрено три задания. Подробные условия и правила выполнения будут добавлены на следующем этапе.',tasks:[1,2,3].map(n=>({number:`Испытание ${n}`,title:`Задание ${n}`,description:'Описание задания появится здесь. Здесь будут указаны условия выполнения и важные детали для участников.'}))},
+  new_year_magic:{kicker:'Праздничные испытания',title:'Шар «Новогоднее волшебство»',description:'В этом шаре предусмотрено три задания. Подробные условия и правила выполнения будут добавлены на следующем этапе.',tasks:[1,2,3].map(n=>({number:`Испытание ${n}`,title:`Задание ${n}`,description:'Описание задания появится здесь. Здесь будут указаны условия выполнения и важные детали для участников.'}))}
+};
+const TASK_SUBMIT_URL='https://vk.com/im?sel=-91120784';
+let taskContentByOrb=JSON.parse(JSON.stringify(TASK_CONTENT_DEFAULTS));
+let activeTaskOrbId=null;
+function taskContentFor(orbId){return taskContentByOrb[orbId]||TASK_CONTENT_DEFAULTS[orbId];}
+async function loadTaskContent(){
+  if(!supabaseClient)return;
+  const {data,error}=await supabaseClient.from('orb_task_content').select('orb_id,content');
+  if(error){console.warn('Не удалось загрузить тексты испытаний:',error.message);return;}
+  (data||[]).forEach(row=>{
+    if(TASK_CONTENT_DEFAULTS[row.orb_id]&&row.content&&typeof row.content==='object'){
+      taskContentByOrb[row.orb_id]={...TASK_CONTENT_DEFAULTS[row.orb_id],...row.content,
+        tasks:Array.isArray(row.content.tasks)?row.content.tasks: TASK_CONTENT_DEFAULTS[row.orb_id].tasks};
+    }
+  });
+}
 function renderTaskPanel(orbId){
   const orb=TASK_ORBS.find(item=>item.id===orbId);
   if(!orb)return;
-  $('taskOrbTitle').textContent=`Шар «${orb.name}»`;
-  $('taskOrbDescription').textContent='В этом шаре предусмотрено три задания. Подробные условия и правила выполнения будут добавлены на следующем этапе.';
-  $('taskList').innerHTML=[1,2,3].map(number=>`<article class="task-card"><span class="task-card-number">Испытание ${number}</span><h4>Задание ${number}</h4><p>Описание задания появится здесь. Здесь будут указаны условия выполнения и важные детали для участников.</p><div class="task-card-foot"><span class="task-ticket">Максимальное количество билетов: 3</span><span class="task-state">Скоро подробнее</span></div></article>`).join('');
+  activeTaskOrbId=orbId;
+  const content=taskContentFor(orbId);
+  $('taskOrbTitle').textContent=content.title||`Шар «${orb.name}»`;
+  $('taskOrbDescription').textContent=content.description||'';
+  const kicker=$('taskBackdrop').querySelector('.task-window-head .market-kicker');
+  if(kicker)kicker.textContent=content.kicker||'';
+  $('taskList').innerHTML=(content.tasks||[]).map((task,index)=>`
+    <article class="task-card">
+      <span class="task-card-number">${escapeHtml(task.number||`Испытание ${index+1}`)}</span>
+      <h4>${escapeHtml(task.title||'')}</h4>
+      <p>${escapeHtml(task.description||'')}</p>
+      <div class="task-card-foot">
+        <a class="task-submit-btn" href="${TASK_SUBMIT_URL}" target="_blank" rel="noopener noreferrer">
+          Отправить задания на проверку
+          <span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </a>
+        <span class="task-state">Скоро подробнее</span>
+      </div>
+    </article>`).join('');
+  $('taskAdminTools').hidden=!isAdmin;
+  $('taskEditorForm').hidden=true;
+  $('toggleTaskEditor').textContent='Редактировать тексты';
+  $('taskEditorStatus').textContent='';
 }
+function renderTaskEditor(){
+  const content=taskContentFor(activeTaskOrbId);
+  const field=(key,label,value,full=false,textarea=false)=>`
+    <div class="task-editor-field ${full?'full':''}">
+      <label for="task-edit-${key}">${label}</label>
+      ${textarea?`<textarea id="task-edit-${key}" data-task-field="${key}">${escapeHtml(value||'')}</textarea>`:`<input id="task-edit-${key}" data-task-field="${key}" value="${escapeHtml(value||'')}">`}
+    </div>`;
+  let out='<div class="task-editor-group"><h4>Заголовок окна</h4><div class="task-editor-grid">';
+  out+=field('kicker','Надпись над заголовком',content.kicker);
+  out+=field('title','Название окна',content.title);
+  out+=field('description','Описание под заголовком',content.description,true,true);
+  out+='</div></div>';
+  (content.tasks||[]).forEach((task,index)=>{
+    out+=`<div class="task-editor-group"><h4>Испытание ${index+1}</h4><div class="task-editor-grid">`;
+    out+=field(`task-${index}-number`,'Метка испытания',task.number);
+    out+=field(`task-${index}-title`,'Название задания',task.title);
+    out+=field(`task-${index}-description`,'Описание и условия',task.description,true,true);
+    out+='</div></div>';
+  });
+  $('taskEditorFields').innerHTML=out;
+}
+$('toggleTaskEditor').addEventListener('click',()=>{
+  const form=$('taskEditorForm');form.hidden=!form.hidden;
+  $('toggleTaskEditor').textContent=form.hidden?'Редактировать тексты':'Свернуть редактор';
+  if(!form.hidden)renderTaskEditor();
+});
+$('cancelTaskEditor').addEventListener('click',()=>{
+  $('taskEditorForm').hidden=true;$('toggleTaskEditor').textContent='Редактировать тексты';
+});
+$('taskEditorForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  if(!isAdmin||!activeTaskOrbId||!supabaseClient){$('taskEditorStatus').textContent='Нет доступа или подключения к общей базе.';return;}
+  const updated=JSON.parse(JSON.stringify(taskContentFor(activeTaskOrbId)));
+  $('taskEditorFields').querySelectorAll('[data-task-field]').forEach(input=>{
+    const key=input.dataset.taskField;
+    if(key.startsWith('task-')){
+      const match=key.match(/^task-(\d+)-(.+)$/);if(match&&updated.tasks[Number(match[1])])updated.tasks[Number(match[1])][match[2]]=input.value.trim();
+    }else updated[key]=input.value.trim();
+  });
+  $('taskEditorStatus').textContent='Сохраняем…';
+  const {error}=await supabaseClient.from('orb_task_content').upsert({
+    orb_id:activeTaskOrbId,content:updated,updated_by:currentUser.id,updated_at:new Date().toISOString()
+  },{onConflict:'orb_id'});
+  if(error){$('taskEditorStatus').textContent='Не удалось сохранить: '+error.message;return;}
+  taskContentByOrb[activeTaskOrbId]=updated;
+  renderTaskPanel(activeTaskOrbId);
+  $('taskEditorForm').hidden=false;
+  $('toggleTaskEditor').textContent='Свернуть редактор';
+  renderTaskEditor();
+  $('taskEditorStatus').textContent='Изменения сохранены.';
+});
 function openTaskModal(orbId){
   renderTaskPanel(orbId);
   $('taskBackdrop').classList.add('open');
@@ -3331,7 +3439,7 @@ async function init(){
   const {data,error}=await supabaseClient.auth.getSession();
   if(error)setNote('Ошибка проверки входа: '+error.message,true);
   await updateSession(data?.session||null);
-  await Promise.all([countSiteVisit(),loadExchangeTimer(),loadOrbSchedule(),loadOrbClosedStyle()]);
+  await Promise.all([countSiteVisit(),loadExchangeTimer(),loadOrbSchedule(),loadOrbClosedStyle(),loadTaskContent()]);
   if(exchangeTimerInterval)clearInterval(exchangeTimerInterval);
   exchangeTimerInterval=setInterval(renderExchangeTimer,1000);
   exchangeTimerRefreshInterval=setInterval(()=>loadExchangeTimer(),60000);
@@ -3341,6 +3449,7 @@ async function init(){
     isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
     render();
     window.dispatchEvent(new Event('zgot-auth-updated'));
+    if($('taskAdminTools')) $('taskAdminTools').hidden=!isAdmin;
     loadRecords();
   });
   subscribeRealtime();
@@ -3960,6 +4069,74 @@ body.task-modal-open{overflow:hidden}
  transform:translateY(-2px);
 }
 @media(max-width:520px){.help-actions{gap:8px}.help-actions .primary-btn{font-size:12px;padding:10px 13px}}
+
+/* Снежная шапка окна испытаний */
+.task-window{isolation:isolate}
+.task-window:before{
+ content:"";position:absolute;z-index:3;left:18px;right:18px;top:-1px;height:13px;
+ border-radius:50% 50% 10px 10px / 100% 100% 10px 10px;
+ background:
+   radial-gradient(ellipse at 8% 100%,rgba(255,255,255,.95) 0 3px,transparent 4px),
+   radial-gradient(ellipse at 24% 75%,rgba(255,255,255,.72) 0 2px,transparent 3px),
+   radial-gradient(ellipse at 51% 95%,rgba(255,255,255,.9) 0 3px,transparent 4px),
+   radial-gradient(ellipse at 78% 78%,rgba(255,255,255,.7) 0 2px,transparent 3px),
+   linear-gradient(180deg,rgba(244,250,255,.88),rgba(199,225,239,.28) 55%,transparent);
+ filter:drop-shadow(0 2px 4px rgba(210,238,255,.18));pointer-events:none
+}
+.task-window-head,.task-list,.task-admin-tools{position:relative;z-index:1}
+.task-window .task-card-foot{align-items:center;flex-wrap:wrap}
+.task-submit-btn{
+ position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ min-height:42px;padding:10px 17px;border-radius:999px;border:1px solid rgba(139,199,226,.42);
+ background:linear-gradient(135deg,#24536f,#2f7894);color:#f1f9ff;font-weight:800;
+ font-size:12px;text-decoration:none;overflow:visible;transition:transform .22s,box-shadow .22s,background .22s
+}
+.task-submit-btn:hover,.task-submit-btn:focus-visible{
+ transform:translateY(-3px);background:linear-gradient(135deg,#2b6685,#3889a8);
+ box-shadow:0 10px 24px rgba(31,105,139,.28);outline:none
+}
+.task-submit-btn .button-butterflies{position:absolute;inset:-13px -10px;pointer-events:none;overflow:visible}
+.task-submit-btn .button-butterflies i{
+ position:absolute;width:24px;height:28px;background-image:var(--butterfly-img);background-size:contain;background-repeat:no-repeat;
+ opacity:0;transform:translateY(8px) scale(.5);transition:opacity .2s,transform .4s
+}
+.task-submit-btn .button-butterflies i:nth-child(1){left:-7px;top:-8px}
+.task-submit-btn .button-butterflies i:nth-child(2){right:-8px;top:-10px}
+.task-submit-btn .button-butterflies i:nth-child(3){left:18%;bottom:-10px}
+.task-submit-btn .button-butterflies i:nth-child(4){right:18%;bottom:-10px}
+.task-submit-btn .button-butterflies i:nth-child(5){left:48%;top:-16px}
+.task-submit-btn:hover .button-butterflies i,.task-submit-btn:focus-visible .button-butterflies i{
+ opacity:1;transform:translateY(-7px) scale(1);animation:trailWing .22s ease-in-out infinite alternate
+}
+.task-admin-tools{margin-top:22px;padding:16px;border:1px solid rgba(139,199,226,.25);border-radius:18px;background:rgba(3,17,30,.28)}
+.task-admin-tools-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.task-admin-tools-head strong{display:block;color:#eaf5ff;font-size:14px}
+.task-admin-tools-head small{display:block;color:#a9c1d1;margin-top:5px;font-size:11px}
+.task-admin-edit-btn,.task-admin-save-btn,.task-admin-cancel-btn{
+ border-radius:999px;padding:10px 15px;font-weight:800;font-size:12px;cursor:pointer;
+ border:1px solid rgba(139,199,226,.36);color:#eff9ff;background:linear-gradient(135deg,#24536f,#2f7894)
+}
+.task-admin-cancel-btn{background:rgba(19,43,62,.8)}
+.task-editor-form{margin-top:16px}
+.task-editor-group{padding:14px;margin-top:12px;border:1px solid rgba(139,199,226,.2);border-radius:14px;background:rgba(5,22,37,.38)}
+.task-editor-group h4{margin:0 0 12px;color:#eaf5ff;font:600 16px Georgia,serif}
+.task-editor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.task-editor-field{display:grid;gap:5px;min-width:0}
+.task-editor-field.full{grid-column:1/-1}
+.task-editor-field label{font-size:11px;font-weight:800;color:#a9c1d1}
+.task-editor-field input,.task-editor-field textarea{
+ width:100%;box-sizing:border-box;border:1px solid rgba(139,199,226,.25);border-radius:10px;
+ padding:10px 11px;background:#0b2033;color:#eff8ff;font:inherit;font-size:13px
+}
+.task-editor-field textarea{min-height:76px;resize:vertical}
+.task-editor-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:14px}
+#taskEditorStatus{margin-right:auto;color:#a9c1d1;font-size:12px}
+@media(max-width:760px){
+ .task-admin-tools{padding:12px}
+ .task-editor-grid{grid-template-columns:1fr}
+ .task-editor-field.full{grid-column:auto}
+ .task-window:before{left:12px;right:12px}
+}
 </style>
 </body>
 </html>
