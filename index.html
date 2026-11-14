@@ -2285,7 +2285,10 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
         <h2 id="taskOrbTitle">Шар «Снежный гость»</h2>
         <p id="taskOrbDescription">В этом шаре предусмотрено три задания.</p>
       </div>
-      <button class="market-close" id="closeTaskBtn" type="button" aria-label="Закрыть">×</button>
+      <div class="task-window-head-actions">
+        <button class="ghost-btn task-help-button" id="taskHelpBtn" type="button">Помощь<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
+        <button class="market-close" id="closeTaskBtn" type="button" aria-label="Закрыть">×</button>
+      </div>
     </div>
     <div class="task-list" id="taskList"></div>
     <section class="task-admin-tools" id="taskAdminTools" hidden>
@@ -3136,10 +3139,10 @@ function renderTaskEditor(){
   out+=field('description','Описание под заголовком',content.description,true,true);
   out+='</div></div>';
   (content.tasks||[]).forEach((task,index)=>{
-    out+=`<div class="task-editor-group"><h4>Испытание ${index+1}</h4><div class="task-editor-grid">`;
-    out+=field(`task-${index}-number`,'Метка испытания',task.number);
+    out+=`<div class="task-editor-group"><h4>Испытание ${index+1}</h4><p class="task-editor-hint">В большое поле ниже вставьте полный текст задания: описание, условия выполнения и любые важные детали. Он заменит текст-заглушку в карточке для посетителей.</p><div class="task-editor-grid">`;
+    out+=field(`task-${index}-description`,'ТЕКСТ САМОГО ЗАДАНИЯ И УСЛОВИЯ (именно этот текст увидят участники)',task.description,true,true);
     out+=field(`task-${index}-title`,'Название задания',task.title);
-    out+=field(`task-${index}-description`,'Описание и условия',task.description,true,true);
+    out+=field(`task-${index}-number`,'Метка испытания',task.number);
     out+='</div></div>';
   });
   $('taskEditorFields').innerHTML=out;
@@ -3193,6 +3196,9 @@ $('addBtn').addEventListener('click',openModal);
   
 // Открытие и закрытие окна помощи
 $('helpBtn').addEventListener('click',()=>{
+    $('helpBackdrop').classList.add('open');
+});
+$('taskHelpBtn').addEventListener('click',()=>{
     $('helpBackdrop').classList.add('open');
 });
 
@@ -4136,6 +4142,18 @@ body.task-modal-open{overflow:hidden}
  .task-editor-grid{grid-template-columns:1fr}
  .task-editor-field.full{grid-column:auto}
  .task-window:before{left:12px;right:12px}
+}
+
+.task-window-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-shrink:0}
+.task-window-head-actions .task-help-button{white-space:nowrap;min-height:44px}
+.task-editor-hint{margin:0 0 12px;color:#a9c1d1;font-size:12px;line-height:1.55}
+.task-editor-field textarea[data-task-field$="-description"]{min-height:150px;font-size:14px;line-height:1.55}
+.task-editor-field label{line-height:1.4}
+@media(max-width:620px){
+ .task-window-head{align-items:flex-start}
+ .task-window-head-actions{gap:7px}
+ .task-window-head-actions .task-help-button{padding:9px 12px;font-size:12px}
+ .task-window-head-actions .market-close{flex-shrink:0}
 }
 </style>
 </body>
