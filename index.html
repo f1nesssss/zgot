@@ -3859,5 +3859,22 @@ table th,thead th,.miracle-admin-table th{
   border-color:rgba(144,205,232,.42)!important;
 }
 </style>
+<style id="music-button-playing-state-fix">
+/* Цвет кнопки музыки одинаков в обычном и включённом состоянии */
+.top-actions .music-toggle,
+.top-actions .music-toggle.is-playing,
+.top-actions .music-toggle[aria-pressed="true"]{
+  background:linear-gradient(135deg,#173a55,#214e6b)!important;
+  color:#eaf6ff!important;
+  border:1px solid rgba(144,205,232,.3)!important;
+  box-shadow:0 5px 16px rgba(0,8,20,.24),inset 0 1px rgba(255,255,255,.12)!important;
+}
+.top-actions .music-toggle:hover,
+.top-actions .music-toggle.is-playing:hover,
+.top-actions .music-toggle[aria-pressed="true"]:hover{
+  background:linear-gradient(135deg,#24536f,#2f7894)!important;
+  border-color:rgba(144,205,232,.42)!important;
+}
+</style>
 </body>
 </html>
