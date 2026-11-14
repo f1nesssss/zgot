@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#e9dfd1">
+<meta name="theme-color" content="#071426">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <title>Сказка в хрустальном шаре</title>
 <style>
@@ -1718,6 +1718,214 @@ body[data-theme="dark"] .miracle-stat{background:rgba(143,194,218,.1);color:#e8f
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+
+/* === ЕДИНАЯ НОЧНАЯ ЗИМНЯЯ ТЕМА: финальная визуальная система === */
+:root{
+ --ink:#e8f2fa;--muted:#a9c1d2;--paper:#0b1b2d;--cream:#132b40;
+ --taupe:#b38a5d;--line:rgba(177,211,232,.19);--shadow:0 18px 48px rgba(0,7,18,.42);
+ --red:#c8796d;--gold:#e2b65f;--peach:#d58b67;--blue:#70b9d8;--green:#85b99a;
+ --winter-panel:linear-gradient(145deg,rgba(25,58,82,.96),rgba(10,30,49,.97));
+ --winter-panel-warm:linear-gradient(145deg,rgba(49,54,59,.97),rgba(24,38,51,.98));
+ --winter-button:linear-gradient(135deg,#b58b5d,#d0aa75);
+ --winter-button-hover:linear-gradient(135deg,#c69b68,#e2bd88);
+}
+html,body{background:#071426!important;color:#e8f2fa!important}
+body{
+ background:
+ radial-gradient(ellipse at 50% -12%,rgba(69,119,151,.24),transparent 43rem),
+ radial-gradient(ellipse at 12% 42%,rgba(22,62,91,.22),transparent 38rem),
+ radial-gradient(ellipse at 88% 72%,rgba(28,72,99,.18),transparent 42rem),
+ linear-gradient(180deg,#061222 0%,#0a1c30 48%,#071426 100%)!important;
+ color:var(--ink)!important;
+ font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important;
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+ background-image:radial-gradient(1px 1px at 12% 18%,#d8efff 98%,transparent),
+ radial-gradient(1px 1px at 78% 24%,#d8efff 98%,transparent),
+ radial-gradient(1.5px 1.5px at 43% 66%,#fff 98%,transparent),
+ radial-gradient(1px 1px at 91% 83%,#c4e5fa 98%,transparent);
+ background-size:173px 151px,211px 193px,257px 229px,307px 277px;
+}
+.snow-layer{z-index:30}
+.topbar,.hero,.section{max-width:1480px}
+.topbar{padding:22px 30px 12px;position:relative;z-index:40}
+.brand strong{color:#eff7ff;font-family:Georgia,"Times New Roman",serif;letter-spacing:.01em}
+.brand-mark{box-shadow:0 0 0 2px rgba(206,231,247,.7),0 0 22px rgba(117,190,220,.22)}
+.hero{
+ margin:12px auto 30px;padding:48px 30px 42px;border-radius:0 0 34px 34px;
+ background:radial-gradient(ellipse at 50% 0,rgba(205,226,239,.25),transparent 66%);
+}
+.eyebrow{color:#e8bd72;text-shadow:0 0 14px rgba(232,189,114,.35)}
+h1,.hero h1,.section-head h2,.tasks-head h2,.task-panel-top h3,
+.miracle-content h2,.market-card h2,.modal h3,.admin-cabinet-window h2,
+.admin-cabinet-window h3{color:#edf6fc;text-shadow:0 2px 18px rgba(115,184,218,.13)}
+.hero p,.section-head p,.market-card p,.miracle-description{color:#a9c1d2}
+.hero-rule{height:2px;background:linear-gradient(90deg,transparent,#e2b65f,#8bc9e4,transparent)}
+.section{padding:14px 30px 58px}
+.section-head{margin-bottom:20px}
+.section-head h2{font-size:clamp(25px,2.3vw,32px)}
+/* Панели: холодное стекло, глубокий синий и тонкая ледяная кромка */
+.participants,.tasks-section,.miracle-card,.market-card,.exchange-timer,
+.stat,.task-panel,.task-card,.admin-cabinet-window,.market-window,
+.market-detail-window,.market-editor-window,.modal,.notifications-modal,
+.miracle-admin-modal{
+ color:var(--ink)!important;
+ background:var(--winter-panel)!important;
+ border:1px solid rgba(145,199,228,.24)!important;
+ box-shadow:0 18px 50px rgba(0,8,20,.32),inset 0 1px rgba(255,255,255,.055),0 0 24px rgba(80,163,207,.055)!important;
+}
+.participants,.tasks-section,.miracle-card,.market-card,.admin-cabinet-window,
+.market-window,.modal,.notifications-modal,.miracle-admin-modal{position:relative;overflow:hidden}
+.participants:before,.tasks-section:before,.miracle-card:before,.market-card:before,
+.admin-cabinet-window:before,.market-window:before,.modal:before,.notifications-modal:before{
+ content:"";position:absolute;left:0;right:0;top:0;height:9px;pointer-events:none;z-index:2;
+ background:linear-gradient(180deg,rgba(239,249,255,.52),rgba(196,226,243,.13),transparent);
+ opacity:.7;
+}
+.participants{border-radius:24px!important}
+.tasks-section{margin-top:32px;border-radius:26px!important}
+.tasks-head{background:linear-gradient(120deg,rgba(44,86,112,.42),rgba(14,39,61,.16));border-bottom:1px solid var(--line)}
+.task-panel{border:0!important;border-radius:0 0 24px 24px!important}
+.task-orb-tab{background:rgba(11,31,49,.72)!important;color:#dcebf5!important;border:1px solid rgba(157,203,228,.2)!important}
+.task-orb-tab[aria-selected="true"]{background:linear-gradient(135deg,#9d794f,#c09a6a)!important;color:#fff!important;border-color:#d5b27e!important}
+.task-card{background:rgba(10,29,47,.72)!important}
+.orb-card{background:linear-gradient(180deg,#17364e,#0d2237)!important;border:1px solid rgba(153,204,231,.22)!important;box-shadow:0 14px 34px rgba(0,7,18,.38)!important}
+.orb-card:hover{box-shadow:0 20px 44px rgba(0,8,20,.5),0 0 22px rgba(109,186,222,.12)!important}
+.orb-title{color:#edf6fc!important;background:rgba(10,30,48,.92)!important}
+.orb-meta{background:linear-gradient(90deg,#8d704f,#b18b61)!important;color:#fff!important}
+.orb-bottom{background:rgba(10,29,47,.96)!important}
+.orb-bottom small{color:#d1e1eb!important}
+.orb-status,.orb-bottom a{color:#8dc8e3!important}
+.exchange-timer{border-radius:18px!important;background:linear-gradient(110deg,rgba(22,55,79,.95),rgba(12,34,54,.95))!important}
+.stat{background:rgba(111,166,198,.13)!important;border-color:rgba(155,205,229,.2)!important}
+.stat span{color:#aec7d7!important}
+/* Кнопки: единый тёплый металл, как огни домика и гирлянды */
+button,.ghost-btn,.primary-btn,.market-visit,.market-view-btn,.market-edit-btn,
+.admin-tools button,.admin-row-actions button,.modal-actions button,.view-tab,
+.task-orb-tab,.market-buy-btn{
+ font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+.ghost-btn,.primary-btn,.market-visit,.market-view-btn,.market-edit-btn,
+.admin-tools button,.admin-row-actions button,.modal-actions button,
+.market-buy-btn,.miracle-card button,.admin-cabinet-window button{
+ background:var(--winter-button)!important;color:#fff!important;
+ border:1px solid rgba(255,224,180,.28)!important;
+ box-shadow:0 5px 16px rgba(0,8,18,.22),inset 0 1px rgba(255,255,255,.22)!important;
+}
+.ghost-btn:hover,.primary-btn:hover,.market-visit:hover,.market-view-btn:hover,
+.market-edit-btn:hover,.admin-tools button:hover,.admin-row-actions button:hover,
+.modal-actions button:hover,.market-buy-btn:hover,.admin-cabinet-window button:hover{
+ background:var(--winter-button-hover)!important;color:#fff!important;
+ box-shadow:0 8px 22px rgba(0,8,18,.3),0 0 18px rgba(226,182,95,.18)!important;
+}
+.icon-btn,.music-toggle,.notification-toggle{background:rgba(30,69,96,.78)!important;color:#eaf6ff!important;border:1px solid rgba(144,201,230,.24)!important}
+.icon-btn:hover,.music-toggle:hover,.notification-toggle:hover{background:#285675!important}
+.top-actions{gap:9px}
+.top-actions .ghost-btn{background:linear-gradient(135deg,#9a7958,#b28b62)!important}
+.top-actions .notification-toggle{background:linear-gradient(135deg,#194361,#245b79)!important}
+input,select,textarea,.search,.filter-search,.admin-cabinet-window input,
+.admin-cabinet-window select,.admin-cabinet-window textarea,
+.modal input,.modal select,.modal textarea{
+ background:#0b2033!important;color:#eaf4fb!important;
+ border:1px solid rgba(145,195,222,.25)!important;
+ border-radius:13px!important;
+}
+input::placeholder,textarea::placeholder{color:#7893a7!important}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:#75b9d8!important;box-shadow:0 0 0 3px rgba(117,185,216,.14)!important}
+select option{background:#10283d;color:#edf6fc}
+label,.muted,.modal-note,.updated-note{color:#a9c1d2!important}
+table{color:#e8f2fa!important}
+thead th{background:linear-gradient(90deg,#947452,#b18b61)!important;color:#fff!important}
+tbody tr{background:rgba(9,29,47,.58)!important;border-color:rgba(148,194,218,.16)!important}
+tbody td{color:#e3eef6!important}
+.empty{color:#a9c1d2!important}
+/* Новогоднее чудо и ярмарка в одном зимнем стиле */
+.miracle-card{background:radial-gradient(circle at 82% 48%,rgba(143,204,228,.17),transparent 24rem),linear-gradient(135deg,#173b57,#0b2035)!important;border-color:rgba(135,196,226,.3)!important}
+.miracle-label,.market-kicker{color:#e5b66d!important}
+.miracle-start-date{background:linear-gradient(135deg,#a17c55,#c09a6b)!important;color:white!important;border:1px solid rgba(255,225,184,.28)!important}
+.miracle-start-date strong{color:#fff!important}
+.miracle-stat{background:rgba(119,177,208,.13)!important;border:1px solid rgba(149,202,228,.2)!important;color:#edf6fc!important}
+.miracle-stat span{color:#a9c1d2!important}
+.miracle-card .miracle-disabled,.miracle-card .miracle-status{color:#e5a17f!important}
+.market-card{background:linear-gradient(135deg,#263b4d,#172b3e)!important}
+.market-prize{background:linear-gradient(160deg,#18364e,#0c2034)!important;border:1px solid rgba(151,201,226,.2)!important;color:#edf6fc!important}
+.market-prize strong,.market-prize small,.market-stock{color:#dceaf3!important}
+.market-product-badge{background:#b58b5d!important;color:#fff!important}
+.market-window,.market-detail-window,.market-editor-window{background:linear-gradient(145deg,#17364e,#0a1e32)!important;color:#eaf4fb!important}
+.market-window h2,.market-window h3,.market-detail-window h3,.market-editor-window h3{color:#f0f7fc!important}
+.market-window .market-admin-toolbar{background:rgba(5,20,34,.35)!important}
+/* Админка: неоновая ледяная рамка и снежная кромка */
+.admin-cabinet-window{
+ background:linear-gradient(145deg,rgba(20,48,69,.985),rgba(8,25,42,.99))!important;
+ border:1px solid rgba(124,204,239,.58)!important;
+ box-shadow:0 0 0 1px rgba(116,195,231,.2),0 0 24px rgba(74,174,221,.24),0 24px 70px rgba(0,5,15,.58),inset 0 1px rgba(255,255,255,.13)!important;
+}
+.admin-cabinet-window:before{
+ height:12px;opacity:1;
+ background:radial-gradient(ellipse at 10% 0%,#fff 0 2px,transparent 3px),
+ radial-gradient(ellipse at 28% 0%,#dff4ff 0 3px,transparent 5px),
+ radial-gradient(ellipse at 51% 0%,#fff 0 2px,transparent 4px),
+ radial-gradient(ellipse at 76% 0%,#dff4ff 0 3px,transparent 5px),
+ linear-gradient(180deg,rgba(242,251,255,.78),rgba(173,221,244,.22),transparent);
+ background-size:120px 12px,180px 12px,150px 12px,200px 12px,100% 12px;
+ filter:drop-shadow(0 2px 5px rgba(160,222,248,.3));
+}
+.admin-cabinet-window .admin-card,.admin-cabinet-window .admin-tool-card,
+.admin-cabinet-window .admin-panel,.admin-cabinet-window .admin-section-card{
+ background:rgba(12,34,53,.78)!important;border:1px solid rgba(143,199,226,.22)!important;color:#eaf4fb!important;
+}
+.admin-cabinet-window h2,.admin-cabinet-window h3{color:#f0f7fc!important}
+.admin-cabinet-window p,.admin-cabinet-window small{color:#a9c1d2!important}
+.admin-cabinet-window .admin-search{background:#0b2033!important;color:#eaf4fb!important}
+.modal-backdrop{background:rgba(1,8,17,.76)!important;backdrop-filter:blur(9px)!important}
+.modal,.notifications-modal,.miracle-admin-modal{background:linear-gradient(145deg,#17364e,#0a1e32)!important;border-color:rgba(137,198,228,.3)!important}
+.modal-top h3,.modal h3{color:#f0f7fc!important}
+.close{background:#244a64!important;color:#fff!important}
+.announcement-card{background:rgba(7,25,42,.72)!important;border:1px solid rgba(143,198,225,.2)!important;color:#eaf4fb!important}
+.announcement-card p{color:#bfd1dd!important}
+/* Снежная шапка блоков — аккуратный налёт, не перекрывающий контент */
+.participants:after,.tasks-section:after,.miracle-card:after,.market-card:after{
+ content:"";position:absolute;top:0;left:5%;right:5%;height:3px;pointer-events:none;z-index:3;
+ background:linear-gradient(90deg,transparent,rgba(239,249,255,.72),rgba(195,228,245,.35),transparent);
+ filter:blur(1px);opacity:.8
+}
+/* Согласованная ширина сайта и более собранная композиция */
+.topbar{max-width:1480px;margin:0 auto}
+.hero{max-width:1480px}
+main.section{max-width:1480px}
+#orbs{gap:14px}
+.market-section{margin-top:34px}
+.footer{color:#9db6c8!important}
+@media(max-width:900px){
+ .topbar{padding:16px 20px 10px}
+ .hero{padding:38px 20px 30px}
+ .section{padding-left:20px;padding-right:20px}
+ .orbs{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:650px){
+ .topbar{padding:12px 14px 8px}
+ .top-actions{justify-content:flex-start;gap:6px}
+ .top-actions .ghost-btn,.top-actions .icon-btn{font-size:11px;padding:9px 11px}
+ .brand strong{font-size:14px}
+ .hero{margin:8px 10px 18px;padding:30px 15px 24px;border-radius:0 0 22px 22px}
+ h1{font-size:clamp(31px,9vw,43px)}
+ .section{padding:8px 12px 36px}
+ .orbs{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .orb-art{height:clamp(145px,48vw,220px)}
+ .orb-title{font-size:12px;min-height:48px}
+ .orb-meta{font-size:9px;padding:8px}
+ .participants,.tasks-section,.miracle-card,.market-card{border-radius:18px!important}
+ .miracle-card{padding:22px 15px!important}
+ .market-card{padding:22px 17px!important;flex-direction:column;align-items:flex-start}
+ .market-visit{align-self:flex-start}
+ .admin-cabinet-window{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important;padding:18px 12px!important}
+ .admin-cabinet-window .admin-grid,.admin-cabinet-window .admin-tools-grid{grid-template-columns:1fr!important}
+ .modal-backdrop{padding:8px!important}
+ .modal{max-height:94vh!important;padding:17px!important}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
 </style>
 </head>
 <body>
@@ -1729,7 +1937,6 @@ body[data-theme="dark"] .miracle-stat{background:rgba(143,194,218,.1);color:#e8f
 </a>
   <div class="top-actions">
   <button class="ghost-btn music-toggle" id="musicToggle" type="button" aria-label="Открыть настройки музыки" aria-pressed="false" title="Настройки музыки">🎵<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
-  <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Включить тёмную тему" title="Тёмная тема" aria-pressed="false">☀️<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="icon-btn notification-toggle" id="notificationsBtn" type="button" aria-label="Открыть новости" title="Новости">
     <span class="notification-label">Новости 📰</span><i class="notification-dot" id="notificationDot" hidden></i><span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
   </button>
@@ -2363,26 +2570,10 @@ function subscribeRealtime(){
     .subscribe();
 }
 
-// Переключение светлой и тёмной темы с сохранением выбора посетителя.
-const themeToggle=$('themeToggle');
-function applyTheme(theme){
-  const dark=theme==='dark';
-  document.body.dataset.theme=dark?'dark':'light';
-  if(themeToggle.firstChild)themeToggle.firstChild.textContent=dark?'🌙':'☀️';
-  themeToggle.setAttribute('aria-pressed',String(dark));
-  themeToggle.setAttribute('aria-label',dark?'Включить светлую тему':'Включить тёмную тему');
-  themeToggle.title=dark?'Светлая тема':'Тёмная тема';
-  const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.content=dark?'#211f1d':'#e9dfd1';
-}
-let savedTheme='light';
-try{savedTheme=localStorage.getItem('zgot-site-theme')||'light';}catch(error){}
-applyTheme(savedTheme);
-themeToggle.addEventListener('click',()=>{
-  const next=document.body.dataset.theme==='dark'?'light':'dark';
-  applyTheme(next);
-  try{localStorage.setItem('zgot-site-theme',next);}catch(error){}
-});
+// На сайте используется единая ночная тема.
+document.body.dataset.theme='dark';
+const themeMeta=document.querySelector('meta[name="theme-color"]');
+if(themeMeta)themeMeta.content='#071426';
 
 // Общие объявления хранятся в Supabase, чтобы их видели все посетители, а не только один браузер.
 let announcementChannel=null;
