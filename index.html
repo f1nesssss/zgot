@@ -426,7 +426,8 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .task-ticket{font-size:10px;font-weight:800;color:#806b56;background:#f0e5d7;padding:6px 9px;border-radius:999px}
 .task-state{font-size:9px;color:var(--muted);font-weight:700}
 .tasks-admin-note{margin:0 24px 20px;padding:11px 13px;border-radius:12px;background:rgba(128,108,89,.08);color:var(--muted);font-size:10px;line-height:1.5}
-body[data-theme="dark"] .task-orb-tab,body[data-theme="dark"] .task-card{background:rgba(255,255,255,.045);color:var(--ink);border-color:var(--line)}
+body[data-theme="dark"] .tasks-section{background:rgba(57,49,43,.88);border-color:rgba(235,220,202,.14)}
+body[data-theme="dark"] .task-orb-tab,body[data-theme="dark"] .task-card{background:rgba(255,255,255,.035);color:var(--ink);border-color:var(--line)}
 body[data-theme="dark"] .task-orb-tab[aria-selected="true"]{background:#806c59;color:#fff}
 body[data-theme="dark"] .task-ticket,body[data-theme="dark"] .task-count{background:rgba(255,255,255,.08);color:var(--ink)}
 body[data-theme="dark"] .tasks-admin-note{background:rgba(255,255,255,.05)}
@@ -1033,6 +1034,15 @@ body[data-theme="dark"] .tasks-admin-note{background:rgba(255,255,255,.05)}
 .announcement-card{padding:15px 16px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.58)}
 .announcement-card h4{margin:0 0 6px;font:600 17px Georgia,serif;color:var(--ink)}
 .announcement-card p{margin:0;color:var(--ink);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.announcement-images{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:12px}
+.announcement-images a{display:block;overflow:hidden;border-radius:10px;aspect-ratio:1;background:rgba(0,0,0,.06)}
+.announcement-images img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+.announcement-images a:hover img{transform:scale(1.04)}
+.announcement-card-actions{display:flex;justify-content:flex-end;margin-top:10px}
+.announcement-delete-btn{border:1px solid rgba(182,108,101,.35);background:rgba(182,108,101,.1);color:#b66c65;border-radius:999px;padding:7px 11px;font-size:10px;font-weight:800}
+.announcement-file-help{font-size:10px;color:var(--muted);font-weight:500}
+.announcement-preview{display:flex;flex-wrap:wrap;gap:7px}
+.announcement-preview img{width:58px;height:58px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
 .announcement-date{display:block;margin-top:9px;color:var(--muted);font-size:10px}
 .announcement-empty{padding:24px 12px;text-align:center;color:var(--muted);font-size:13px}
 .announcement-form{border-top:1px solid var(--line);padding-top:17px;margin-top:15px;display:grid;gap:10px}
@@ -1389,6 +1399,8 @@ body[data-theme="dark"] .close{background:#51453b;color:var(--ink)}
         <h4>Новое обращение для всех посетителей</h4>
         <label>Заголовок<input id="announcementTitle" maxlength="100" required placeholder="Например, Важная информация"></label>
         <label>Текст обращения<textarea id="announcementMessage" maxlength="2000" rows="4" required placeholder="Напишите сообщение, которое увидят посетители сайта…"></textarea></label>
+        <label>Изображения <span class="announcement-file-help">До 10 изображений, JPG, PNG, WebP или GIF. До 5 МБ каждое.</span><input id="announcementImages" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple></label>
+        <div class="announcement-preview" id="announcementImagePreview"></div>
         <div class="modal-actions"><button class="primary-btn" type="submit" id="publishAnnouncementBtn">Опубликовать</button></div>
         <p class="announcement-admin-note" id="announcementAdminNote" aria-live="polite"></p>
       </form>
@@ -1637,12 +1649,12 @@ function renderAnnouncements(rows){
     $('notificationDot').hidden=true;
     return;
   }
-  list.innerHTML=rows.map(item=>`
-    <article class="announcement-card">
-      <h4>${escapeHtml(item.title)}</h4>
-      <p>${escapeHtml(item.message)}</p>
-      <time class="announcement-date">${escapeHtml(formatAnnouncementDate(item.created_at))}</time>
-    </article>`).join('');
+  list.innerHTML=rows.map(item=>{
+    const images=Array.isArray(item.image_urls)?item.image_urls:[];
+    const imageMarkup=images.length?`<div class="announcement-images">${images.map(url=>`<a href="${escapeHtml(url)}" target="_blank" rel="noopener"><img src="${escapeHtml(url)}" alt="Изображение к объявлению" loading="lazy"></a>`).join('')}</div>`:'';
+    const deleteMarkup=isAdmin?`<div class="announcement-card-actions"><button class="announcement-delete-btn" type="button" data-delete-announcement="${escapeHtml(String(item.id))}">Удалить для всех</button></div>`:'';
+    return `<article class="announcement-card"><h4>${escapeHtml(item.title)}</h4><p>${escapeHtml(item.message)}</p>${imageMarkup}<time class="announcement-date">${escapeHtml(formatAnnouncementDate(item.created_at))}</time>${deleteMarkup}</article>`;
+  }).join('');
   const newest=rows[0]?.created_at||'';
   let seen='';
   try{seen=localStorage.getItem('zgot-announcements-seen')||'';}catch(error){}
@@ -1655,7 +1667,7 @@ async function loadAnnouncements(){
     return;
   }
   const {data,error}=await supabaseClient.from('site_announcements')
-    .select('id,title,message,created_at').order('created_at',{ascending:false}).limit(30);
+    .select('id,title,message,image_urls,created_at').order('created_at',{ascending:false}).limit(30);
   if(error){
     console.error('site_announcements:',error);
     list.innerHTML='<div class="announcement-empty">Не удалось загрузить объявления. Возможно, требуется выполнить SQL-настройку уведомлений.</div>';
@@ -1682,25 +1694,61 @@ $('notificationsBackdrop').addEventListener('click',event=>{
 function updateAnnouncementAdminVisibility(){
   $('announcementForm').hidden=!isAdmin;
 }
+const announcementImageInput=$('announcementImages');
+announcementImageInput.addEventListener('change',()=>{
+  const files=Array.from(announcementImageInput.files||[]);
+  const preview=$('announcementImagePreview');
+  preview.innerHTML='';
+  if(files.length>10){announcementImageInput.value='';$('announcementAdminNote').textContent='Можно выбрать не более 10 изображений.';return;}
+  for(const file of files){
+    if(!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)||file.size>5*1024*1024){
+      announcementImageInput.value='';preview.innerHTML='';$('announcementAdminNote').textContent='Проверьте формат и размер: JPG, PNG, WebP или GIF до 5 МБ.';return;
+    }
+    const img=document.createElement('img');img.alt='Предпросмотр';img.src=URL.createObjectURL(file);preview.appendChild(img);
+  }
+  $('announcementAdminNote').textContent=files.length?`Выбрано изображений: ${files.length} из 10`:'';
+});
+$('announcementList').addEventListener('click',async event=>{
+  const button=event.target.closest('[data-delete-announcement]');
+  if(!button||!isAdmin||!supabaseClient)return;
+  const id=button.dataset.deleteAnnouncement;
+  if(!confirm('Удалить это объявление для всех посетителей сайта? Это действие нельзя отменить.'))return;
+  button.disabled=true;button.textContent='Удаляем…';
+  const {data:announcement,error:readError}=await supabaseClient.from('site_announcements').select('image_urls').eq('id',id).single();
+  if(readError){console.error('Announcement lookup failed:',readError);button.disabled=false;button.textContent='Не удалось удалить';return;}
+  const {error}=await supabaseClient.from('site_announcements').delete().eq('id',id);
+  if(error){console.error('Announcement delete failed:',error);button.disabled=false;button.textContent='Не удалось удалить';return;}
+  const paths=(announcement?.image_urls||[]).map(url=>{try{const marker='/storage/v1/object/public/site-announcement-images/';const at=new URL(url).pathname.indexOf(marker);return at>=0?decodeURIComponent(new URL(url).pathname.slice(at+marker.length)):null;}catch(e){return null;}}).filter(Boolean);
+  if(paths.length){const {error:storageError}=await supabaseClient.storage.from('site-announcement-images').remove(paths);if(storageError)console.warn('Announcement images cleanup failed:',storageError);}
+  await loadAnnouncements();
+});
 $('announcementForm').addEventListener('submit',async event=>{
   event.preventDefault();
   if(!isAdmin||!supabaseClient)return;
   const title=$('announcementTitle').value.trim();
   const message=$('announcementMessage').value.trim();
+  const files=Array.from(announcementImageInput.files||[]);
   const submit=$('publishAnnouncementBtn');
   if(!title||!message)return;
-  submit.disabled=true;
-  $('announcementAdminNote').textContent='Публикуем обращение…';
-  const {error}=await supabaseClient.from('site_announcements').insert({
-    title,message,created_by:currentUser.id
-  });
-  submit.disabled=false;
-  if(error){
-    console.error('Announcement publish failed:',error);
-    $('announcementAdminNote').textContent='Не удалось опубликовать. Проверь SQL-настройку и права администратора.';
-    return;
+  if(files.length>10){$('announcementAdminNote').textContent='Можно прикрепить не более 10 изображений.';return;}
+  for(const file of files){
+    if(!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)||file.size>5*1024*1024){$('announcementAdminNote').textContent='Формат или размер одного из файлов не подходит.';return;}
   }
-  $('announcementForm').reset();
+  submit.disabled=true;$('announcementAdminNote').textContent='Загружаем изображения и публикуем…';
+  const imageUrls=[];
+  for(let i=0;i<files.length;i++){
+    const file=files[i];
+    const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+    const path=`${currentUser.id}/${Date.now()}-${i}-${crypto.randomUUID()}.${ext}`;
+    const {error:uploadError}=await supabaseClient.storage.from('site-announcement-images').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});
+    if(uploadError){console.error('Announcement image upload failed:',uploadError);$('announcementAdminNote').textContent='Не удалось загрузить изображение. Проверь Storage bucket и SQL-права.';submit.disabled=false;return;}
+    const {data:publicData}=supabaseClient.storage.from('site-announcement-images').getPublicUrl(path);
+    if(publicData?.publicUrl)imageUrls.push(publicData.publicUrl);
+  }
+  const {error}=await supabaseClient.from('site_announcements').insert({title,message,image_urls:imageUrls,created_by:currentUser.id});
+  submit.disabled=false;
+  if(error){console.error('Announcement publish failed:',error);$('announcementAdminNote').textContent='Изображения загружены, но объявление не опубликовано. Проверь SQL-настройку таблицы.';return;}
+  $('announcementForm').reset();$('announcementImagePreview').innerHTML='';
   $('announcementAdminNote').textContent='Обращение опубликовано и доступно всем посетителям.';
   await loadAnnouncements();
 });
