@@ -2236,6 +2236,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
       <div class="filters">
         <select id="orbFilter" aria-label="Фильтр по шару"><option value="all">Все шары</option></select>
         <select id="socialFilter" aria-label="Фильтр по соцсети"><option value="all">Все соцсети</option><option value="ВК">ВКонтакте</option><option value="ОК">Одноклассники</option></select>
+        <input id="searchId" class="filter-search" type="search" inputmode="search" autocomplete="off" placeholder="⌕ Поиск по ID" aria-label="Поиск участника по ID">
       </div>
     </div>
     <div class="table-wrap">
@@ -2707,7 +2708,7 @@ function formatOrbCountdown(ms){const d=Math.floor(ms/86400000),h=Math.floor(ms%
 
 function renderRows(){
     const totalMode=selectedOrb==='all';
-    const q=''; // Поиск по ID временно отключён по запросу пользователя.
+    const q=($('searchId')?.value||'').trim().toLowerCase();
     const social=$('socialFilter').value;
     const orb=$('orbFilter').value;
 
@@ -3325,6 +3326,7 @@ $('totalViewBtn').addEventListener('click',()=>{
 
 $('socialFilter').addEventListener('change',renderRows);
 $('orbFilter').addEventListener('change',renderRows);
+$('searchId').addEventListener('input',renderRows);
 $('orbFilter').innerHTML='<option value="all">Все шары</option>'+ORBS.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
 $('exportBtn').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify({orbs:ORBS,entries:records.map(({dbId,...r})=>r)},null,2)],{type:'application/json'});
@@ -4262,3 +4264,22 @@ body.task-modal-open{overflow:hidden}
 </style>
 </body>
 </html>
+
+/* Поиск по ID: новый элемент с нуля, в цвете кнопки «Посетить». */
+#searchId.filter-search{
+  width:min(260px,100%);min-width:180px;min-height:44px;
+  padding:11px 16px;border-radius:999px;
+  background:linear-gradient(135deg,#24536f,#2f7894)!important;
+  color:#f1f9ff!important;border:1px solid rgba(139,199,226,.36)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+  outline:none;transition:background .2s,border-color .2s,box-shadow .2s;
+}
+#searchId.filter-search::placeholder{color:rgba(241,249,255,.82)!important;opacity:1}
+#searchId.filter-search:focus{
+  background:linear-gradient(135deg,#2e6c89,#3b91a8)!important;
+  border-color:rgba(157,220,244,.75)!important;
+  box-shadow:0 0 0 3px rgba(98,183,220,.16),0 5px 16px rgba(0,8,20,.18)!important;
+}
+body[data-theme="dark"] #searchId.filter-search{background:linear-gradient(135deg,#24536f,#2f7894)!important;color:#f1f9ff!important}
+@media(max-width:650px){#searchId.filter-search{width:100%;min-width:0;grid-column:1/-1}}
+
