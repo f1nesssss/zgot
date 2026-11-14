@@ -118,7 +118,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .empty{padding:30px;text-align:center;color:var(--muted);font:italic 14px Georgia,serif}
 .footer{max-width:1240px;margin:0 auto;padding:0 28px 35px;text-align:center;color:#9b8b7b;font:italic 12px Georgia,serif}
 .footer .star{font-style:normal;color:#b69a78}
-.modal-backdrop{position:fixed;inset:0;background:rgba(48,40,33,.35);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}
+.modal-backdrop{position:fixed;inset:0;background:rgba(48,40,33,.35);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:220}
 .modal-backdrop.open{display:flex}
 .modal {
     position: relative;
@@ -1401,6 +1401,20 @@ body[data-theme="dark"] .admin-cabinet-window::-webkit-scrollbar-thumb{backgroun
 .admin-tool[hidden]{display:none!important}@media(max-width:700px){.admin-tools-grid{grid-template-columns:1fr}.admin-orb-row{grid-template-columns:1fr 1fr}.admin-orb-row button{grid-column:auto}}
 body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-inline-actions input,body[data-theme="dark"] .admin-orb-row input{background:#211f1d;color:#eee6dc;border-color:rgba(235,220,202,.18)}
 
+
+/* Публичный статус и таймер каждого новогоднего шара */
+.orb-schedule-status{display:grid;gap:3px;padding:9px 10px 2px;text-align:center;color:var(--muted);font-size:11px;line-height:1.4}
+.orb-schedule-status strong{font-size:12px;color:var(--ink)}
+.orb-schedule-status.is-closed strong{color:#c47a70}
+body[data-theme="dark"] .orb-schedule-status strong{color:var(--ink)}
+.admin-orb-row{grid-template-columns:minmax(150px,1.15fr) minmax(170px,1fr) minmax(150px,1fr) auto auto;gap:9px}
+.admin-orb-row .orb-admin-fields{display:grid;gap:5px;min-width:0}
+.admin-orb-row .orb-admin-fields label{display:flex;align-items:center;gap:7px;margin:0;font-size:11px}
+.admin-orb-row .orb-admin-fields input[type=text]{margin:0}
+.admin-orb-row .orb-admin-fields input[type=checkbox]{width:15px;height:15px;margin:0;accent-color:#806c59}
+@media(max-width:900px){.admin-orb-row{grid-template-columns:1fr 1fr}.admin-orb-row>strong{grid-column:1/-1}.admin-orb-row .orb-admin-fields{grid-column:1/-1}}
+
+.modal-backdrop{z-index:220!important}
 /* Кабинет администратора: широкая компоновка без горизонтальной прокрутки */
 .admin-cabinet-backdrop{padding:18px;overflow-y:auto;overflow-x:hidden}
 .admin-cabinet-window{width:min(1560px,calc(100vw - 36px));max-width:1560px;max-height:calc(100vh - 36px);overflow-x:hidden;overflow-y:auto;padding:30px 32px}
@@ -1417,6 +1431,11 @@ body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-i
 @media(max-width:900px){.admin-cabinet-window{width:calc(100vw - 24px);padding:22px 20px}.admin-cabinet-grid,.admin-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-orb-row{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.admin-cabinet-backdrop{padding:8px}.admin-cabinet-window{width:100%;max-height:calc(100vh - 16px);padding:18px 14px}.admin-cabinet-grid,.admin-tools-grid{grid-template-columns:1fr}.admin-cabinet-head{flex-wrap:wrap}.admin-cabinet-head .admin-cabinet-actions{flex-wrap:wrap}.admin-orb-row{grid-template-columns:1fr 1fr}}
 
+
+/* Финальная компоновка управления таймерами шаров */
+.admin-orb-row{grid-template-columns:minmax(150px,1.1fr) minmax(190px,1fr) minmax(160px,1fr) auto auto!important}
+@media(max-width:1050px){.admin-orb-row{grid-template-columns:1fr 1fr!important}.admin-orb-row>strong,.admin-orb-row .orb-admin-fields{grid-column:1/-1}}
+@media(max-width:650px){.admin-orb-row{grid-template-columns:1fr!important}.admin-orb-row>strong,.admin-orb-row .orb-admin-fields{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -1873,17 +1892,28 @@ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 function renderOrbs(){
   $('orbs').innerHTML=ORBS.map(o=>{
     const list=records.filter(r=>r.orb===o.id);
+    const schedule=orbScheduleState[o.id]||{};
+    const end=schedule.ends_at?new Date(schedule.ends_at).getTime():NaN;
+    const timerOn=!!schedule.is_enabled&&Number.isFinite(end);
+    const remaining=timerOn?Math.max(0,end-Date.now()):0;
+    const expired=timerOn&&remaining<=0;
+    const closed=schedule.is_open===false||expired;
+    const timerText=timerOn?(remaining>0?`${escapeHtml(schedule.label||'До окончания испытаний осталось')}: ${formatOrbCountdown(remaining)}`:'Срок испытаний завершён'):'';
+    const status=schedule.is_open===false?'Шар закрыт':expired?'Срок испытаний завершён':timerOn?timerText:'Испытания доступны';
     return `<article class="orb-card" style="--accent:${o.tone}">
       <div class="orb-art"><span class="orb-glint">✧</span><img class="orb-image" src="assets/${o.image}" alt="Шар «${o.name}»"></div>
       <div class="orb-title">${o.name}</div>
       <div class="orb-meta"><span>УЧАСТНИКИ</span><span>${list.length}</span></div>
-      <div class="orb-bottom"><button class="view-btn" data-view="${o.id}">Открыть →</button></div>
+      <div class="orb-schedule-status ${closed?'is-closed':''}"><strong>${status}</strong></div>
+      <div class="orb-bottom"><button class="view-btn" data-view="${o.id}" ${closed?'disabled aria-disabled="true"':''}>${closed?'Недоступен':'Открыть →'}</button></div>
     </article>`;
   }).join('');
   $('orbs').querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{
+    if(b.disabled)return;
     selectedOrb=b.dataset.view;$('orbFilter').value=selectedOrb;renderRows();$('participants').scrollIntoView({behavior:'smooth'});
   }));
 }
+function formatOrbCountdown(ms){const d=Math.floor(ms/86400000),h=Math.floor(ms%86400000/3600000),m=Math.floor(ms%3600000/60000);return `${d} дн. ${String(h).padStart(2,'0')} ч. ${String(m).padStart(2,'0')} мин.`;}
 
 function renderRows(){
     const totalMode=selectedOrb==='all';
@@ -2130,6 +2160,7 @@ async function renderAnnouncements(rows){
       const pollVotes=votes.filter(v=>String(v.poll_id)===String(poll.id));
       const myVote=pollVotes.find(v=>v.visitor_id===visitorId);
       const total=pollVotes.length;
+      const pollClosed=Boolean(poll.is_closed)||(Boolean(poll.closes_at)&&new Date(poll.closes_at).getTime()<=Date.now());
       if(myVote||pollClosed){
         pollMarkup=`<section class="poll-card" data-poll-id="${escapeHtml(String(poll.id))}"><h5>${escapeHtml(poll.question)}</h5><div class="poll-results">${(poll.options||[]).map((option,index)=>{const count=pollVotes.filter(v=>Number(v.option_index)===index).length;const pct=total?Math.round(count/total*100):0;return `<div class="poll-result-row"><span>${escapeHtml(option)}</span><b>${pct}% · ${count}</b><div class="poll-result-track"><i style="width:${pct}%"></i></div></div>`;}).join('')}</div><small class="announcement-date">${pollClosed?'Опрос закрыт · ':''}Всего голосов: ${total}</small></section>`;
       }else{
@@ -2162,7 +2193,7 @@ async function loadAnnouncements(){
     list.innerHTML='<div class="announcement-empty">Не удалось загрузить объявления. Возможно, требуется выполнить SQL-настройку уведомлений.</div>';
     return;
   }
-  renderAnnouncements(data||[]);
+  try{await renderAnnouncements(data||[]);}catch(renderError){console.error('Announcement rendering failed:',renderError);list.innerHTML='<div class="announcement-empty">Не удалось отобразить публикации. Обновите страницу или проверьте настройки опросов.</div>';return;}
   try{const visitorId=getAnnouncementVisitorId();const ids=(data||[]).map(x=>x.id);if(ids.length){await supabaseClient.from('site_announcement_views').upsert(ids.map(id=>({announcement_id:id,visitor_id:visitorId})),{onConflict:'announcement_id,visitor_id,view_day',ignoreDuplicates:true});}}catch(viewError){console.warn('Announcement view tracking:',viewError.message||viewError);}
 }
 $('notificationsBtn').addEventListener('click',async()=>{
@@ -2496,7 +2527,14 @@ function adminOnly(){if(!isAdmin||!supabaseClient){throw new Error('Доступ
 const adminOut=(id,html)=>{const n=$(id);if(n)n.innerHTML=html;};
 const safeDate=d=>d?new Date(d).toLocaleString('ru-RU'):'—';
 async function loadAdminAudit(date=null){
- try{adminOnly();let q=supabaseClient.from('admin_audit_log').select('*').order('created_at',{ascending:false}).limit(100);if(date){const a=new Date(date+'T00:00:00');const b=new Date(date+'T23:59:59.999');q=q.gte('created_at',a.toISOString()).lte('created_at',b.toISOString());}const {data,error}=await q;if(error)throw error;adminOut('adminHistoryResults',(data||[]).length?(data||[]).map(x=>`<div class="audit-row"><b>${escapeHtml(x.table_name||'—')} · ${escapeHtml(x.operation||'')}</b><br>${escapeHtml(x.description||'Изменение записи')}<br><small>${escapeHtml(safeDate(x.created_at))} · ${escapeHtml(x.actor_email||x.actor_id||'система')}</small></div>`).join(''):'Записей за этот период нет.');}catch(e){adminOut('adminHistoryResults',`<span>${escapeHtml(e.message||String(e))}</span>`);}
+ try{
+  adminOnly();
+  let q=supabaseClient.from('entries').select('created_at,globe_id,social_network,social_id,tickets').order('created_at',{ascending:false}).limit(150);
+  if(date){const a=new Date(date+'T00:00:00');const b=new Date(date+'T23:59:59.999');q=q.gte('created_at',a.toISOString()).lte('created_at',b.toISOString());}
+  const {data,error}=await q;if(error)throw error;
+  const rows=data||[];
+  adminOut('adminDuplicateResults',rows.length?`<b>Последние начисления${date?' за выбранный день':''}:</b>`+rows.map(x=>`<div class="audit-row"><b>${escapeHtml(x.social_network||'—')} · ID ${escapeHtml(x.social_id||'—')}</b><br>${escapeHtml(orbById(x.globe_id)?.name||x.globe_id||'—')} · +${Number(x.tickets||0)} бил. <br><small>${escapeHtml(safeDate(x.created_at))}</small></div>`).join(''):'Начислений за этот период нет.');
+ }catch(e){adminOut('adminDuplicateResults',`<span>Не удалось загрузить историю начислений: ${escapeHtml(e.message||String(e))}</span>`);}
 }
 async function findAdminDuplicates(){
  try{adminOnly();const map=new Map();records.forEach(r=>{const k=(r.social+'|'+String(r.id).trim()).toLowerCase();if(!map.has(k))map.set(k,[]);map.get(k).push(r);});const dup=[...map.values()].filter(a=>a.length>1);adminOut('adminDuplicateResults',dup.length?dup.map(a=>`<div class="audit-row"><b>${escapeHtml(a[0].social)} · ID ${escapeHtml(a[0].id)}</b><br>${a.length} записи: ${a.map(r=>escapeHtml(orbById(r.orb)?.name||r.orb)).join(', ')}<br><small>Сумма билетов: ${a.reduce((n,r)=>n+Number(r.tickets||0),0)}</small></div>`).join(''):'Повторяющихся ID не найдено.');}catch(e){adminOut('adminDuplicateResults',escapeHtml(e.message||String(e)));}
@@ -2507,10 +2545,52 @@ async function checkAdminIntegrity(){
 async function loadAdminAnalytics(){
  try{adminOnly();const {data,error}=await supabaseClient.from('site_visits').select('created_at').order('created_at',{ascending:false}).limit(10000);if(error)throw error;const now=new Date(),day=86400000;const rows=data||[];const today=rows.filter(x=>new Date(x.created_at)>=new Date(now.getFullYear(),now.getMonth(),now.getDate())).length;const week=rows.filter(x=>now-new Date(x.created_at)<7*day).length;const month=rows.filter(x=>now-new Date(x.created_at)<30*day).length;$('adminVisitsToday').textContent=today;$('adminVisitsWeek').textContent=week;$('adminVisitsMonth').textContent=month;const bins=new Map();rows.forEach(x=>{const d=new Date(x.created_at);d.setMinutes(Math.floor(d.getMinutes()/15)*15,0,0);const k=d.toLocaleString('ru-RU');bins.set(k,(bins.get(k)||0)+1);});const peak=[...bins.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);adminOut('adminAnalyticsResults',peak.length?'<b>Пиковые 15-минутные интервалы:</b>'+peak.map(([t,n])=>`<div class="audit-row">${escapeHtml(t)} — ${n} посещ.</div>`).join(''):'Пока нет данных.');}catch(e){adminOut('adminAnalyticsResults',escapeHtml(e.message||String(e)));}
 }
-async function loadAdminOrbControls(){
- try{adminOnly();const {data,error}=await supabaseClient.from('site_orb_schedule').select('*').order('orb_id');if(error)throw error;const host=$('adminOrbControls');host.innerHTML=ORBS.map(o=>{const x=(data||[]).find(z=>z.orb_id===o.id)||{};return `<div class="admin-orb-row"><strong>${escapeHtml(o.name)}</strong><input type="datetime-local" data-orb-end="${o.id}" value="${x.ends_at?new Date(x.ends_at).toLocaleString('sv-SE').replace(' ','T').slice(0,16):''}" aria-label="Срок шара ${escapeHtml(o.name)}"><button type="button" data-orb-save="${o.id}">Сохранить</button><button type="button" data-orb-toggle="${o.id}" data-open="${x.is_open===false?'0':'1'}">${x.is_open===false?'Открыть':'Закрыть'}</button></div>`;}).join('');}catch(e){$('adminOrbControls').textContent='Не удалось загрузить настройки шаров: '+(e.message||e);}
+let orbScheduleState={};
+let orbScheduleTick=null;
+async function loadOrbSchedule(){
+ if(!supabaseClient)return;
+ const {data,error}=await supabaseClient.from('site_orb_schedule').select('*');
+ if(error){console.warn('Orb schedule load error:',error.message);return;}
+ orbScheduleState={};(data||[]).forEach(row=>{orbScheduleState[row.orb_id]=row;});
+ renderOrbs();
 }
-$('adminOrbControls')?.addEventListener('click',async e=>{const save=e.target.closest('[data-orb-save]'),toggle=e.target.closest('[data-orb-toggle]');if(!save&&!toggle)return;try{adminOnly();const id=(save||toggle).dataset.orbSave||(save||toggle).dataset.orbToggle;const end=$(`adminOrbControls`).querySelector(`[data-orb-end="${id}"]`).value;let payload={orb_id:id,updated_at:new Date().toISOString()};if(save){if(!end){$('adminOrbNote').textContent='';}payload.ends_at=end?new Date(end).toISOString():null;}else payload.is_open=toggle.dataset.open==='0';const {error}=await supabaseClient.from('site_orb_schedule').upsert(payload,{onConflict:'orb_id'});if(error)throw error;await loadAdminOrbControls();$('adminOrbNote').textContent='Настройки шара сохранены.';}catch(err){$('adminOrbNote').textContent='Ошибка: '+(err.message||err);}});
+async function loadAdminOrbControls(){
+ try{
+  adminOnly();
+  const {data,error}=await supabaseClient.from('site_orb_schedule').select('*');if(error)throw error;
+  orbScheduleState={};(data||[]).forEach(row=>{orbScheduleState[row.orb_id]=row;});
+  const host=$('adminOrbControls');
+  host.innerHTML=ORBS.map(o=>{
+   const x=orbScheduleState[o.id]||{};
+   const localEnd=x.ends_at?new Date(x.ends_at).toLocaleString('sv-SE',{timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone}).replace(' ','T').slice(0,16):'';
+   return `<div class="admin-orb-row" data-orb-row="${o.id}">
+    <strong>${escapeHtml(o.name)}</strong>
+    <div class="orb-admin-fields"><label><input type="checkbox" data-orb-enabled="${o.id}" ${x.is_enabled?'checked':''}> Показывать таймер</label><input type="text" data-orb-label="${o.id}" maxlength="100" value="${escapeHtml(x.label||'До окончания испытаний осталось')}" aria-label="Подпись таймера"></div>
+    <input type="datetime-local" data-orb-end="${o.id}" value="${localEnd}" aria-label="Срок шара ${escapeHtml(o.name)}">
+    <button type="button" data-orb-save="${o.id}">Сохранить</button>
+    <button type="button" data-orb-toggle="${o.id}" data-open="${x.is_open===false?'0':'1'}">${x.is_open===false?'Открыть шар':'Закрыть шар'}</button>
+   </div>`;
+  }).join('');
+ }catch(e){$('adminOrbControls').textContent='Не удалось загрузить настройки шаров: '+(e.message||e);}
+}
+$('adminOrbControls')?.addEventListener('click',async e=>{
+ const save=e.target.closest('[data-orb-save]'),toggle=e.target.closest('[data-orb-toggle]');if(!save&&!toggle)return;
+ try{
+  adminOnly();const id=(save||toggle).dataset.orbSave||(save||toggle).dataset.orbToggle;
+  const current=orbScheduleState[id]||{};let payload={orb_id:id,updated_at:new Date().toISOString()};
+  if(save){
+   const raw=$(`adminOrbControls`).querySelector(`[data-orb-end="${id}"]`).value;
+   const enabled=$(`adminOrbControls`).querySelector(`[data-orb-enabled="${id}"]`).checked;
+   const label=$(`adminOrbControls`).querySelector(`[data-orb-label="${id}"]`).value.trim();
+   const end=raw?new Date(raw):null;
+   if(enabled&&(!end||!Number.isFinite(end.getTime()))){$('adminOrbNote').textContent='Укажите дату и время окончания или отключите показ таймера.';return;}
+   payload={...current,...payload,ends_at:end?end.toISOString():null,is_enabled:enabled,label:label||'До окончания испытаний осталось'};
+  }else payload={...current,...payload,is_open:toggle.dataset.open==='0'};
+  const {error}=await supabaseClient.from('site_orb_schedule').upsert(payload,{onConflict:'orb_id'});if(error)throw error;
+  $('adminOrbNote').textContent=save?'Настройки таймера сохранены.':'Доступность шара обновлена.';
+  await loadAdminOrbControls();await loadOrbSchedule();
+ }catch(err){$('adminOrbNote').textContent='Ошибка: '+(err.message||err);}
+});
 let adminToolsInitialized=false;
 function initAdminTools(){
  if(!isAdmin)return;
@@ -2542,10 +2622,11 @@ async function init(){
   const {data,error}=await supabaseClient.auth.getSession();
   if(error)setNote('Ошибка проверки входа: '+error.message,true);
   await updateSession(data?.session||null);
-  await Promise.all([countSiteVisit(),loadExchangeTimer()]);
+  await Promise.all([countSiteVisit(),loadExchangeTimer(),loadOrbSchedule()]);
   if(exchangeTimerInterval)clearInterval(exchangeTimerInterval);
   exchangeTimerInterval=setInterval(renderExchangeTimer,1000);
   exchangeTimerRefreshInterval=setInterval(()=>loadExchangeTimer(),60000);
+  if(orbScheduleTick)clearInterval(orbScheduleTick);orbScheduleTick=setInterval(()=>{if(Object.keys(orbScheduleState).length)renderOrbs();},60000);
   supabaseClient.auth.onAuthStateChange((_event,session)=>{
     currentUser=session?.user||null;
     isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
