@@ -1404,15 +1404,16 @@ body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-i
 
 /* Публичный статус и таймер каждого новогоднего шара */
 /* Настраиваемая надпись закрытых испытаний с цветным свечением */
-.orb-schedule-status strong{color:var(--orb-closed-color,var(--ink));text-shadow:0 0 calc(4px * var(--orb-glow-strength,1)) var(--orb-closed-glow,transparent),0 0 calc(11px * var(--orb-glow-strength,1)) var(--orb-closed-glow,transparent),0 0 calc(22px * var(--orb-glow-strength,1)) var(--orb-closed-glow,transparent);}
+.orb-schedule-status.is-closed strong{color:var(--orb-closed-color,#c47a70);text-shadow:0 0 5px var(--orb-closed-glow,rgba(196,122,112,.55)),0 0 13px var(--orb-closed-glow,rgba(196,122,112,.35)),0 0 24px var(--orb-closed-glow,rgba(196,122,112,.2));}
 .orb-status-admin{display:grid;grid-template-columns:minmax(220px,1.5fr) minmax(180px,.8fr) auto;gap:10px;align-items:end;margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface-soft)}
 .orb-status-admin label{display:grid;gap:6px;font-size:12px;color:var(--muted)}
 .orb-status-admin input,.orb-status-admin select{min-width:0;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--text)}
 .orb-status-admin button{white-space:nowrap}
 @media(max-width:700px){.orb-status-admin{grid-template-columns:1fr}.orb-status-admin button{width:100%}}
 .orb-schedule-status{display:grid;gap:3px;padding:9px 10px 2px;text-align:center;color:var(--muted);font-size:11px;line-height:1.4}
-.orb-schedule-status strong{font-size:12px;color:var(--orb-closed-color,var(--ink))}
-body[data-theme="dark"] .orb-schedule-status strong{color:var(--orb-closed-color,var(--ink))}
+.orb-schedule-status strong{font-size:12px;color:var(--ink)}
+.orb-schedule-status.is-closed strong{color:#c47a70}
+body[data-theme="dark"] .orb-schedule-status strong{color:var(--ink)}
 .admin-orb-row{grid-template-columns:minmax(135px,1fr) minmax(230px,1.55fr) minmax(190px,1.25fr) 46px minmax(112px,auto);gap:10px}
 .admin-orb-row .orb-admin-fields{display:grid;gap:5px;min-width:0;overflow:hidden}
 .admin-orb-row .orb-admin-fields label{display:flex;align-items:center;gap:7px;margin:0;font-size:11px}
@@ -1425,20 +1426,6 @@ body[data-theme="dark"] .orb-schedule-status strong{color:var(--orb-closed-color
 @media(max-width:900px){.admin-orb-row{grid-template-columns:1fr 1fr}.admin-orb-row>strong{grid-column:1/-1}.admin-orb-row .orb-admin-fields{grid-column:1/-1}.admin-orb-row [data-orb-save]{grid-column:1}.admin-orb-row [data-orb-toggle]{grid-column:2}}
 
 .modal-backdrop{z-index:220!important}
-
-.orb-style-admin-row{display:grid;grid-template-columns:minmax(220px,1.5fr) minmax(150px,.8fr) minmax(150px,.8fr) 44px;gap:10px;align-items:end;padding:12px 0 16px 14px;border-bottom:1px solid var(--line);margin-bottom:5px}
-.orb-style-admin-row label{display:grid;gap:6px;min-width:0;font-size:12px;color:var(--muted)}
-.orb-style-admin-row input[type=text],.orb-style-admin-row select{width:100%;min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--text)}
-.orb-style-admin-row input[type=range]{width:100%;accent-color:#8d765f;cursor:pointer}
-.orb-style-admin-row .orb-brightness-value{font-variant-numeric:tabular-nums;color:var(--text);font-weight:700}
-.orb-style-admin-row [data-orb-style-save]{height:42px;width:44px;padding:0!important;border-radius:12px!important;background:#477d52!important;color:#fff!important;font-size:23px!important}
-@media(max-width:900px){.orb-style-admin-row{grid-template-columns:1fr 1fr}.orb-style-admin-row label:first-child{grid-column:1/-1}.orb-style-admin-row [data-orb-style-save]{grid-column:2;justify-self:end}}
-.admin-cabinet-window button,.admin-cabinet-card button{border-radius:12px;transition:background .18s,border-color .18s,transform .18s,box-shadow .18s}
-.admin-cabinet-window button:hover,.admin-cabinet-card button:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.admin-cabinet-window button:active,.admin-cabinet-card button:active{transform:translateY(0);filter:brightness(.96)}
-body[data-theme="dark"] .admin-cabinet-card button{background:#806c59;color:#fff;border-color:rgba(235,220,202,.18)}
-body[data-theme="dark"] .admin-cabinet-card button:hover{background:#967d65}
-
 /* Кабинет администратора: широкая компоновка без горизонтальной прокрутки */
 .admin-cabinet-backdrop{padding:18px;overflow-y:auto;overflow-x:hidden}
 .admin-cabinet-window{width:min(1560px,calc(100vw - 36px));max-width:1560px;max-height:calc(100vh - 36px);overflow-x:hidden;overflow-y:auto;padding:30px 32px}
@@ -1526,6 +1513,209 @@ body[data-theme="light"] .top-actions .admin-access-button:hover{
 }
 @media(prefers-reduced-motion:reduce){
  .admin-access-button:hover .admin-hover-emojis i{animation:none!important}
+}
+
+
+/* === WINTER LOCATION REDESIGN: snowy resort, ice, timber and warm lights === */
+:root{
+ --ink:#173047;--muted:#62798c;--paper:#f2f8fc;--cream:#e4eff7;
+ --taupe:#557b96;--line:rgba(67,112,145,.22);
+ --shadow:0 16px 42px rgba(26,66,99,.13);
+ --red:#b85b66;--gold:#d69a35;--peach:#bf8053;--blue:#4c91bb;--green:#438d83;
+ --winter-night:#0b1930;--winter-blue:#183653;--winter-ice:#dff3fb;--winter-gold:#ffc96b;
+}
+body{
+ color:var(--ink);
+ background:
+  radial-gradient(ellipse at 50% -12%,rgba(255,255,255,.98),transparent 42rem),
+  radial-gradient(ellipse at 8% 24%,rgba(166,218,242,.42),transparent 30rem),
+  radial-gradient(ellipse at 92% 38%,rgba(255,211,139,.18),transparent 28rem),
+  linear-gradient(180deg,#e8f5fc 0%,#dcecf7 42%,#f4f9fc 100%);
+ background-attachment:fixed;
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.26;
+ background-image:radial-gradient(circle at 12% 18%,#fff 0 1px,transparent 2px),radial-gradient(circle at 72% 32%,#fff 0 1px,transparent 2px),radial-gradient(circle at 42% 70%,#fff 0 1px,transparent 2px);
+ background-size:73px 91px,113px 127px,157px 139px;
+}
+.topbar{
+ max-width:1320px;padding-top:24px;
+}
+.brand-mark{box-shadow:0 0 0 3px rgba(255,255,255,.82),0 5px 18px rgba(26,68,100,.22)}
+.brand small{color:#66879d}
+.brand strong{color:#15344c;text-shadow:0 1px #fff}
+.ghost-btn,.icon-btn,.music-toggle{
+ background:rgba(249,253,255,.78);color:#24465e;border:1px solid rgba(120,166,192,.35);
+ box-shadow:0 5px 16px rgba(31,76,108,.08);backdrop-filter:blur(12px);
+}
+.ghost-btn:hover,.icon-btn:hover{background:#fff;box-shadow:0 8px 20px rgba(31,76,108,.14)}
+.primary-btn{background:linear-gradient(135deg,#245b79,#327f9d);border-color:#327f9d;color:#fff;box-shadow:0 7px 18px rgba(31,91,123,.2)}
+.primary-btn:hover{background:linear-gradient(135deg,#194b69,#286e8c)}
+.hero{
+ max-width:1320px;margin-top:12px;padding-top:50px;padding-bottom:38px;
+ border-radius:30px;
+ background:radial-gradient(ellipse at 50% 0,rgba(255,255,255,.78),transparent 66%);
+}
+.eyebrow{color:#b47b2c;letter-spacing:.28em}
+h1,.section-head h2,.tasks-head h2,.task-panel-top h3{color:#173b56;text-shadow:0 1px rgba(255,255,255,.8)}
+.hero p{color:#5d788c}
+.hero-rule{height:2px;background:linear-gradient(90deg,transparent,#e9b65e,#7bbbd3,transparent)}
+.stats{max-width:900px}
+.stat{
+ background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(232,245,251,.76));
+ border:1px solid rgba(255,255,255,.98);box-shadow:0 9px 25px rgba(31,76,108,.09);
+}
+.stat b{color:#1d4965}.stat span{color:#648398}
+.section{max-width:1320px}
+.section-head h2{font-size:clamp(23px,3vw,30px)}
+.section-head p{color:#668196}
+.orb-card,.participants,.announcement-card,.tasks-section,.miracle-card,.admin-cabinet-card{
+ background:linear-gradient(150deg,rgba(255,255,255,.94),rgba(232,244,250,.88));
+ border:1px solid rgba(255,255,255,.98);
+ box-shadow:0 12px 32px rgba(28,72,104,.11),inset 0 1px rgba(255,255,255,.9);
+}
+.orb-card{border-radius:22px}
+.orb-card:hover{box-shadow:0 20px 42px rgba(28,72,104,.17)}
+.orb-art{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 25%,#e5f5fb),#f9fdff)}
+.orb-title{color:#173d58}
+.orb-meta{background:linear-gradient(100deg,color-mix(in srgb,var(--accent) 88%,#214c67),var(--accent));}
+.view-btn{color:#286c8c}
+.participants-head{background:linear-gradient(110deg,#e5f3fa,#f8fcff);border-bottom:1px solid var(--line)}
+.filters select,.search,.filters .filter-search,
+.miracle-form select,.miracle-form input,.form-grid input,.form-grid select,
+.auth-form input,.announcement-form input,.announcement-form textarea{
+ background:rgba(255,255,255,.92);color:#17364e;border:1px solid rgba(94,147,177,.32);
+}
+table th{color:#54758b;background:rgba(225,240,248,.75)}
+tbody tr:hover{background:rgba(159,211,233,.13)}
+.miracle-card{
+ background:radial-gradient(circle at 80% 0,rgba(255,205,116,.2),transparent 42%),linear-gradient(135deg,#e6f5fb,#f9fcff);
+ border-color:rgba(255,255,255,.95);
+}
+.miracle-start-date,.task-count,.task-ticket{
+ background:#e6f2f8;color:#315e78;border-color:rgba(94,147,177,.2)
+}
+.tasks-section{overflow:hidden}
+.tasks-head{background:linear-gradient(110deg,rgba(226,242,250,.88),rgba(255,255,255,.6))}
+.task-orb-tab,.task-card{background:rgba(255,255,255,.78);color:#173b56;border-color:rgba(104,155,183,.25)}
+.task-orb-tab[aria-selected="true"]{background:linear-gradient(135deg,#1d5676,#398aa6);border-color:#398aa6;color:#fff;box-shadow:0 8px 20px rgba(31,91,123,.2)}
+.task-card h4{color:#173b56}.task-card-number{color:#b17b32}
+.footer{color:#668196}
+.modal,.admin-cabinet-window,.notifications-modal,.market-window,.market-detail-window,.market-editor-window{
+ background:linear-gradient(150deg,#f8fcff,#e8f3f9);color:#17364e;border:1px solid rgba(255,255,255,.95);
+ box-shadow:0 24px 80px rgba(6,29,50,.28);
+}
+.modal-top,.admin-cabinet-head,.market-window-head{border-bottom-color:rgba(87,139,168,.24)}
+.close,.admin-cabinet-close,.market-close{background:#e1eff6;color:#234d67}
+.help-item{background:rgba(255,255,255,.78);border-color:rgba(102,157,187,.2)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#65a9c8!important;box-shadow:0 0 0 3px rgba(91,169,204,.16)!important}
+button{transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s}
+button:focus-visible,a:focus-visible{outline:3px solid rgba(221,164,73,.72);outline-offset:3px}
+.admin-cabinet-card{border-radius:18px}
+.admin-cabinet-card h3{color:#204d68}
+.admin-orb-row [data-orb-save]{background:linear-gradient(135deg,#2b7892,#3e9b9b)!important;border-color:#3e9b9b!important}
+.admin-orb-row [data-orb-toggle]{background:linear-gradient(135deg,#d99c43,#e9b95e)!important;color:#2b3c47!important;border:1px solid #e9b95e!important;border-radius:12px!important}
+.market-prize{background:linear-gradient(150deg,#f9fdff,#e8f4fa);border:1px solid rgba(255,255,255,.98);box-shadow:0 10px 28px rgba(26,70,100,.12)}
+.market-prize-art{background:radial-gradient(circle,#fff,#dff0f8)}
+.snow-layer{opacity:.75}
+.snowflake{text-shadow:0 0 9px #fff,0 0 16px rgba(112,188,220,.8)}
+/* Light theme: daylight snow, pale ice and warm cabin lights */
+body[data-theme="light"]{color-scheme:light}
+body[data-theme="light"] .modal-backdrop,body[data-theme="light"] .admin-cabinet-backdrop{background:rgba(10,29,48,.58)}
+body[data-theme="light"] .theme-toggle{background:linear-gradient(145deg,#fff8e8,#e9f6fc)}
+/* Dark theme: deep blue mountain night with glowing golden garlands */
+body[data-theme="dark"]{
+ --ink:#e8f4fb;--muted:#a9c1d1;--paper:#0b1a2d;--cream:#142a40;
+ --taupe:#8fb9cf;--line:rgba(164,207,228,.19);--shadow:0 18px 48px rgba(0,0,0,.32);
+ color:var(--ink);
+ background:
+  radial-gradient(ellipse at 50% -18%,rgba(56,112,150,.38),transparent 42rem),
+  radial-gradient(ellipse at 8% 26%,rgba(22,79,113,.28),transparent 30rem),
+  radial-gradient(ellipse at 92% 40%,rgba(218,157,66,.10),transparent 28rem),
+  linear-gradient(180deg,#071426 0%,#0d2138 48%,#102a42 100%);
+ background-attachment:fixed;
+}
+body[data-theme="dark"] .brand strong,body[data-theme="dark"] h1,
+body[data-theme="dark"] .section-head h2,body[data-theme="dark"] .tasks-head h2,
+body[data-theme="dark"] .task-panel-top h3{color:#eaf7ff;text-shadow:0 2px 14px rgba(117,190,220,.15)}
+body[data-theme="dark"] .brand small,body[data-theme="dark"] .hero p,
+body[data-theme="dark"] .section-head p,body[data-theme="dark"] .footer{color:#a9c1d1}
+body[data-theme="dark"] .eyebrow{color:#f0c16d}
+body[data-theme="dark"] .stat,body[data-theme="dark"] .orb-card,
+body[data-theme="dark"] .participants,body[data-theme="dark"] .announcement-card,
+body[data-theme="dark"] .tasks-section,body[data-theme="dark"] .admin-cabinet-card,
+body[data-theme="dark"] .help-item{
+ background:linear-gradient(150deg,rgba(24,52,75,.96),rgba(13,35,56,.96));
+ border-color:rgba(142,194,218,.18);box-shadow:0 14px 36px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.035)
+}
+body[data-theme="dark"] .stat b,body[data-theme="dark"] .orb-title,
+body[data-theme="dark"] .task-card h4,body[data-theme="dark"] .admin-cabinet-card h3{color:#e7f5fc}
+body[data-theme="dark"] .stat span,body[data-theme="dark"] .orb-bottom small{color:#a9c1d1}
+body[data-theme="dark"] .orb-art{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 30%,#102c43),#1a3c56)}
+body[data-theme="dark"] .participants-head,body[data-theme="dark"] .tasks-head{
+ background:linear-gradient(110deg,rgba(31,68,94,.9),rgba(19,45,67,.8));border-color:var(--line)
+}
+body[data-theme="dark"] .filters select,body[data-theme="dark"] .search,
+body[data-theme="dark"] .filters .filter-search,body[data-theme="dark"] .miracle-form select,
+body[data-theme="dark"] .miracle-form input,body[data-theme="dark"] .form-grid input,
+body[data-theme="dark"] .form-grid select,body[data-theme="dark"] .auth-form input,
+body[data-theme="dark"] .announcement-form input,body[data-theme="dark"] .announcement-form textarea,
+body[data-theme="dark"] .admin-orb-row input,body[data-theme="dark"] .admin-tools-head input{
+ background:#0c2034;color:#e8f4fb;border-color:rgba(143,194,218,.24)
+}
+body[data-theme="dark"] table th{background:rgba(35,72,98,.72);color:#b9d5e4}
+body[data-theme="dark"] td{color:#dcecf5}
+body[data-theme="dark"] tbody tr:hover{background:rgba(125,190,220,.08)}
+body[data-theme="dark"] .miracle-card{background:radial-gradient(circle at 80% 0,rgba(255,195,92,.13),transparent 42%),linear-gradient(135deg,#16354f,#0e243a);border-color:rgba(143,194,218,.2)}
+body[data-theme="dark"] .miracle-start-date,body[data-theme="dark"] .task-count,
+body[data-theme="dark"] .task-ticket{background:rgba(134,189,216,.12);color:#c6e2ef;border-color:var(--line)}
+body[data-theme="dark"] .task-orb-tab,body[data-theme="dark"] .task-card{
+ background:rgba(7,25,43,.42);color:#e5f3fa;border-color:rgba(143,194,218,.2)
+}
+body[data-theme="dark"] .task-orb-tab[aria-selected="true"]{background:linear-gradient(135deg,#1e6687,#398ca4);color:#fff}
+body[data-theme="dark"] .modal,body[data-theme="dark"] .admin-cabinet-window,
+body[data-theme="dark"] .notifications-modal,body[data-theme="dark"] .market-window,
+body[data-theme="dark"] .market-detail-window,body[data-theme="dark"] .market-editor-window{
+ background:linear-gradient(150deg,#17344d,#0e243a);color:#e8f4fb;border-color:rgba(143,194,218,.2)
+}
+body[data-theme="dark"] .close,body[data-theme="dark"] .admin-cabinet-close,
+body[data-theme="dark"] .market-close{background:#244761;color:#eaf7ff}
+body[data-theme="dark"] .market-prize{background:linear-gradient(150deg,#17344d,#10283e);border-color:var(--line)}
+body[data-theme="dark"] .ghost-btn,body[data-theme="dark"] .icon-btn,
+body[data-theme="dark"] .music-toggle{background:rgba(23,53,77,.9);color:#e5f4fb;border-color:rgba(143,194,218,.25)}
+body[data-theme="dark"] .primary-btn{background:linear-gradient(135deg,#28718e,#3792a6);border-color:#3792a6}
+body[data-theme="dark"] .admin-orb-row [data-orb-toggle]{color:#14283a!important}
+body[data-theme="dark"] .theme-toggle{background:linear-gradient(145deg,#24445e,#17324a)}
+body[data-theme="dark"] .prize-result-warning,body[data-theme="dark"] .prize-result-id,
+body[data-theme="dark"] .miracle-stat{background:rgba(143,194,218,.1);color:#e8f4fb;border-color:var(--line)}
+@media(max-width:760px){
+ .topbar{padding:14px 16px 8px;gap:10px;flex-wrap:wrap}
+ .brand{min-width:0}.brand strong{font-size:15px}.brand small{font-size:8px}
+ .top-actions{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+ .top-actions .ghost-btn,.top-actions .icon-btn{min-height:38px}
+ .hero{margin:8px 12px 20px;padding:34px 16px 26px;border-radius:22px}
+ .stats{padding:0 14px 22px;gap:7px}
+ .stat{padding:12px 6px;border-radius:13px}.stat b{font-size:20px}.stat span{font-size:8px}
+ .section{padding:10px 14px 38px}
+ .section-head{align-items:flex-start;flex-direction:column}
+ .orbs{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .orb-art{height:clamp(150px,48vw,220px)}
+ .orb-title{font-size:13px;min-height:48px}
+ .participants,.tasks-section,.miracle-card{border-radius:17px}
+ .task-orb-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .task-list{grid-template-columns:1fr}
+ .modal{max-width:calc(100vw - 24px);max-height:calc(100dvh - 28px);overflow:auto}
+ .admin-cabinet-window{width:calc(100vw - 16px);max-height:calc(100dvh - 16px);overflow:auto}
+}
+@media(max-width:390px){
+ .brand-mark{width:35px;height:35px}
+ .brand strong{font-size:13px}
+ .top-actions{width:100%;justify-content:flex-end}
+ .orbs{gap:8px}
+ .orb-art{height:155px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
 </style>
@@ -1809,7 +1999,7 @@ body[data-theme="light"] .top-actions .admin-access-button:hover{
     <article class="admin-cabinet-card admin-tool" data-tool="participants"><h3>Участники и дубликаты</h3><p>Фильтр VK/OK, поиск повторяющихся ID между шарами, проверка подозрительных записей.</p><div class="admin-inline-actions"><button type="button" id="adminDuplicatesBtn">Найти дубликаты</button><button type="button" id="adminIntegrityBtn">Проверить целостность</button><button type="button" id="adminHistoryBtn">История начислений</button></div><div id="adminDuplicateResults" class="admin-tool-results" aria-live="polite"></div></article>
     <article class="admin-cabinet-card admin-tool" data-tool="history"><h3>Журнал действий</h3><p>История изменений участников и товаров: кто, когда и что изменил.</p><div class="admin-inline-actions"><input type="date" id="adminHistoryDate"><button type="button" id="adminLoadHistory">Показать за день</button><button type="button" id="adminLoadAudit">Последние действия</button></div><div id="adminHistoryResults" class="admin-tool-results" aria-live="polite"></div></article>
     <article class="admin-cabinet-card admin-tool" data-tool="statistics"><h3>Статистика посещений</h3><p>Посещения за сегодня, неделю и месяц, пиковые интервалы и просмотры новостей.</p><div class="admin-stat-strip"><span>Сегодня <b id="adminVisitsToday">—</b></span><span>7 дней <b id="adminVisitsWeek">—</b></span><span>30 дней <b id="adminVisitsMonth">—</b></span></div><button type="button" id="adminLoadAnalytics">Обновить аналитику</button><div id="adminAnalyticsResults" class="admin-tool-results"></div></article>
-    <article class="admin-cabinet-card admin-tool" data-tool="globes"><h3>Таймеры и доступность шаров</h3><p>Управление сроками испытаний. Можно закрыть шар вручную или снова открыть его.</p><div id="adminOrbControls" class="admin-orb-controls"></div><p class="admin-cabinet-note">Для каждого шара можно отдельно настроить текст, цвет и яркость свечения.</p><p id="adminOrbNote" class="admin-cabinet-note" aria-live="polite"></p></article>
+    <article class="admin-cabinet-card admin-tool" data-tool="globes"><h3>Таймеры и доступность шаров</h3><p>Управление сроками испытаний. Можно закрыть шар вручную или снова открыть его.</p><div id="adminOrbControls" class="admin-orb-controls"></div><div class="orb-status-admin"><label>Текст для завершённых испытаний<input id="orbClosedText" type="text" maxlength="70" value="Испытания завершены" placeholder="Например, Испытания завершены"></label><label>Цвет свечения<select id="orbClosedGlow"><option value="rose">Розовый</option><option value="red">Красный</option><option value="orange">Оранжевый</option><option value="gold">Золотой</option><option value="lime">Лаймовый</option><option value="green">Зелёный</option><option value="cyan">Бирюзовый</option><option value="blue">Голубой</option><option value="violet">Фиолетовый</option><option value="white">Белый</option></select></label><button type="button" id="saveOrbClosedStyle">Сохранить оформление</button></div><p id="orbClosedStyleNote" class="admin-cabinet-note" aria-live="polite"></p><p id="adminOrbNote" class="admin-cabinet-note" aria-live="polite"></p></article>
     <article class="admin-cabinet-card admin-tool" data-tool="google sheets"><h3>Отчёт в Google Таблицы</h3><p>Создаёт таблицу с участниками, соцсетями, игровыми ID, шарами, билетами и итогами.</p><label for="googleSheetsEndpoint">Адрес Google Apps Script</label><input type="url" id="googleSheetsEndpoint" placeholder="https://script.google.com/macros/s/…/exec"><div class="admin-inline-actions"><button type="button" id="saveGoogleSheetsEndpoint">Сохранить адрес</button><button type="button" id="exportGoogleSheets">Создать Google Таблицу</button></div><p id="googleSheetsNote" class="admin-cabinet-note" aria-live="polite"></p></article>
     <article class="admin-cabinet-card admin-tool" data-tool="settings"><h3>Настройки кабинета</h3><p>Быстрый поиск по функциям и избранные действия сохраняются в этом браузере.</p><label><input type="checkbox" id="adminNotifyLowStock" checked> Показывать предупреждения о низком остатке наград</label><div id="adminSystemStatus" class="admin-tool-results">Проверка состояния разделов…</div></article>
    </div>
@@ -1984,7 +2174,6 @@ function setNote(message, error=false){
 function totalTickets(list=records){return list.reduce((s,r)=>s+Number(r.tickets||0),0);}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function renderOrbs(){
-  const activeOrbId=ORBS.find(o=>{const x=orbScheduleState[o.id]||{};const end=x.ends_at?new Date(x.ends_at).getTime():NaN;return x.is_open===true&&(!(x.is_enabled&&Number.isFinite(end))||end>Date.now());})?.id||null;
   $('orbs').innerHTML=ORBS.map(o=>{
     const list=records.filter(r=>r.orb===o.id);
     const schedule=orbScheduleState[o.id]||{};
@@ -1992,15 +2181,11 @@ function renderOrbs(){
     const timerOn=!!schedule.is_enabled&&Number.isFinite(end);
     const remaining=timerOn?Math.max(0,end-Date.now()):0;
     const expired=timerOn&&remaining<=0;
-    const isOpen=schedule.is_open===true&&activeOrbId===o.id&&!expired;
-    const closed=!isOpen;
-    const isClosed=closed; // Used by the status CSS class; keep aligned with the button state.
+    const closed=schedule.is_open===false||expired;
     const timerText=timerOn?(remaining>0?`${escapeHtml(schedule.label||'До окончания испытаний осталось')}: ${formatOrbCountdown(remaining)}`:'Срок испытаний завершён'):'';
-    const style=orbStatusStyles[o.id]||DEFAULT_ORB_STATUS;
-    const palette=ORB_CLOSED_PALETTES[style.palette]||ORB_CLOSED_PALETTES.rose;
-    const status=closed?style.text:(timerOn?timerText:'Испытания доступны');
-    const strength=Math.max(0,Math.min(1.5,Number(style.brightness||0)/65));
-    const closedStyle=`style="--orb-closed-color:${palette.color};--orb-closed-glow:${palette.glow};--orb-glow-strength:${strength}"`;
+    const isClosed=schedule.is_open===false||expired;
+    const status=isClosed?orbClosedStyle.text:(timerOn?timerText:'Испытания доступны');
+    const closedStyle=isClosed?`style="--orb-closed-color:${orbClosedStyle.color};--orb-closed-glow:${orbClosedStyle.glow}"`:'';
     return `<article class="orb-card" style="--accent:${o.tone}">
       <div class="orb-art"><span class="orb-glint">✧</span><img class="orb-image" src="assets/${o.image}" alt="Шар «${o.name}»"></div>
       <div class="orb-title">${o.name}</div>
@@ -2649,33 +2834,19 @@ async function loadAdminAnalytics(){
 const ORB_CLOSED_PALETTES={
  rose:{color:'#e98ab5',glow:'rgba(233,138,181,.62)'},red:{color:'#ff7777',glow:'rgba(255,75,75,.62)'},orange:{color:'#ffad68',glow:'rgba(255,145,65,.62)'},gold:{color:'#f2cf75',glow:'rgba(242,207,117,.68)'},lime:{color:'#d1e77b',glow:'rgba(209,231,123,.62)'},green:{color:'#83d69a',glow:'rgba(95,215,135,.62)'},cyan:{color:'#79e2d8',glow:'rgba(85,220,205,.62)'},blue:{color:'#83baff',glow:'rgba(100,165,255,.66)'},violet:{color:'#b79aff',glow:'rgba(165,125,255,.66)'},white:{color:'#fff3df',glow:'rgba(255,243,223,.72)'}
 };
-let orbStatusStyles={};
+let orbClosedStyle={text:'Испытания завершены',color:ORB_CLOSED_PALETTES.rose.color,glow:ORB_CLOSED_PALETTES.rose.glow,palette:'rose'};
 let orbScheduleState={};
 let orbScheduleTick=null;
-const DEFAULT_ORB_STATUS={text:'Испытания завершены',palette:'rose',brightness:65};
-async function loadOrbStatusStyles(){
+async function loadOrbClosedStyle(){
  if(!supabaseClient)return;
- const {data,error}=await supabaseClient.from('site_orb_status_styles').select('*');
- if(error){console.warn('Orb status styles load error:',error.message);return;}
- orbStatusStyles={};(data||[]).forEach(row=>{orbStatusStyles[row.orb_id]={text:row.closed_text||DEFAULT_ORB_STATUS.text,palette:row.glow_palette||DEFAULT_ORB_STATUS.palette,brightness:Number.isFinite(Number(row.glow_brightness))?Number(row.glow_brightness):DEFAULT_ORB_STATUS.brightness};});
+ const {data,error}=await supabaseClient.from('site_orb_display_settings').select('*').eq('id',1).maybeSingle();
+ if(error){console.warn('Orb display settings load error:',error.message);return;}
+ if(data){const palette=ORB_CLOSED_PALETTES[data.glow_palette]||ORB_CLOSED_PALETTES.rose;orbClosedStyle={text:data.closed_text||'Испытания завершены',color:palette.color,glow:palette.glow,palette:data.glow_palette||'rose'};}
  renderOrbs();
 }
-async function saveOrbStatusStyle(id){
- try{
-  adminOnly();const host=$('adminOrbControls');
-  const textValue=host.querySelector(`[data-style-text="${id}"]`).value.trim()||DEFAULT_ORB_STATUS.text;
-  const palette=host.querySelector(`[data-style-palette="${id}"]`).value;
-  const brightness=Number(host.querySelector(`[data-style-brightness="${id}"]`).value);
-  const {error}=await supabaseClient.from('site_orb_status_styles').upsert({orb_id:id,closed_text:textValue,glow_palette:palette,glow_brightness:brightness,updated_at:new Date().toISOString()},{onConflict:'orb_id'});
-  if(error)throw error;
-  orbStatusStyles[id]={text:textValue,palette,brightness};renderOrbs();
-  const note=host.querySelector(`[data-style-note="${id}"]`);if(note)note.textContent='Сохранено';
- }catch(e){const note=$('adminOrbNote');note.textContent='Не удалось сохранить оформление: '+(e.message||e);}
-}
-async function orbScheduleIsOpen(schedule={}){
- const end=schedule.ends_at?new Date(schedule.ends_at).getTime():NaN;
- const expired=!!schedule.is_enabled&&Number.isFinite(end)&&end<=Date.now();
- return schedule.is_open===true&&!expired;
+async function saveOrbClosedStyle(){
+ try{adminOnly();const textValue=$('orbClosedText').value.trim()||'Испытания завершены';const palette=$('orbClosedGlow').value;const {error}=await supabaseClient.from('site_orb_display_settings').upsert({id:1,closed_text:textValue,glow_palette:palette,updated_at:new Date().toISOString()},{onConflict:'id'});if(error)throw error;await loadOrbClosedStyle();$('orbClosedStyleNote').textContent='Текст и свечение сохранены.';}
+ catch(e){$('orbClosedStyleNote').textContent='Не удалось сохранить: '+(e.message||e);}
 }
 async function loadOrbSchedule(){
  if(!supabaseClient)return;
@@ -2687,37 +2858,25 @@ async function loadOrbSchedule(){
 async function loadAdminOrbControls(){
  try{
   adminOnly();
-  const [{data:schedules,error:scheduleError},{data:styles,error:styleError}]=await Promise.all([
-   supabaseClient.from('site_orb_schedule').select('*'),
-   supabaseClient.from('site_orb_status_styles').select('*')
-  ]);
-  if(scheduleError)throw scheduleError;if(styleError)throw styleError;
-  orbScheduleState={};(schedules||[]).forEach(row=>{orbScheduleState[row.orb_id]=row;});
-  orbStatusStyles={};(styles||[]).forEach(row=>{orbStatusStyles[row.orb_id]={text:row.closed_text||DEFAULT_ORB_STATUS.text,palette:row.glow_palette||'rose',brightness:Number(row.glow_brightness??65)};});
+  const {data,error}=await supabaseClient.from('site_orb_schedule').select('*');if(error)throw error;
+  orbScheduleState={};(data||[]).forEach(row=>{orbScheduleState[row.orb_id]=row;});
   const host=$('adminOrbControls');
   host.innerHTML=ORBS.map(o=>{
-   const x=orbScheduleState[o.id]||{};const style=orbStatusStyles[o.id]||DEFAULT_ORB_STATUS;
+   const x=orbScheduleState[o.id]||{};
    const localEnd=x.ends_at?new Date(x.ends_at).toLocaleString('sv-SE',{timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone}).replace(' ','T').slice(0,16):'';
    return `<div class="admin-orb-row" data-orb-row="${o.id}">
     <strong>${escapeHtml(o.name)}</strong>
     <div class="orb-admin-fields"><label><input type="checkbox" data-orb-enabled="${o.id}" ${x.is_enabled?'checked':''}> Показывать таймер</label><input type="text" data-orb-label="${o.id}" maxlength="100" value="${escapeHtml(x.label||'До окончания испытаний осталось')}" aria-label="Подпись таймера"></div>
     <input type="datetime-local" data-orb-end="${o.id}" value="${localEnd}" aria-label="Срок шара ${escapeHtml(o.name)}">
     <button type="button" data-orb-save="${o.id}" aria-label="Сохранить настройки шара ${escapeHtml(o.name)}" title="Сохранить">✓</button>
-    <button type="button" data-orb-toggle="${o.id}" data-open="${orbScheduleIsOpen(x)?'1':'0'}">${orbScheduleIsOpen(x)?'Закрыть шар':'Открыть шар'}</button>
-   </div>
-   <div class="orb-style-admin-row" data-orb-style-row="${o.id}">
-    <label>Текст при закрытом шаре<input type="text" maxlength="90" data-style-text="${o.id}" value="${escapeHtml(style.text)}"></label>
-    <label>Цвет свечения<select data-style-palette="${o.id}">${[['rose','Розовый'],['red','Красный'],['orange','Оранжевый'],['gold','Золотой'],['lime','Лаймовый'],['green','Зелёный'],['cyan','Бирюзовый'],['blue','Голубой'],['violet','Фиолетовый'],['white','Белый']].map(([v,n])=>`<option value="${v}" ${style.palette===v?'selected':''}>${n}</option>`).join('')}</select></label>
-    <label>Яркость свечения <span class="orb-brightness-value" data-brightness-value="${o.id}">${Math.round(style.brightness)}%</span><input type="range" min="0" max="100" step="1" value="${Math.max(0,Math.min(100,style.brightness))}" data-style-brightness="${o.id}"></label>
-    <button type="button" data-orb-style-save="${o.id}" title="Сохранить оформление" aria-label="Сохранить оформление ${escapeHtml(o.name)}">✓</button>
-    <span class="admin-cabinet-note" data-style-note="${o.id}" aria-live="polite"></span>
+    <button type="button" data-orb-toggle="${o.id}" data-open="${x.is_open===false?'0':'1'}">${x.is_open===false?'Открыть шар':'Закрыть шар'}</button>
    </div>`;
   }).join('');
-  host.querySelectorAll('[data-style-brightness]').forEach(input=>input.addEventListener('input',()=>{const out=host.querySelector(`[data-brightness-value="${input.dataset.styleBrightness}"]`);if(out)out.textContent=input.value+'%';}));
+  $('orbClosedText').value=orbClosedStyle.text;$('orbClosedGlow').value=orbClosedStyle.palette;
  }catch(e){$('adminOrbControls').textContent='Не удалось загрузить настройки шаров: '+(e.message||e);}
 }
 $('adminOrbControls')?.addEventListener('click',async e=>{
- const save=e.target.closest('[data-orb-save]'),toggle=e.target.closest('[data-orb-toggle]'),styleSave=e.target.closest('[data-orb-style-save]');if(styleSave){await saveOrbStatusStyle(styleSave.dataset.orbStyleSave);return;}if(!save&&!toggle)return;
+ const save=e.target.closest('[data-orb-save]'),toggle=e.target.closest('[data-orb-toggle]');if(!save&&!toggle)return;
  try{
   adminOnly();const id=(save||toggle).dataset.orbSave||(save||toggle).dataset.orbToggle;
   const current=orbScheduleState[id]||{};let payload={orb_id:id,updated_at:new Date().toISOString()};
@@ -2728,17 +2887,10 @@ $('adminOrbControls')?.addEventListener('click',async e=>{
    const end=raw?new Date(raw):null;
    if(enabled&&(!end||!Number.isFinite(end.getTime()))){$('adminOrbNote').textContent='Укажите дату и время окончания или отключите показ таймера.';return;}
    payload={...current,...payload,ends_at:end?end.toISOString():null,is_enabled:enabled,label:label||'До окончания испытаний осталось'};
-  }else {
-   const opening=toggle.dataset.open==='0';
-   const {error}=await supabaseClient.rpc('admin_set_orb_open',{p_orb_id:id,p_is_open:opening});
-   if(error)throw error;
-   $('adminOrbNote').textContent=opening?'Шар открыт. Остальные шары закрыты.':'Шар закрыт.';
-   await loadAdminOrbControls();await loadOrbSchedule();
-   return;
-  }
+  }else payload={...current,...payload,is_open:toggle.dataset.open==='0'};
   const {error}=await supabaseClient.from('site_orb_schedule').upsert(payload,{onConflict:'orb_id'});if(error)throw error;
-  $('adminOrbNote').textContent='Настройки таймера сохранены.';
-  await loadAdminOrbControls();await loadOrbSchedule();await loadOrbStatusStyles();
+  $('adminOrbNote').textContent=save?'Настройки таймера сохранены.':'Доступность шара обновлена.';
+  await loadAdminOrbControls();await loadOrbSchedule();
  }catch(err){$('adminOrbNote').textContent='Ошибка: '+(err.message||err);}
 });
 let adminToolsInitialized=false;
@@ -2748,7 +2900,7 @@ function initAdminTools(){
  adminToolsInitialized=true;
  try{$('googleSheetsEndpoint').value=localStorage.getItem('zgot-google-sheets-endpoint')||'';$('adminNotifyLowStock').checked=localStorage.getItem('zgot-admin-low-stock')!=='false';}catch(e){}
  $('adminToolSearch').oninput=()=>{const q=$('adminToolSearch').value.trim().toLowerCase();document.querySelectorAll('.admin-tool').forEach(c=>c.hidden=!!q&&!((c.innerText||'').toLowerCase().includes(q)));};
- $('adminDuplicatesBtn').onclick=findAdminDuplicates;$('adminIntegrityBtn').onclick=checkAdminIntegrity;$('adminHistoryBtn').onclick=()=>loadAdminAudit();$('adminLoadHistory').onclick=()=>loadAdminAudit($('adminHistoryDate').value||null);$('adminLoadAudit').onclick=()=>loadAdminAudit();$('adminLoadAnalytics').onclick=loadAdminAnalytics;
+ $('saveOrbClosedStyle').onclick=saveOrbClosedStyle;$('adminDuplicatesBtn').onclick=findAdminDuplicates;$('adminIntegrityBtn').onclick=checkAdminIntegrity;$('adminHistoryBtn').onclick=()=>loadAdminAudit();$('adminLoadHistory').onclick=()=>loadAdminAudit($('adminHistoryDate').value||null);$('adminLoadAudit').onclick=()=>loadAdminAudit();$('adminLoadAnalytics').onclick=loadAdminAnalytics;
  $('adminNotifyLowStock').onchange=()=>{try{localStorage.setItem('zgot-admin-low-stock',String($('adminNotifyLowStock').checked));}catch(e){}};
  $('saveGoogleSheetsEndpoint').onclick=()=>{const url=$('googleSheetsEndpoint').value.trim();try{if(url&&!new URL(url).hostname.endsWith('google.com')&&!new URL(url).hostname.endsWith('googleusercontent.com'))throw new Error();localStorage.setItem('zgot-google-sheets-endpoint',url);$('googleSheetsNote').textContent='Адрес сохранён в этом браузере.';}catch(e){$('googleSheetsNote').textContent='Укажите корректный URL опубликованного Google Apps Script.';}};
  $('exportGoogleSheets').onclick=exportToGoogleSheets;
@@ -2772,7 +2924,7 @@ async function init(){
   const {data,error}=await supabaseClient.auth.getSession();
   if(error)setNote('Ошибка проверки входа: '+error.message,true);
   await updateSession(data?.session||null);
-  await Promise.all([countSiteVisit(),loadExchangeTimer(),loadOrbSchedule(),loadOrbStatusStyles()]);
+  await Promise.all([countSiteVisit(),loadExchangeTimer(),loadOrbSchedule(),loadOrbClosedStyle()]);
   if(exchangeTimerInterval)clearInterval(exchangeTimerInterval);
   exchangeTimerInterval=setInterval(renderExchangeTimer,1000);
   exchangeTimerRefreshInterval=setInterval(()=>loadExchangeTimer(),60000);
@@ -2785,9 +2937,6 @@ async function init(){
     loadRecords();
   });
   subscribeRealtime();
-  supabaseClient.channel('site-orb-schedule-live')
-    .on('postgres_changes',{event:'*',schema:'public',table:'site_orb_schedule'},()=>loadOrbSchedule())
-    .subscribe();
   announcementChannel=supabaseClient.channel('site-announcements-live')
     .on('postgres_changes',{event:'*',schema:'public',table:'site_announcements'},()=>loadAnnouncements())
     .subscribe();
