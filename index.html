@@ -1404,16 +1404,15 @@ body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-i
 
 /* Публичный статус и таймер каждого новогоднего шара */
 /* Настраиваемая надпись закрытых испытаний с цветным свечением */
-.orb-schedule-status.is-closed strong{color:var(--orb-closed-color,#c47a70);text-shadow:0 0 5px var(--orb-closed-glow,rgba(196,122,112,.55)),0 0 13px var(--orb-closed-glow,rgba(196,122,112,.35)),0 0 24px var(--orb-closed-glow,rgba(196,122,112,.2));}
+.orb-schedule-status strong{color:var(--orb-closed-color,var(--ink));text-shadow:0 0 5px var(--orb-closed-glow,transparent),0 0 13px var(--orb-closed-glow,transparent),0 0 24px var(--orb-closed-glow,transparent);}
 .orb-status-admin{display:grid;grid-template-columns:minmax(220px,1.5fr) minmax(180px,.8fr) auto;gap:10px;align-items:end;margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface-soft)}
 .orb-status-admin label{display:grid;gap:6px;font-size:12px;color:var(--muted)}
 .orb-status-admin input,.orb-status-admin select{min-width:0;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--text)}
 .orb-status-admin button{white-space:nowrap}
 @media(max-width:700px){.orb-status-admin{grid-template-columns:1fr}.orb-status-admin button{width:100%}}
 .orb-schedule-status{display:grid;gap:3px;padding:9px 10px 2px;text-align:center;color:var(--muted);font-size:11px;line-height:1.4}
-.orb-schedule-status strong{font-size:12px;color:var(--ink)}
-.orb-schedule-status.is-closed strong{color:#c47a70}
-body[data-theme="dark"] .orb-schedule-status strong{color:var(--ink)}
+.orb-schedule-status strong{font-size:12px;color:var(--orb-closed-color,var(--ink))}
+body[data-theme="dark"] .orb-schedule-status strong{color:var(--orb-closed-color,var(--ink))}
 .admin-orb-row{grid-template-columns:minmax(135px,1fr) minmax(230px,1.55fr) minmax(190px,1.25fr) 46px minmax(112px,auto);gap:10px}
 .admin-orb-row .orb-admin-fields{display:grid;gap:5px;min-width:0;overflow:hidden}
 .admin-orb-row .orb-admin-fields label{display:flex;align-items:center;gap:7px;margin:0;font-size:11px}
@@ -1982,7 +1981,7 @@ function renderOrbs(){
     const timerText=timerOn?(remaining>0?`${escapeHtml(schedule.label||'До окончания испытаний осталось')}: ${formatOrbCountdown(remaining)}`:'Срок испытаний завершён'):'';
     const isClosed=schedule.is_open===false||expired;
     const status=isClosed?orbClosedStyle.text:(timerOn?timerText:'Испытания доступны');
-    const closedStyle=isClosed?`style="--orb-closed-color:${orbClosedStyle.color};--orb-closed-glow:${orbClosedStyle.glow}"`:'';
+    const closedStyle=`style="--orb-closed-color:${orbClosedStyle.color};--orb-closed-glow:${orbClosedStyle.glow}"`;
     return `<article class="orb-card" style="--accent:${o.tone}">
       <div class="orb-art"><span class="orb-glint">✧</span><img class="orb-image" src="assets/${o.image}" alt="Шар «${o.name}»"></div>
       <div class="orb-title">${o.name}</div>
