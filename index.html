@@ -1926,6 +1926,148 @@ main.section{max-width:1480px}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
+
+/* === FIX: прокрутка окон и единая ледяная палитра === */
+.modal-backdrop.open,
+.admin-cabinet-backdrop.open{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding:clamp(10px,2.5vh,28px) 14px!important;
+}
+.notifications-modal{
+  max-height:none!important;
+  height:auto!important;
+  overflow:visible!important;
+  flex:0 0 auto;
+  margin:auto 0!important;
+}
+#announcementList{
+  max-height:none!important;
+  height:auto!important;
+  overflow:visible!important;
+}
+.admin-cabinet-window{
+  max-height:none!important;
+  height:auto!important;
+  overflow:visible!important;
+  flex:0 0 auto;
+  margin:0 auto!important;
+}
+.admin-cabinet-backdrop.open{align-items:flex-start!important}
+.admin-cabinet-window .admin-cabinet-head{position:sticky;top:0;z-index:5;background:linear-gradient(145deg,#17364e,#10283d);padding:10px 0;border-bottom:1px solid rgba(145,199,228,.2)}
+@media(max-width:650px){
+ .modal-backdrop.open,.admin-cabinet-backdrop.open{padding:8px!important}
+ .notifications-modal{width:100%!important;margin:0!important}
+ .admin-cabinet-window{width:100%!important;max-width:none!important;margin:0!important}
+}
+
+/* Убираем резкий белый засвет в шапке */
+.hero{background:none!important;box-shadow:none!important}
+body:before{opacity:.25!important}
+body{background:
+ radial-gradient(ellipse at 50% -15%,rgba(75,132,166,.13),transparent 38rem),
+ radial-gradient(ellipse at 12% 42%,rgba(22,62,91,.18),transparent 38rem),
+ radial-gradient(ellipse at 88% 72%,rgba(28,72,99,.13),transparent 42rem),
+ linear-gradient(180deg,#061222 0%,#0a1c30 48%,#071426 100%)!important}
+
+/* Переключатели шаров — ровно по центру, с равными отступами */
+.task-orb-tabs{
+ align-items:stretch!important;
+ padding:12px 24px 18px!important;
+}
+.task-orb-tab{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ align-self:stretch!important;
+ min-height:76px!important;
+ margin:0!important;
+ text-align:center!important;
+ line-height:1.35!important;
+ transform:none;
+}
+.task-orb-tab small{display:block;margin-top:5px;line-height:1.25}
+.task-orb-tab:hover{transform:translateY(-2px)!important}
+@media(max-width:650px){.task-orb-tabs{padding:10px 12px 15px!important;gap:8px!important}.task-orb-tab{min-height:68px!important;padding:10px 6px!important;font-size:11px!important}}
+
+/* Таймер — плотная панель, как остальные информационные блоки */
+.exchange-timer{
+ background:linear-gradient(145deg,rgba(25,58,82,.98),rgba(10,30,49,.99))!important;
+ border:1px solid rgba(145,199,228,.27)!important;
+ box-shadow:0 14px 36px rgba(0,8,20,.34),0 0 22px rgba(80,163,207,.08)!important;
+}
+
+/* Общая палитра кнопок: ледяной синий, мягкая бирюза и тонкая золотая кромка */
+:root{
+ --winter-button:linear-gradient(135deg,#24536f,#2f7894);
+ --winter-button-hover:linear-gradient(135deg,#2d6987,#3b91a8);
+}
+button,.ghost-btn,.primary-btn,.market-visit,.market-view-btn,.market-edit-btn,
+.admin-tools button,.admin-row-actions button,.modal-actions button,.view-tab,
+.task-orb-tab,.market-buy-btn,.miracle-start-date,.miracle-card .prize-tag{
+ transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease!important;
+}
+.top-actions .ghost-btn,.top-actions .music-toggle,.top-actions .icon-btn{
+ background:linear-gradient(135deg,#173a55,#214e6b)!important;
+ color:#eaf6ff!important;
+ border:1px solid rgba(135,194,222,.32)!important;
+ box-shadow:0 5px 16px rgba(0,8,20,.24),inset 0 1px rgba(255,255,255,.08)!important;
+}
+.top-actions .admin-access-button{
+ background:linear-gradient(135deg,#285d78,#367f98)!important;
+ color:#fff!important;
+ border:1px solid rgba(165,215,235,.48)!important;
+ box-shadow:0 5px 18px rgba(0,8,20,.3),0 0 15px rgba(92,180,218,.13)!important;
+}
+.top-actions .ghost-btn:hover,.top-actions .music-toggle:hover,.top-actions .icon-btn:hover{
+ background:linear-gradient(135deg,#24536f,#2f7894)!important;
+ transform:translateY(-2px);
+}
+.top-actions .admin-access-button:hover{
+ background:linear-gradient(135deg,#34748f,#459bb0)!important;
+ transform:translateY(-2px);
+}
+.miracle-start-date,.miracle-card .prize-tag{
+ background:linear-gradient(135deg,#24536f,#2f7894)!important;
+ color:#eef8ff!important;border:1px solid rgba(135,194,222,.35)!important;
+}
+button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-tab):not(.announcement-reaction):not(.icon-btn):not(.notification-toggle){
+ border-color:rgba(139,199,226,.28);
+}
+.admin-cabinet-window button,.admin-cabinet-window .primary-btn,
+.admin-cabinet-window .ghost-btn,.admin-cabinet-window .admin-tools button,
+.admin-cabinet-window .admin-row-actions button{
+ background:linear-gradient(135deg,#24536f,#2f7894)!important;
+ color:#f1f9ff!important;border:1px solid rgba(139,199,226,.32)!important;
+}
+.admin-cabinet-window button:hover{background:linear-gradient(135deg,#2e6c89,#3b91a8)!important;box-shadow:0 6px 18px rgba(0,8,20,.25),0 0 14px rgba(98,183,220,.12)!important}
+
+/* Мягкое свечение и лёгкое движение блоков при наведении */
+.participants,.tasks-section,.miracle-card,.market-card,.exchange-timer,
+.stat,.orb-card,.announcement-card,.admin-cabinet-card,.task-card,
+.market-prize,.help-item{
+ box-shadow:0 14px 34px rgba(0,5,15,.28),0 0 22px rgba(93,173,211,.075),inset 0 1px rgba(255,255,255,.045)!important;
+ transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease!important;
+}
+.orb-card:hover,.participants:hover,.tasks-section:hover,.miracle-card:hover,
+.market-card:hover,.exchange-timer:hover,.stat:hover,.announcement-card:hover,
+.admin-cabinet-card:hover,.task-card:hover,.market-prize:hover,.help-item:hover{
+ transform:translateY(-3px);
+ border-color:rgba(144,205,232,.38)!important;
+ box-shadow:0 19px 42px rgba(0,5,15,.34),0 0 26px rgba(93,173,211,.13),inset 0 1px rgba(255,255,255,.06)!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .orb-card:hover,.participants:hover,.tasks-section:hover,.miracle-card:hover,
+ .market-card:hover,.exchange-timer:hover,.stat:hover,.announcement-card:hover,
+ .admin-cabinet-card:hover,.task-card:hover,.market-prize:hover,.help-item:hover{transform:none!important}
+}
+
 </style>
 </head>
 <body>
