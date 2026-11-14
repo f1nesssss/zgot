@@ -1123,7 +1123,7 @@ html,body{overscroll-behavior-y:none}
 .top-actions .button-butterflies i:nth-child(3){left:17%;bottom:-13px;--fly-x:-7px;--fly-y:11px;--fly-r:-30deg}
 .top-actions .button-butterflies i:nth-child(4){right:15%;bottom:-12px;--fly-x:9px;--fly-y:9px;--fly-r:30deg}
 .top-actions .button-butterflies i:nth-child(5){left:48%;top:-16px;--fly-x:0px;--fly-y:-17px;--fly-r:8deg}
-.top-actions .music-toggle:hover .button-butterflies i,.top-actions .icon-btn:hover .button-butterflies i,.top-actions #helpBtn:hover .button-butterflies i,
+.top-actions .music-toggle:hover .button-butterflies i,.top-actions .icon-btn:hover .button-butterflies i,.top-actions #musicToggle:hover .button-butterflies i,.top-actions #helpBtn:hover .button-butterflies i,
 .top-actions .music-toggle:focus-visible .button-butterflies i,.top-actions .icon-btn:focus-visible .button-butterflies i,.top-actions #helpBtn:focus-visible .button-butterflies i{opacity:1;animation:headerButterfly .95s ease-in-out infinite alternate}
 @keyframes headerButterfly{from{transform:translate(0,3px) scale(.68) rotate(-12deg)}to{transform:translate(var(--fly-x),var(--fly-y)) scale(1) rotate(var(--fly-r))}}
 @media(prefers-reduced-motion:reduce){.top-actions .button-butterflies i{animation:none!important}}
@@ -2081,6 +2081,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
   <button class="icon-btn notification-toggle" id="notificationsBtn" type="button" aria-label="Открыть новости" title="Новости">
     <span class="notification-label">Новости 📰</span><i class="notification-dot" id="notificationDot" hidden></i><span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
   </button>
+  <button class="ghost-btn" id="musicToggle" type="button" aria-label="Открыть настройки музыки" title="Музыка">Музыка 🎵<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="ghost-btn" id="helpBtn">Помощь<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="ghost-btn admin-access-button" id="adminBtn">Вход для администратора<span class="admin-hover-emojis" aria-hidden="true"><i>🔐</i><i>🔐</i></span></button>
   <button class="ghost-btn admin-access-button" id="adminCabinetBtn" hidden>Кабинет администратора<span class="admin-hover-emojis" aria-hidden="true"><i>💼</i><i>💼</i></span></button>
@@ -2977,6 +2978,7 @@ async function startSiteMusic(){
   syncMusicControls();
 }
 function stopSiteMusic(){siteMusic.pause();syncMusicControls();$('musicStatus').textContent='Музыка выключена.';}
+$('musicToggle').addEventListener('click',()=>{musicBackdrop.classList.add('open');syncMusicControls();});
 $('closeMusic').addEventListener('click',()=>musicBackdrop.classList.remove('open'));
 musicBackdrop.addEventListener('click',e=>{if(e.target===musicBackdrop)musicBackdrop.classList.remove('open');});
 musicPlayBtn.addEventListener('click',()=>{if(siteMusic.paused)startSiteMusic();else stopSiteMusic();});
@@ -3765,7 +3767,7 @@ button:hover,.primary-btn:hover,.ghost-btn:hover,.market-visit:hover,.market-vie
  background:linear-gradient(135deg,#2e6c89,#3b91a8)!important;
  box-shadow:0 7px 20px rgba(0,8,20,.3),0 0 16px rgba(98,183,220,.16)!important;
 }
-.top-actions #helpBtn,.top-actions .icon-btn{
+.top-actions #helpBtn,.top-actions #musicToggle,.top-actions .icon-btn{
  background:linear-gradient(135deg,#173a55,#214e6b)!important;color:#eaf6ff!important;border-color:rgba(144,205,232,.3)!important;
 }
 .top-actions #adminLoginBtn,.top-actions #adminBtn{
