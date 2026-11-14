@@ -2672,6 +2672,11 @@ async function saveOrbStatusStyle(id){
   const note=host.querySelector(`[data-style-note="${id}"]`);if(note)note.textContent='Сохранено';
  }catch(e){const note=$('adminOrbNote');note.textContent='Не удалось сохранить оформление: '+(e.message||e);}
 }
+async function orbScheduleIsOpen(schedule={}){
+ const end=schedule.ends_at?new Date(schedule.ends_at).getTime():NaN;
+ const expired=!!schedule.is_enabled&&Number.isFinite(end)&&end<=Date.now();
+ return schedule.is_open===true&&!expired;
+}
 async function loadOrbSchedule(){
  if(!supabaseClient)return;
  const {data,error}=await supabaseClient.from('site_orb_schedule').select('*');
@@ -2698,7 +2703,7 @@ async function loadAdminOrbControls(){
     <div class="orb-admin-fields"><label><input type="checkbox" data-orb-enabled="${o.id}" ${x.is_enabled?'checked':''}> Показывать таймер</label><input type="text" data-orb-label="${o.id}" maxlength="100" value="${escapeHtml(x.label||'До окончания испытаний осталось')}" aria-label="Подпись таймера"></div>
     <input type="datetime-local" data-orb-end="${o.id}" value="${localEnd}" aria-label="Срок шара ${escapeHtml(o.name)}">
     <button type="button" data-orb-save="${o.id}" aria-label="Сохранить настройки шара ${escapeHtml(o.name)}" title="Сохранить">✓</button>
-    <button type="button" data-orb-toggle="${o.id}" data-open="${x.is_open===true?'1':'0'}">${x.is_open===true?'Закрыть шар':'Открыть шар'}</button>
+    <button type="button" data-orb-toggle="${o.id}" data-open="${orbScheduleIsOpen(x)?'1':'0'}">${orbScheduleIsOpen(x)?'Закрыть шар':'Открыть шар'}</button>
    </div>
    <div class="orb-style-admin-row" data-orb-style-row="${o.id}">
     <label>Текст при закрытом шаре<input type="text" maxlength="90" data-style-text="${o.id}" value="${escapeHtml(style.text)}"></label>
@@ -2725,14 +2730,14 @@ $('adminOrbControls')?.addEventListener('click',async e=>{
    payload={...current,...payload,ends_at:end?end.toISOString():null,is_enabled:enabled,label:label||'До окончания испытаний осталось'};
   }else {
    const opening=toggle.dataset.open==='0';
-   if(opening){
-    const others=ORBS.filter(o=>o.id!==id).map(o=>({orb_id:o.id,is_open:false,updated_at:new Date().toISOString()}));
-    for(const other of others){const {error:closeError}=await supabaseClient.from('site_orb_schedule').upsert(other,{onConflict:'orb_id'});if(closeError)throw closeError;}
-   }
-   payload={...current,...payload,is_open:opening};
+   const {error}=await supabaseClient.rpc('admin_set_orb_open',{p_orb_id:id,p_is_open:opening});
+   if(error)throw error;
+   $('adminOrbNote').textContent=opening?'Шар открыт. Остальные шары закрыты.':'Шар закрыт.';
+   await loadAdminOrbControls();await loadOrbSchedule();
+   return;
   }
   const {error}=await supabaseClient.from('site_orb_schedule').upsert(payload,{onConflict:'orb_id'});if(error)throw error;
-  $('adminOrbNote').textContent=save?'Настройки таймера сохранены.':'Доступность шара обновлена.';
+  $('adminOrbNote').textContent='Настройки таймера сохранены.';
   await loadAdminOrbControls();await loadOrbSchedule();await loadOrbStatusStyles();
  }catch(err){$('adminOrbNote').textContent='Ошибка: '+(err.message||err);}
 });
@@ -2780,6 +2785,9 @@ async function init(){
     loadRecords();
   });
   subscribeRealtime();
+  supabaseClient.channel('site-orb-schedule-live')
+    .on('postgres_changes',{event:'*',schema:'public',table:'site_orb_schedule'},()=>loadOrbSchedule())
+    .subscribe();
   announcementChannel=supabaseClient.channel('site-announcements-live')
     .on('postgres_changes',{event:'*',schema:'public',table:'site_announcements'},()=>loadAnnouncements())
     .subscribe();
