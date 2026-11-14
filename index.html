@@ -399,6 +399,42 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .auth-form input{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff;color:var(--ink)}
 @media(max-width:1000px){.orbs{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
+
+/* Поиск в общей панели фильтров */
+.filters .filter-search{
+  width: min(220px, 100%);
+  min-width: 150px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:9px 12px;
+  background:#fff;
+  color:var(--ink);
+  font-size:11px;
+  outline:none;
+}
+.filters .filter-search:focus{border-color:#a58b70;box-shadow:0 0 0 3px rgba(165,139,112,.12)}
+.music-toggle{min-width:40px;width:40px;height:40px;padding:0;font-size:20px;line-height:1}
+.music-toggle.is-playing{background:#806c59;color:#fff;border-color:#806c59}
+.miracle-start-date{
+  display:inline-block;
+  margin:10px 0 0;
+  padding:9px 13px;
+  border:1px solid rgba(108,88,69,.13);
+  border-radius:999px;
+  background:rgba(255,255,255,.55);
+  color:#806c59;
+  font-size:12px;
+  line-height:1.5;
+}
+.miracle-start-date strong{font-weight:800;color:var(--ink)}
+.miracle-card{min-height:100%}
+.miracle-section{width:100%}
+@media(max-width:650px){
+  .filters .filter-search{width:100%;min-width:0;grid-column:1/-1}
+  .music-toggle{width:38px;min-width:38px;height:38px}
+  .miracle-start-date{border-radius:12px;font-size:11px}
+}
+
 @media(max-width:650px){
   .topbar{
     padding:16px;
@@ -951,6 +987,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 </a>
   <div class="top-actions">
   <button class="ghost-btn" id="helpBtn">Помощь</button>
+  <button class="ghost-btn music-toggle" id="musicToggle" type="button" aria-label="Включить музыку" aria-pressed="false" title="Включить музыку">♫</button>
   <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
   <div class="admin-tools" id="adminTools" hidden>
     <button class="ghost-btn" id="addBtn">+ Участник</button>
@@ -971,7 +1008,6 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 <main class="section">
   <div class="section-head">
     <div><h2>Коллекция шаров</h2><p>Выберите шар, чтобы посмотреть участников и количество заработанных билетов</p></div>
-    <input class="search" id="search" type="search" placeholder="⌕ Поиск по ID">
   </div>
   <div class="orbs" id="orbs"></div>
   
@@ -992,6 +1028,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
       <div class="filters">
         <select id="orbFilter" aria-label="Фильтр по шару"><option value="all">Все шары</option></select>
         <select id="socialFilter" aria-label="Фильтр по соцсети"><option value="all">Все соцсети</option><option value="ВК">ВКонтакте</option><option value="ОК">Одноклассники</option></select>
+        <input class="filter-search" id="search" type="search" placeholder="⌕ Поиск по ID" aria-label="Поиск по ID">
       </div>
     </div>
     <div class="table-wrap">
@@ -1011,6 +1048,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
                 В новогоднюю ночь даже самые обычные снежные шары могут хранить необычные секреты.
                 Попробуй встряхнуть свой шар и узнай, что приготовила для тебя эта зима!
             </p>
+            <p class="miracle-start-date">✦ Начало активности: <strong>31 декабря 2026 года, 13:00 (МСК)</strong></p>
 
             <div class="miracle-info">
                 <div class="miracle-stat">
@@ -1163,7 +1201,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 
             <p class="prize-result-description" id="prizeResultDescription"></p>
 
-            <div class="prize-result-warning">
+            <div class="prize-result-warning" id="prizeResultWarning">
                 Сделай скриншот этого окна! На нём должны быть видны твоя награда, ID и социальная сеть. Затем отправь этот скриншот в личные сообщения нашей группы для подтверждения приза ^^
             </div>
 <a
@@ -1200,6 +1238,7 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
   </div>
 </div>
 
+  <audio id="siteMusic" src="assets/jingle-bells-instrumental.mp3" preload="none" loop></audio>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
 <script>
@@ -1396,6 +1435,31 @@ function subscribeRealtime(){
     .on('postgres_changes',{event:'*',schema:'public',table:'entries'},()=>loadRecords())
     .subscribe();
 }
+const siteMusic=$('siteMusic');
+const musicToggle=$('musicToggle');
+musicToggle.addEventListener('click',async()=>{
+  if(siteMusic.paused){
+    try{
+      await siteMusic.play();
+      musicToggle.classList.add('is-playing');
+      musicToggle.textContent='♫';
+      musicToggle.setAttribute('aria-pressed','true');
+      musicToggle.setAttribute('aria-label','Выключить музыку');
+      musicToggle.title='Выключить музыку';
+    }catch(error){
+      musicToggle.title='Не удалось воспроизвести файл. Проверь assets/jingle-bells-instrumental.mp3';
+      console.error('Music playback failed:',error);
+    }
+  }else{
+    siteMusic.pause();
+    musicToggle.classList.remove('is-playing');
+    musicToggle.setAttribute('aria-pressed','false');
+    musicToggle.setAttribute('aria-label','Включить музыку');
+    musicToggle.title='Включить музыку';
+  }
+});
+siteMusic.addEventListener('ended',()=>musicToggle.classList.remove('is-playing'));
+
 $('addBtn').addEventListener('click',openModal);
   
 // Открытие и закрытие окна помощи
@@ -1495,6 +1559,14 @@ async function init(){
   let miracleStatus = null;
   let miracleAdminBusy = false;
 
+  $('miracleGameId').addEventListener('input',()=>{
+    const valid=/^[0-9]{1,30}$/.test($('miracleGameId').value.trim());
+    const data=miracleStatus;
+    if(!data){miracleShakeBtn.disabled=true;return;}
+    const now=Date.now(), start=new Date(data.starts_at).getTime(), end=new Date(data.ends_at).getTime();
+    miracleShakeBtn.disabled=!(valid && data.enabled && now>=start && now<end && Number(data.participants_count||0)<Number(data.capacity||270));
+  });
+
   const prizeDetails = {
     merch: {title:'Мерч проекта!', description:'Поздравляем! Тебе достался мерч нашего проекта.', image:'assets/prize-merch.png'},
     gifts: {title:'Набор новогодних подарков!', description:'Поздравляем! Тебе достался набор новогодних подарков.', image:'assets/prize-gifts.png'},
@@ -1535,7 +1607,8 @@ async function init(){
     else if(count >= capacity) message='Все места заняты. Приём участников завершён.';
     else message='Розыгрыш открыт! Введи свои данные и встряхни шар.';
     $('miracleStatus').textContent=message;
-    miracleShakeBtn.disabled=!(data.enabled && now>=start && now<end && count<capacity);
+    const validGameId=/^[0-9]{1,30}$/.test($('miracleGameId').value.trim());
+    miracleShakeBtn.disabled=!(data.enabled && now>=start && now<end && count<capacity && validGameId);
   }
 
   async function refreshMiracleStatus(){
@@ -1548,6 +1621,7 @@ async function init(){
   function showMiracleResult(prizeType, social, gameId){
     const prize=prizeDetails[prizeType] || prizeDetails.no_prize;
     $('sendPrizeScreenshot').hidden=!prize.image;
+    $('prizeResultWarning').hidden=!prize.image;
     $('prizeResultTitle').textContent='Твой результат';
     $('prizeResultName').textContent=prize.title;
     $('prizeResultDescription').textContent=prize.description;
