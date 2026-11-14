@@ -2065,6 +2065,51 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
  .admin-cabinet-card:hover,.task-card:hover,.market-prize:hover,.help-item:hover{transform:none!important}
 }
 
+
+
+/* Финальная настройка снежной подсветки и пяти бабочек в окне испытаний */
+.task-window:before{
+  left:8px!important;
+  right:8px!important;
+  top:-1px!important;
+  height:15px!important;
+  border-radius:50% 50% 8px 8px / 100% 100% 8px 8px!important;
+  background:
+    radial-gradient(ellipse at 7% 100%,rgba(255,255,255,.96) 0 3px,transparent 4px),
+    radial-gradient(ellipse at 25% 78%,rgba(255,255,255,.78) 0 2px,transparent 3px),
+    radial-gradient(ellipse at 50% 96%,rgba(255,255,255,.94) 0 3px,transparent 4px),
+    radial-gradient(ellipse at 76% 78%,rgba(255,255,255,.78) 0 2px,transparent 3px),
+    radial-gradient(ellipse at 94% 100%,rgba(255,255,255,.9) 0 2px,transparent 3px),
+    linear-gradient(180deg,rgba(244,250,255,.92),rgba(199,225,239,.34) 58%,transparent)!important;
+  filter:drop-shadow(0 2px 5px rgba(210,238,255,.24))!important;
+}
+.task-backdrop .help-butterflies{
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+.task-backdrop .help-butterfly{
+  width:clamp(46px,5vw,74px)!important;
+  opacity:.96!important;
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,.3))!important;
+  animation:butterflyFloat 7s ease-in-out infinite,wingBeat .42s ease-in-out infinite alternate!important;
+}
+.task-backdrop .help-butterfly.b1{left:7%!important;right:auto!important;top:25%!important;bottom:auto!important;animation-delay:-1s,0s!important}
+.task-backdrop .help-butterfly.b2{right:7%!important;left:auto!important;top:29%!important;bottom:auto!important;animation-delay:-3s,-.12s!important}
+.task-backdrop .help-butterfly.b3{left:9%!important;right:auto!important;bottom:13%!important;top:auto!important;animation-delay:-4.5s,-.2s!important}
+.task-backdrop .help-butterfly.b4{right:8%!important;left:auto!important;bottom:12%!important;top:auto!important;animation-delay:-2.2s,-.08s!important}
+.task-backdrop .help-butterfly.b5{left:calc(50% - 18px)!important;right:auto!important;top:7%!important;bottom:auto!important;width:36px!important;animation-delay:-5s,-.16s!important}
+@media(max-width:760px){
+ .task-backdrop .help-butterfly{width:clamp(34px,8vw,48px)!important}
+ .task-backdrop .help-butterfly.b1{left:1%!important;top:19%!important}
+ .task-backdrop .help-butterfly.b2{right:1%!important;top:23%!important}
+ .task-backdrop .help-butterfly.b3{left:2%!important;bottom:8%!important}
+ .task-backdrop .help-butterfly.b4{right:2%!important;bottom:8%!important}
+ .task-backdrop .help-butterfly.b5{top:2%!important;width:28px!important}
+}
+
 </style>
 
 <style id="music-modal-centered-butterflies">
