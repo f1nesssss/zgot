@@ -393,6 +393,45 @@ tbody tr:hover{background:rgba(238,226,210,.35)}
 .admin-row-actions{display:flex;gap:6px;align-items:center}
 .admin-row-actions button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 9px;color:var(--ink);font-size:10px}
 .admin-row-actions button:hover{background:#f1e7da}
+
+/* Музыкальные настройки */
+.music-modal{width:min(440px,100%)}
+.music-control-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:20px 0 14px}
+.music-play-btn{border:0;border-radius:999px;background:#806c59;color:#fff;padding:12px 20px;font-weight:800}
+.music-volume{display:grid;gap:10px;margin-top:16px}
+.music-volume-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)}
+.music-volume input{width:100%;accent-color:#806c59;cursor:pointer}
+.music-status{min-height:18px;color:var(--muted);font-size:11px;margin:12px 0 0}
+/* Интерактивный блок заданий пяти шаров */
+.tasks-section{margin-top:38px;background:rgba(255,255,255,.63);border:1px solid rgba(255,255,255,.95);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.tasks-head{padding:22px 24px 16px}
+.tasks-head h2{font:500 25px Georgia,serif;margin:0}
+.tasks-head p{font-size:11px;color:var(--muted);line-height:1.6;margin:6px 0 0;max-width:760px}
+.task-orb-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:0 24px 18px}
+.task-orb-tab{border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.58);padding:11px 8px;color:var(--ink);font-size:11px;font-weight:800;line-height:1.35;transition:.2s}
+.task-orb-tab:hover{transform:translateY(-2px);background:#fff}
+.task-orb-tab[aria-selected="true"]{background:#806c59;color:#fff;border-color:#806c59;box-shadow:0 7px 18px rgba(87,67,48,.13)}
+.task-orb-tab small{display:block;font-size:9px;font-weight:600;opacity:.78;margin-top:4px}
+.task-panel{padding:20px 24px 24px;border-top:1px solid var(--line)}
+.task-panel-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}
+.task-panel-top h3{font:500 21px Georgia,serif;margin:0}
+.task-panel-top p{font-size:11px;color:var(--muted);margin:5px 0 0;line-height:1.5}
+.task-count{white-space:nowrap;border-radius:999px;background:#f0e5d7;color:#806b56;padding:7px 11px;font-size:10px;font-weight:800}
+.task-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.task-card{position:relative;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.55);padding:16px;min-height:155px;display:flex;flex-direction:column;gap:9px}
+.task-card-number{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#a58d75;font-weight:900}
+.task-card h4{font:600 15px Georgia,serif;margin:0;color:var(--ink)}
+.task-card p{font-size:11px;line-height:1.55;color:var(--muted);margin:0}
+.task-card-foot{margin-top:auto;padding-top:7px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.task-ticket{font-size:10px;font-weight:800;color:#806b56;background:#f0e5d7;padding:6px 9px;border-radius:999px}
+.task-state{font-size:9px;color:var(--muted);font-weight:700}
+.tasks-admin-note{margin:0 24px 20px;padding:11px 13px;border-radius:12px;background:rgba(128,108,89,.08);color:var(--muted);font-size:10px;line-height:1.5}
+body[data-theme="dark"] .task-orb-tab,body[data-theme="dark"] .task-card{background:rgba(255,255,255,.045);color:var(--ink);border-color:var(--line)}
+body[data-theme="dark"] .task-orb-tab[aria-selected="true"]{background:#806c59;color:#fff}
+body[data-theme="dark"] .task-ticket,body[data-theme="dark"] .task-count{background:rgba(255,255,255,.08);color:var(--ink)}
+body[data-theme="dark"] .tasks-admin-note{background:rgba(255,255,255,.05)}
+@media(max-width:760px){.task-orb-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.task-list{grid-template-columns:1fr}.task-card{min-height:0}.task-panel-top{flex-direction:column}.tasks-head,.task-panel{padding-left:17px;padding-right:17px}.task-orb-tabs{padding-left:17px;padding-right:17px}.tasks-admin-note{margin-left:17px;margin-right:17px}}
+
 [hidden]{display:none!important}
 .auth-form{display:grid;gap:12px;margin-top:18px}
 .auth-form label{display:grid;gap:6px;font-size:11px;color:var(--muted);font-weight:800}
@@ -1062,7 +1101,7 @@ body[data-theme="dark"] .close{background:#51453b;color:var(--ink)}
 </a>
   <div class="top-actions">
   <button class="icon-btn notification-toggle" id="notificationsBtn" type="button" aria-label="Открыть уведомления" title="Уведомления">
-    <span aria-hidden="true">♧</span><i class="notification-dot" id="notificationDot" hidden></i>
+    <span aria-hidden="true">🔔</span><i class="notification-dot" id="notificationDot" hidden></i>
   </button>
   <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Включить тёмную тему" title="Тёмная тема" aria-pressed="false">☾</button>
   <button class="ghost-btn" id="helpBtn">Помощь</button>
@@ -1089,6 +1128,25 @@ body[data-theme="dark"] .close{background:#51453b;color:var(--ink)}
     <div><h2>Коллекция шаров</h2><p>Выберите шар, чтобы посмотреть участников и количество заработанных билетов</p></div>
   </div>
   <div class="orbs" id="orbs"></div>
+
+  <section class="tasks-section" id="tasksSection" aria-labelledby="tasksTitle">
+    <div class="tasks-head">
+      <h2 id="tasksTitle">Испытания пяти шаров</h2>
+      <p>У каждого хрустального шара — три задания. Выполняйте их в игре и следите за условиями участия. Выберите шар, чтобы открыть его испытания.</p>
+    </div>
+    <div class="task-orb-tabs" id="taskOrbTabs" role="tablist" aria-label="Выбор новогоднего шара">
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="snow_guest" aria-selected="true">Снежный гость<small>3 испытания</small></button>
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="gift_workshop" aria-selected="false">Подарочная мастерская<small>3 испытания</small></button>
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="gingerbread_house" aria-selected="false">Пряничный домик<small>3 испытания</small></button>
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="ice_castle" aria-selected="false">Ледяной замок<small>3 испытания</small></button>
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="new_year_magic" aria-selected="false">Новогоднее волшебство<small>3 испытания</small></button>
+    </div>
+    <div class="task-panel" id="taskPanel" role="tabpanel" aria-live="polite">
+      <div class="task-panel-top"><div><h3 id="taskOrbTitle">Шар «Снежный гость»</h3><p id="taskOrbDescription">Откройте карточки ниже, чтобы ознакомиться с тремя заданиями этого шара.</p></div><span class="task-count">3 задания</span></div>
+      <div class="task-list" id="taskList"></div>
+    </div>
+    <p class="tasks-admin-note" id="tasksAdminNote" hidden>Административный режим: структура раздела подготовлена. На следующем этапе добавим управление заданиями, публикацией и условиями начисления билетов через общую базу сайта.</p>
+  </section>
   
   <section class="participants" id="participants">
     <div class="participants-head">
@@ -1336,6 +1394,15 @@ body[data-theme="dark"] .close{background:#51453b;color:var(--ink)}
       </form>
     </div>
   </div>
+  <div class="modal-backdrop" id="musicBackdrop">
+    <div class="modal music-modal" role="dialog" aria-modal="true" aria-labelledby="musicTitle">
+      <div class="modal-top"><h3 id="musicTitle">Музыка сайта</h3><button class="close" id="closeMusic" type="button" aria-label="Закрыть">×</button></div>
+      <p class="modal-note">Включите новогоднее музыкальное сопровождение и настройте комфортную громкость.</p>
+      <div class="music-control-row"><span id="musicStateLabel">Музыка выключена</span><button class="music-play-btn" id="musicPlayBtn" type="button">Включить музыку</button></div>
+      <label class="music-volume"><span class="music-volume-line"><strong>Громкость</strong><span id="musicVolumeValue">35%</span></span><input id="musicVolume" type="range" min="0" max="100" value="35" step="1"></label>
+      <p class="music-status" id="musicStatus" aria-live="polite">Музыка будет повторяться автоматически.</p>
+    </div>
+  </div>
   <audio id="siteMusic" src="assets/jingle-bells-instrumental.mp3" preload="none" loop></audio>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
@@ -1527,6 +1594,7 @@ async function updateSession(session){
   isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
   render();
   if(configured)await loadRecords();
+  if($('tasksAdminNote')) $('tasksAdminNote').hidden=!isAdmin;
 }
 function subscribeRealtime(){
   if(!supabaseClient||realtimeChannel)return;
@@ -1639,28 +1707,66 @@ $('announcementForm').addEventListener('submit',async event=>{
 
 const siteMusic=$('siteMusic');
 const musicToggle=$('musicToggle');
-musicToggle.addEventListener('click',async()=>{
-  if(siteMusic.paused){
-    try{
-      await siteMusic.play();
-      musicToggle.classList.add('is-playing');
-      musicToggle.textContent='♫';
-      musicToggle.setAttribute('aria-pressed','true');
-      musicToggle.setAttribute('aria-label','Выключить музыку');
-      musicToggle.title='Выключить музыку';
-    }catch(error){
-      musicToggle.title='Не удалось воспроизвести файл. Проверь assets/jingle-bells-instrumental.mp3';
-      console.error('Music playback failed:',error);
-    }
-  }else{
-    siteMusic.pause();
-    musicToggle.classList.remove('is-playing');
-    musicToggle.setAttribute('aria-pressed','false');
-    musicToggle.setAttribute('aria-label','Включить музыку');
-    musicToggle.title='Включить музыку';
+const musicBackdrop=$('musicBackdrop');
+const musicPlayBtn=$('musicPlayBtn');
+const musicVolume=$('musicVolume');
+const savedMusicVolume=localStorage.getItem('zgot-music-volume');
+siteMusic.volume=savedMusicVolume===null?0.35:Math.max(0,Math.min(1,Number(savedMusicVolume)));
+musicVolume.value=Math.round(siteMusic.volume*100);
+$('musicVolumeValue').textContent=musicVolume.value+'%';
+function syncMusicControls(){
+  const playing=!siteMusic.paused;
+  musicToggle.classList.toggle('is-playing',playing);
+  musicToggle.setAttribute('aria-pressed',String(playing));
+  musicToggle.setAttribute('aria-label',playing?'Настройки музыки':'Открыть настройки музыки');
+  musicToggle.title=playing?'Настройки музыки — воспроизводится':'Настройки музыки';
+  musicPlayBtn.textContent=playing?'Выключить музыку':'Включить музыку';
+  $('musicStateLabel').textContent=playing?'Музыка включена':'Музыка выключена';
+}
+async function startSiteMusic(){
+  try{
+    await siteMusic.play();
+    $('musicStatus').textContent='Музыка воспроизводится и будет повторяться автоматически.';
+  }catch(error){
+    $('musicStatus').textContent='Не удалось загрузить музыку. Проверьте файл assets/jingle-bells-instrumental.mp3.';
+    console.error('Music playback failed:',error);
   }
+  syncMusicControls();
+}
+function stopSiteMusic(){siteMusic.pause();syncMusicControls();$('musicStatus').textContent='Музыка выключена.';}
+musicToggle.addEventListener('click',()=>{musicBackdrop.classList.add('open');syncMusicControls();});
+$('closeMusic').addEventListener('click',()=>musicBackdrop.classList.remove('open'));
+musicBackdrop.addEventListener('click',e=>{if(e.target===musicBackdrop)musicBackdrop.classList.remove('open');});
+musicPlayBtn.addEventListener('click',()=>{if(siteMusic.paused)startSiteMusic();else stopSiteMusic();});
+musicVolume.addEventListener('input',()=>{
+  const value=Number(musicVolume.value);
+  siteMusic.volume=value/100;
+  $('musicVolumeValue').textContent=value+'%';
+  localStorage.setItem('zgot-music-volume',String(siteMusic.volume));
 });
-siteMusic.addEventListener('ended',()=>musicToggle.classList.remove('is-playing'));
+siteMusic.addEventListener('play',syncMusicControls);
+siteMusic.addEventListener('pause',syncMusicControls);
+siteMusic.addEventListener('ended',()=>{if(siteMusic.loop)startSiteMusic();else syncMusicControls();});
+syncMusicControls();
+
+// Переключение пяти наборов испытаний. Содержимое заданий пока демонстрационное.
+const TASK_ORBS=[
+  {id:'snow_guest',name:'Снежный гость'},
+  {id:'gift_workshop',name:'Подарочная мастерская'},
+  {id:'gingerbread_house',name:'Пряничный домик'},
+  {id:'ice_castle',name:'Ледяной замок'},
+  {id:'new_year_magic',name:'Новогоднее волшебство'}
+];
+let selectedTaskOrb='snow_guest';
+function renderTaskPanel(){
+  const orb=TASK_ORBS.find(item=>item.id===selectedTaskOrb)||TASK_ORBS[0];
+  $('taskOrbTitle').textContent=`Шар «${orb.name}»`;
+  $('taskOrbDescription').textContent='В этом шаре предусмотрено три задания. Подробные условия и правила выполнения будут добавлены на следующем этапе.';
+  $('taskList').innerHTML=[1,2,3].map(number=>`<article class="task-card"><span class="task-card-number">Испытание ${number}</span><h4>Задание ${number}</h4><p>Описание задания появится здесь. Здесь будут указаны условия выполнения и важные детали для участников.</p><div class="task-card-foot"><span class="task-ticket">Билеты: уточняется</span><span class="task-state">Скоро подробнее</span></div></article>`).join('');
+  document.querySelectorAll('.task-orb-tab').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.taskOrb===selectedTaskOrb)));
+}
+document.querySelectorAll('.task-orb-tab').forEach(button=>button.addEventListener('click',()=>{selectedTaskOrb=button.dataset.taskOrb;renderTaskPanel();}));
+renderTaskPanel();
 
 $('addBtn').addEventListener('click',openModal);
   
