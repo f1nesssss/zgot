@@ -783,20 +783,15 @@ body[data-theme="dark"] .tasks-admin-note{background:rgba(255,255,255,.05)}
 
 .miracle-orb{
     position:relative;
-    width:min(100%,280px);
+    width:min(100%,300px);
     aspect-ratio:1;
     margin:auto;
     display:grid;
     place-items:center;
-    border:7px solid rgba(255,255,255,.72);
-    border-radius:50%;
-    background:
-        radial-gradient(circle at 30% 25%,rgba(255,255,255,.95),transparent 24%),
-        radial-gradient(circle at 65% 70%,rgba(255,255,255,.65),transparent 35%),
-        linear-gradient(145deg,#e9f5f6,#b9d0d5 55%,#f8eee1);
-    box-shadow:inset -12px -15px 30px rgba(75,105,115,.2),
-               inset 8px 8px 20px white,
-               0 15px 35px rgba(92,72,54,.2);
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
 }
 
 .miracle-orb-glow{
@@ -810,9 +805,11 @@ body[data-theme="dark"] .tasks-admin-note{background:rgba(255,255,255,.05)}
 .miracle-orb-snow{
     position:relative;
     z-index:1;
-    color:white;
-    font-size:100px;
-    text-shadow:0 0 18px white,0 0 35px #b7dce5;
+    display:block;
+    font-family:system-ui,sans-serif;
+    font-size:clamp(150px,19vw,230px);
+    line-height:1;
+    filter:drop-shadow(0 12px 22px rgba(0,0,0,.24)) drop-shadow(0 0 20px rgba(153,215,245,.25));
     animation:miracleFloat 3s ease-in-out infinite;
 }
   .miracle-orb-result{
@@ -866,7 +863,7 @@ body[data-theme="dark"] .tasks-admin-note{background:rgba(255,255,255,.05)}
     }
 }
 
-.miracle-orb-base{
+.miracle-orb-base{display:none;
     position:absolute;
     bottom:-15px;
     width:55%;
@@ -2180,24 +2177,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
     </div>
   </section>
 
-  <section class="tasks-section" id="tasksSection" aria-labelledby="tasksTitle">
-    <div class="tasks-head">
-      <h2 id="tasksTitle">Испытания пяти шаров</h2>
-      <p>У каждого хрустального шара — три задания. Выполняйте их в игре и следите за условиями участия. Выберите шар, чтобы открыть его испытания.</p>
-    </div>
-    <div class="task-orb-tabs" id="taskOrbTabs" role="tablist" aria-label="Выбор новогоднего шара">
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="snow_guest" aria-selected="true">Снежный гость<small>3 испытания</small></button>
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="gift_workshop" aria-selected="false">Подарочная мастерская<small>3 испытания</small></button>
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="gingerbread_house" aria-selected="false">Пряничный домик<small>3 испытания</small></button>
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="ice_castle" aria-selected="false">Ледяной замок<small>3 испытания</small></button>
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="new_year_magic" aria-selected="false">Новогоднее волшебство<small>3 испытания</small></button>
-    </div>
-    <div class="task-panel" id="taskPanel" role="tabpanel" aria-live="polite">
-      <div class="task-panel-top"><div><h3 id="taskOrbTitle">Шар «Снежный гость»</h3><p id="taskOrbDescription">Откройте карточки ниже, чтобы ознакомиться с тремя заданиями этого шара.</p></div><span class="task-count">3 задания</span></div>
-      <div class="task-list" id="taskList"></div>
-    </div>
-    <p class="tasks-admin-note" id="tasksAdminNote" hidden>Административный режим: структура раздела подготовлена. На следующем этапе добавим управление заданиями, публикацией и условиями начисления билетов через общую базу сайта.</p>
-  </section>
+
   
 
 <section class="miracle-section" id="miracleSection">
@@ -2261,7 +2241,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 
         <div class="miracle-orb" id="miracleOrb">
             <div class="miracle-orb-glow"></div>
-            <div class="miracle-orb-snow">❄</div>
+            <div class="miracle-orb-snow" aria-label="Хрустальный шар">🔮</div>
             <div class="miracle-orb-result" id="miracleResult" hidden>
     <div class="miracle-result-content">
         <span class="miracle-result-title"></span>
@@ -2289,6 +2269,27 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 
 </main>
 
+
+
+<!-- Окно испытаний выбранного шара -->
+<div class="task-backdrop" id="taskBackdrop" aria-hidden="true">
+  <div class="help-butterflies" aria-hidden="true">
+    <span class="help-butterfly b1"></span><span class="help-butterfly b2"></span>
+    <span class="help-butterfly b3"></span><span class="help-butterfly b4"></span>
+    <span class="help-butterfly b5"></span>
+  </div>
+  <section class="task-window" role="dialog" aria-modal="true" aria-labelledby="taskOrbTitle">
+    <div class="task-window-head">
+      <div>
+        <div class="market-kicker">✦ Праздничные испытания ✦</div>
+        <h2 id="taskOrbTitle">Шар «Снежный гость»</h2>
+        <p id="taskOrbDescription">В этом шаре предусмотрено три задания.</p>
+      </div>
+      <button class="market-close" id="closeTaskBtn" type="button" aria-label="Закрыть">×</button>
+    </div>
+    <div class="task-list" id="taskList"></div>
+  </section>
+</div>
 
 <div class="market-frost" id="marketFrost" aria-hidden="true"></div>
 <div class="market-backdrop" id="marketBackdrop" aria-hidden="true">
@@ -2604,7 +2605,7 @@ function renderOrbs(){
   }).join('');
   $('orbs').querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{
     if(b.disabled)return;
-    selectedOrb=b.dataset.view;$('orbFilter').value=selectedOrb;renderRows();$('participants').scrollIntoView({behavior:'smooth'});
+    openTaskModal(b.dataset.view);
   }));
 }
 function formatOrbCountdown(ms){const d=Math.floor(ms/86400000),h=Math.floor(ms%86400000/3600000),m=Math.floor(ms%3600000/60000);return `${d} дн. ${String(h).padStart(2,'0')} ч. ${String(m).padStart(2,'0')} мин.`;}
@@ -3042,7 +3043,7 @@ siteMusic.addEventListener('pause',syncMusicControls);
 siteMusic.addEventListener('ended',()=>{if(siteMusic.loop)startSiteMusic();else syncMusicControls();});
 syncMusicControls();
 
-// Переключение пяти наборов испытаний. Содержимое заданий пока демонстрационное.
+// Индивидуальные испытания открываются из кнопки «Открыть» соответствующего шара.
 const TASK_ORBS=[
   {id:'snow_guest',name:'Снежный гость'},
   {id:'gift_workshop',name:'Подарочная мастерская'},
@@ -3050,16 +3051,27 @@ const TASK_ORBS=[
   {id:'ice_castle',name:'Ледяной замок'},
   {id:'new_year_magic',name:'Новогоднее волшебство'}
 ];
-let selectedTaskOrb='snow_guest';
-function renderTaskPanel(){
-  const orb=TASK_ORBS.find(item=>item.id===selectedTaskOrb)||TASK_ORBS[0];
+function renderTaskPanel(orbId){
+  const orb=TASK_ORBS.find(item=>item.id===orbId);
+  if(!orb)return;
   $('taskOrbTitle').textContent=`Шар «${orb.name}»`;
   $('taskOrbDescription').textContent='В этом шаре предусмотрено три задания. Подробные условия и правила выполнения будут добавлены на следующем этапе.';
   $('taskList').innerHTML=[1,2,3].map(number=>`<article class="task-card"><span class="task-card-number">Испытание ${number}</span><h4>Задание ${number}</h4><p>Описание задания появится здесь. Здесь будут указаны условия выполнения и важные детали для участников.</p><div class="task-card-foot"><span class="task-ticket">Максимальное количество билетов: 3</span><span class="task-state">Скоро подробнее</span></div></article>`).join('');
-  document.querySelectorAll('.task-orb-tab').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.taskOrb===selectedTaskOrb)));
 }
-document.querySelectorAll('.task-orb-tab').forEach(button=>button.addEventListener('click',()=>{selectedTaskOrb=button.dataset.taskOrb;renderTaskPanel();}));
-renderTaskPanel();
+function openTaskModal(orbId){
+  renderTaskPanel(orbId);
+  $('taskBackdrop').classList.add('open');
+  $('taskBackdrop').setAttribute('aria-hidden','false');
+  document.body.classList.add('task-modal-open');
+}
+function closeTaskModal(){
+  $('taskBackdrop').classList.remove('open');
+  $('taskBackdrop').setAttribute('aria-hidden','true');
+  document.body.classList.remove('task-modal-open');
+}
+$('closeTaskBtn').addEventListener('click',closeTaskModal);
+$('taskBackdrop').addEventListener('click',event=>{if(event.target===$('taskBackdrop'))closeTaskModal();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('taskBackdrop').classList.contains('open'))closeTaskModal();});
 
 $('addBtn').addEventListener('click',openModal);
   
@@ -3889,6 +3901,43 @@ table th,thead th,.miracle-admin-table th{
 .market-crop-controls label{display:grid;gap:5px}
 .market-crop-controls input[type=range]{width:100%;accent-color:#55a9ce}
 .market-editor-current-image img{max-width:116px;max-height:116px}
+
+/* Индивидуальное окно испытаний шара */
+.task-backdrop{position:fixed;inset:0;z-index:115;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(2,10,20,.82);overflow:hidden}
+.task-backdrop.open{display:flex}
+.task-window{position:relative;z-index:2;width:min(1050px,100%);max-height:90vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:30px;border:1px solid rgba(139,199,226,.32);border-radius:26px;background:linear-gradient(155deg,#17364d,#0b2033);color:#eaf5ff;box-shadow:0 28px 90px rgba(0,0,0,.48),0 0 28px rgba(92,178,220,.12);opacity:0;transform:translateY(18px) scale(.98);transition:opacity .3s ease,transform .35s ease}
+.task-backdrop.open .task-window{opacity:1;transform:translateY(0) scale(1)}
+.task-window-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}
+.task-window-head h2{margin:0 0 8px;font:600 clamp(24px,3vw,34px) Georgia,serif;color:#edf7ff}
+.task-window-head p{margin:0;color:#a9c1d1;line-height:1.6;font-size:14px}
+.task-window .market-kicker{color:#e6b968}
+.task-window .task-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.task-window .task-card{min-width:0;padding:20px;border:1px solid rgba(139,199,226,.22);border-radius:20px;background:rgba(5,22,37,.58);color:#eaf5ff;box-shadow:0 8px 24px rgba(0,0,0,.14)}
+.task-window .task-card-number{color:#e6b968}
+.task-window .task-card h4{color:#edf7ff}
+.task-window .task-card p{color:#a9c1d1}
+.task-window .task-ticket{display:inline-flex;align-items:center;border-radius:999px;padding:7px 11px;background:rgba(47,120,148,.28)!important;color:#dff4ff!important;border:1px solid rgba(143,205,232,.28)!important}
+.task-window .task-state{color:#a9c1d1}
+.task-window .market-close{flex:0 0 auto;background:#24536f!important;color:#f1f9ff!important;border:1px solid rgba(139,199,226,.36)!important}
+.task-backdrop .help-butterflies{z-index:1}
+@media(max-width:760px){
+ .task-backdrop{padding:10px;align-items:center}
+ .task-window{max-height:88dvh;padding:21px 16px;border-radius:22px}
+ .task-window .task-list{grid-template-columns:1fr;gap:11px}
+ .task-window .task-card{padding:17px}
+ .task-window-head h2{font-size:25px}
+}
+
+/* Единая холодная палитра для меток праздничной активности */
+.miracle-start-date,.miracle-rewards span{
+ background:linear-gradient(135deg,#24536f,#2f7894)!important;
+ color:#eef8ff!important;border:1px solid rgba(139,199,226,.36)!important;
+ box-shadow:0 5px 16px rgba(0,12,25,.16)!important;
+}
+.miracle-start-date strong{color:#fff!important}
+.miracle-rewards span{border-radius:999px!important}
+
+body.task-modal-open{overflow:hidden}
 </style>
 </body>
 </html>
