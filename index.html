@@ -1080,6 +1080,43 @@ body[data-theme="dark"] .announcement-reaction{background:rgba(128,108,89,.18);c
 body[data-theme="dark"] .announcement-reaction.is-selected{background:rgba(128,108,89,.48);border-color:#b39a80}
 @media(max-width:650px){.notifications-modal{padding:18px;width:calc(100vw - 18px)}.announcement-list{max-height:55vh}.announcement-card{padding:14px}.holiday-garland{height:27px;padding:0 5px}.holiday-garland span{flex-basis:6px;width:6px;height:9px}.holiday-garland span:nth-child(3n){margin-top:13px}.holiday-garland span:nth-child(5n){margin-top:15px}}
 
+
+/* Единый цвет полосы участников под всеми шарами */
+.orb-meta{background:#806c59!important;color:#fff!important}
+.orb-meta span{color:#fff!important}
+/* Единый выразительный hover для всех интерактивных кнопок */
+button,.ghost-btn,.primary-btn,.icon-btn,.task-orb-tab,.announcement-reaction{transition:background-color .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease,filter .2s ease}
+button:not(:disabled):hover,.ghost-btn:hover,.primary-btn:hover,.icon-btn:hover,.task-orb-tab:hover,.announcement-reaction:hover{filter:brightness(1.09);box-shadow:0 5px 16px rgba(120,94,68,.18);transform:translateY(-1px)}
+button:focus-visible{outline:2px solid #b79a78;outline-offset:3px}
+/* Админские действия — компактная квадратная группа */
+#adminTools{display:grid;grid-template-columns:repeat(2,minmax(150px,1fr));gap:8px;align-items:stretch;min-width:300px}
+#adminTools .ghost-btn{min-height:42px;white-space:normal;padding:9px 13px}
+#adminTools #exportBtn{grid-column:1/-1;justify-self:stretch}
+/* Кнопки шапки имеют одинаковую высоту */
+.top-actions>.ghost-btn,.top-actions>.icon-btn,.top-actions>.music-toggle{min-height:42px;display:inline-flex;align-items:center;justify-content:center}
+/* Сдержанные тематические полосы прокрутки */
+*{scrollbar-width:thin;scrollbar-color:#a58f79 transparent}
+*::-webkit-scrollbar{width:9px;height:9px}
+*::-webkit-scrollbar-track{background:transparent;border-radius:99px}
+*::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#b6a18b,#806c59);border:2px solid transparent;background-clip:padding-box;border-radius:99px}
+body[data-theme="dark"] *{scrollbar-color:#806c59 transparent}
+body[data-theme="dark"] *::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#a18a72,#665343);border:2px solid transparent;background-clip:padding-box}
+.announcement-editor-tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:12px;background:rgba(128,108,89,.07)}
+.announcement-editor-tools button,.announcement-editor-tools select{border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);padding:7px 9px;font-size:12px;min-height:34px}
+.announcement-editor-tools button{font-weight:800;min-width:34px}
+.announcement-editor{min-height:145px;max-height:360px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:13px 14px;background:rgba(255,255,255,.8);color:#332b25;line-height:1.65;outline:none;overflow-wrap:anywhere}
+.announcement-editor:empty:before{content:attr(data-placeholder);color:#95897d}
+.announcement-editor:focus{border-color:#a58b70;box-shadow:0 0 0 3px rgba(165,139,112,.12)}
+body[data-theme="dark"] .announcement-editor{background:#211e1b;color:#f1e8dc}
+.announcement-card .announcement-rich-content{font-size:13px;line-height:1.7;overflow-wrap:anywhere;color:var(--ink)}
+.announcement-rich-content h2{font:600 22px Georgia,serif;margin:12px 0 7px}
+.announcement-rich-content h3{font:600 18px Georgia,serif;margin:10px 0 6px}
+.announcement-rich-content p{margin:0 0 8px;white-space:normal}
+.announcement-card-actions{justify-content:flex-end;gap:7px;flex-wrap:wrap}
+.announcement-edit-btn{border:1px solid rgba(128,108,89,.35);background:rgba(128,108,89,.12);color:var(--ink);border-radius:999px;padding:7px 11px;font-size:10px;font-weight:800}
+.announcement-form.is-editing{border-color:#b69a7b}
+@media(max-width:760px){#adminTools{grid-template-columns:repeat(2,minmax(120px,1fr));min-width:0;width:100%}.top-actions{flex-wrap:wrap}}
+
 </style>
 </head>
 <body>
@@ -1091,7 +1128,7 @@ body[data-theme="dark"] .announcement-reaction.is-selected{background:rgba(128,1
     <div><strong>Здесь говорят о тебе | Аватария</strong></div>
 </a>
   <div class="top-actions">
-  <button class="ghost-btn music-toggle" id="musicToggle" type="button" aria-label="Открыть настройки музыки" aria-pressed="false" title="Настройки музыки">♫<span class="button-sparkles" aria-hidden="true"><i>🎵</i><i>✨</i><i>❄️</i><i>⭐</i><i>🎶</i></span></button>
+  <button class="ghost-btn music-toggle" id="musicToggle" type="button" aria-label="Открыть настройки музыки" aria-pressed="false" title="Настройки музыки">🎵<span class="button-sparkles" aria-hidden="true"><i>🎵</i><i>✨</i><i>❄️</i><i>⭐</i><i>🎶</i></span></button>
   <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Включить тёмную тему" title="Тёмная тема" aria-pressed="false">☾<span class="button-sparkles" aria-hidden="true"><i>🌙</i><i>✨</i><i>❄️</i><i>⭐</i><i>☀️</i></span></button>
   <button class="icon-btn notification-toggle" id="notificationsBtn" type="button" aria-label="Открыть оповещения" title="Оповещения">
     <span class="notification-label">Оповещения</span><i class="notification-dot" id="notificationDot" hidden></i><span class="button-sparkles" aria-hidden="true"><i>💌</i><i>✨</i><i>🔔</i><i>❄️</i><i>⭐</i></span>
@@ -1377,13 +1414,19 @@ body[data-theme="dark"] .announcement-reaction.is-selected{background:rgba(128,1
         <div class="announcement-empty">Загрузка уведомлений…</div>
       </div>
       <form id="announcementForm" class="announcement-form" hidden>
-        <h4>Новое обращение для всех посетителей</h4>
+        <h4 id="announcementFormTitle">Новое обращение для всех посетителей</h4>
         <label>Заголовок<input id="announcementTitle" maxlength="100" required placeholder="Например, Важная информация"></label>
-        <label>Текст обращения<textarea id="announcementMessage" maxlength="2000" rows="4" required placeholder="Напишите сообщение, которое увидят посетители сайта…"></textarea></label>
+        <label>Текст обращения
+          <div class="announcement-editor-tools" aria-label="Форматирование текста">
+            <select id="announcementFont" aria-label="Шрифт"><option value="Georgia">Georgia</option><option value="Arial">Arial</option><option value="Verdana">Verdana</option><option value="Trebuchet MS">Trebuchet MS</option><option value="Times New Roman">Times New Roman</option><option value="Garamond">Garamond</option><option value="Courier New">Courier New</option><option value="system-ui">Системный</option></select>
+            <button type="button" data-editor-command="bold" title="Жирный"><b>B</b></button><button type="button" data-editor-command="italic" title="Курсив"><i>I</i></button><button type="button" data-editor-command="underline" title="Подчёркнутый"><u>U</u></button><button type="button" data-editor-command="formatBlock" data-editor-value="h2" title="Заголовок">H2</button><button type="button" data-editor-command="formatBlock" data-editor-value="h3" title="Подзаголовок">H3</button><button type="button" data-editor-command="insertUnorderedList" title="Маркированный список">• Список</button><button type="button" data-editor-command="removeFormat" title="Убрать оформление">Очистить</button>
+          </div>
+          <div id="announcementEditor" class="announcement-editor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Напишите сообщение, которое увидят посетители сайта…"></div>
+        </label>
         <label>Изображения <span class="announcement-file-help">До 10 изображений, JPG, PNG, WebP или GIF. До 5 МБ каждое.</span><input id="announcementImages" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple></label>
         <label>Размер изображений в публикации<select id="announcementImageSize" class="announcement-image-size"><option value="small">Компактный</option><option value="medium" selected>Средний</option><option value="large">Крупный</option></select></label>
         <div class="announcement-preview" id="announcementImagePreview"></div>
-        <div class="modal-actions"><button class="primary-btn" type="submit" id="publishAnnouncementBtn">Опубликовать</button></div>
+        <div class="modal-actions"><button class="primary-btn" type="submit" id="publishAnnouncementBtn">Опубликовать</button><button class="ghost-btn" type="button" id="cancelAnnouncementEdit" hidden>Отменить редактирование</button></div>
         <p class="announcement-admin-note" id="announcementAdminNote" aria-live="polite"></p>
       </form>
     </div>
@@ -1620,6 +1663,24 @@ themeToggle.addEventListener('click',()=>{
 
 // Общие объявления хранятся в Supabase, чтобы их видели все посетители, а не только один браузер.
 let announcementChannel=null;
+function sanitizeAnnouncementHtml(input){
+  const parser=new DOMParser();const doc=parser.parseFromString(String(input||''),'text/html');
+  const allowed=new Set(['P','BR','STRONG','B','EM','I','U','H2','H3','UL','OL','LI','SPAN','DIV','FONT']);
+  const fonts=new Set(['Georgia','Arial','Verdana','Trebuchet MS','Times New Roman','Garamond','Courier New','system-ui']);
+  function clean(node){
+    if(node.nodeType===Node.TEXT_NODE)return document.createTextNode(node.textContent||'');
+    if(node.nodeType!==Node.ELEMENT_NODE)return document.createDocumentFragment();
+    const tag=node.tagName.toUpperCase();
+    if(!allowed.has(tag)){const fragment=document.createDocumentFragment();[...node.childNodes].forEach(child=>fragment.appendChild(clean(child)));return fragment;}
+    const el=document.createElement(tag==='FONT'?'span':tag.toLowerCase());
+    if(tag==='SPAN'||tag==='FONT'){
+      const font=(node.style.fontFamily||node.getAttribute('face')||'').replace(/["']/g,'').split(',')[0].trim();
+      if(fonts.has(font))el.style.fontFamily=font;
+    }
+    [...node.childNodes].forEach(child=>el.appendChild(clean(child)));return el;
+  }
+  const out=document.createElement('div');[...doc.body.childNodes].forEach(node=>out.appendChild(clean(node)));return out.innerHTML;
+}
 function formatAnnouncementDate(value){
   const date=new Date(value);
   return Number.isNaN(date.getTime())?'':date.toLocaleString('ru-RU',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -1652,8 +1713,10 @@ async function renderAnnouncements(rows){
     const imageMarkup=images.length?`<div class="announcement-images ${sizeClass}">${images.map(url=>`<a href="${escapeHtml(url)}" target="_blank" rel="noopener"><img src="${escapeHtml(url)}" alt="Изображение к объявлению" loading="lazy"></a>`).join('')}</div>`:'';
     const mine=reactionRows.find(r=>String(r.announcement_id)===String(item.id)&&r.visitor_id===visitorId);
     const reactionMarkup=`<div class="announcement-reactions" aria-label="Реакции">${ANNOUNCEMENT_REACTIONS.map(([emoji,label])=>{const count=reactionRows.filter(r=>String(r.announcement_id)===String(item.id)&&r.reaction===emoji).length;return `<button class="announcement-reaction ${mine?.reaction===emoji?'is-selected':''}" type="button" data-announcement-reaction="${escapeHtml(String(item.id))}" data-reaction="${emoji}" aria-pressed="${mine?.reaction===emoji?'true':'false'}" title="${label}"><span>${emoji}</span><span class="reaction-count">${count||''}</span></button>`;}).join('')}</div>`;
-    const deleteMarkup=isAdmin?`<div class="announcement-card-actions"><button class="announcement-delete-btn" type="button" data-delete-announcement="${escapeHtml(String(item.id))}">Удалить для всех</button></div>`:'';
-    return `<article class="announcement-card"><h4>${escapeHtml(item.title)}</h4><p>${escapeHtml(item.message)}</p>${imageMarkup}${reactionMarkup}<time class="announcement-date">${escapeHtml(formatAnnouncementDate(item.created_at))}</time>${deleteMarkup}</article>`;
+    const richMessage=sanitizeAnnouncementHtml(item.message);
+    const editMarkup=isAdmin?`<button class="announcement-edit-btn" type="button" data-edit-announcement="${escapeHtml(String(item.id))}">Редактировать</button>`:'';
+    const actions=isAdmin?`<div class="announcement-card-actions">${editMarkup}<button class="announcement-delete-btn" type="button" data-delete-announcement="${escapeHtml(String(item.id))}">Удалить для всех</button></div>`:'';
+    return `<article class="announcement-card"><h4>${escapeHtml(item.title)}</h4><div class="announcement-rich-content">${richMessage}</div>${imageMarkup}${reactionMarkup}<time class="announcement-date">${escapeHtml(formatAnnouncementDate(item.created_at))}</time>${actions}</article>`;
   }).join('');
   const newest=rows[0]?.created_at||'';
   let seen='';
@@ -1698,6 +1761,16 @@ $('notificationsBackdrop').addEventListener('click',event=>{
 function updateAnnouncementAdminVisibility(){
   $('announcementForm').hidden=!isAdmin;
 }
+let editingAnnouncementId=null;
+const announcementEditor=$('announcementEditor');
+function resetAnnouncementEditor(){editingAnnouncementId=null;$('announcementForm').classList.remove('is-editing');$('announcementFormTitle').textContent='Новое обращение для всех посетителей';$('publishAnnouncementBtn').textContent='Опубликовать';$('cancelAnnouncementEdit').hidden=true;$('announcementTitle').value='';announcementEditor.innerHTML='';$('announcementImageSize').value='medium';announcementImageInput.value='';$('announcementImagePreview').innerHTML='';}
+$('announcementForm').addEventListener('click',event=>{
+  const control=event.target.closest('[data-editor-command]');if(!control)return;
+  const command=control.dataset.editorCommand;announcementEditor.focus();
+  if(command==='formatBlock')document.execCommand(command,false,control.dataset.editorValue);else document.execCommand(command,false,null);
+});
+$('announcementFont').addEventListener('change',event=>{announcementEditor.focus();document.execCommand('fontName',false,event.target.value);});
+$('cancelAnnouncementEdit').addEventListener('click',()=>{resetAnnouncementEditor();$('announcementAdminNote').textContent='Редактирование отменено.';});
 const announcementImageInput=$('announcementImages');
 announcementImageInput.addEventListener('change',()=>{
   const files=Array.from(announcementImageInput.files||[]);
@@ -1734,6 +1807,15 @@ $('announcementList').addEventListener('click',async event=>{
     await loadAnnouncements();
     return;
   }
+  const editButton=event.target.closest('[data-edit-announcement]');
+  if(editButton&&isAdmin&&supabaseClient){
+    const id=editButton.dataset.editAnnouncement;editButton.disabled=true;
+    const {data:item,error}=await supabaseClient.from('site_announcements').select('id,title,message,image_size').eq('id',id).single();
+    editButton.disabled=false;
+    if(error||!item){$('announcementAdminNote').textContent='Не удалось загрузить объявление для редактирования.';return;}
+    editingAnnouncementId=String(item.id);$('announcementTitle').value=item.title||'';announcementEditor.innerHTML=sanitizeAnnouncementHtml(item.message||'');$('announcementImageSize').value=['small','medium','large'].includes(item.image_size)?item.image_size:'medium';
+    $('announcementFormTitle').textContent='Редактирование опубликованного обращения';$('publishAnnouncementBtn').textContent='Сохранить изменения';$('cancelAnnouncementEdit').hidden=false;$('announcementForm').classList.add('is-editing');$('announcementAdminNote').textContent='Новые изображения можно добавить к уже опубликованным.';$('announcementForm').scrollIntoView({behavior:'smooth',block:'nearest'});return;
+  }
   const button=event.target.closest('[data-delete-announcement]');
   if(!button||!isAdmin||!supabaseClient)return;
   const id=button.dataset.deleteAnnouncement;
@@ -1751,31 +1833,33 @@ $('announcementForm').addEventListener('submit',async event=>{
   event.preventDefault();
   if(!isAdmin||!supabaseClient)return;
   const title=$('announcementTitle').value.trim();
-  const message=$('announcementMessage').value.trim();
+  const message=sanitizeAnnouncementHtml(announcementEditor.innerHTML).trim();
   const files=Array.from(announcementImageInput.files||[]);
   const submit=$('publishAnnouncementBtn');
-  if(!title||!message)return;
+  if(!title||!message||message==='<br>'){$('announcementAdminNote').textContent='Заполните заголовок и текст обращения.';return;}
   if(files.length>10){$('announcementAdminNote').textContent='Можно прикрепить не более 10 изображений.';return;}
-  for(const file of files){
-    if(!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)||file.size>5*1024*1024){$('announcementAdminNote').textContent='Формат или размер одного из файлов не подходит.';return;}
-  }
-  submit.disabled=true;$('announcementAdminNote').textContent='Загружаем изображения и публикуем…';
+  if(editingAnnouncementId){const {data:existingImages}=await supabaseClient.from('site_announcements').select('image_urls').eq('id',editingAnnouncementId).single();if((existingImages?.image_urls||[]).length+files.length>10){$('announcementAdminNote').textContent='В публикации может быть не более 10 изображений с учётом уже добавленных.';return;}}
+  for(const file of files){if(!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)||file.size>5*1024*1024){$('announcementAdminNote').textContent='Формат или размер одного из файлов не подходит.';return;}}
+  submit.disabled=true;$('announcementAdminNote').textContent=files.length?'Загружаем изображения…':'Сохраняем обращение…';
   const imageUrls=[];
   for(let i=0;i<files.length;i++){
-    const file=files[i];
-    const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+    const file=files[i];const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
     const path=`${currentUser.id}/${Date.now()}-${i}-${crypto.randomUUID()}.${ext}`;
     const {error:uploadError}=await supabaseClient.storage.from('site-announcement-images').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});
     if(uploadError){console.error('Announcement image upload failed:',uploadError);$('announcementAdminNote').textContent='Не удалось загрузить изображение. Проверь Storage bucket и SQL-права.';submit.disabled=false;return;}
-    const {data:publicData}=supabaseClient.storage.from('site-announcement-images').getPublicUrl(path);
-    if(publicData?.publicUrl)imageUrls.push(publicData.publicUrl);
+    const {data:publicData}=supabaseClient.storage.from('site-announcement-images').getPublicUrl(path);if(publicData?.publicUrl)imageUrls.push(publicData.publicUrl);
   }
-  const {error}=await supabaseClient.from('site_announcements').insert({title,message,image_urls:imageUrls,image_size:$('announcementImageSize').value,created_by:currentUser.id});
+  let result;
+  if(editingAnnouncementId){
+    const {data:old,error:oldError}=await supabaseClient.from('site_announcements').select('image_urls').eq('id',editingAnnouncementId).single();
+    if(oldError){$('announcementAdminNote').textContent='Не удалось получить текущие изображения.';submit.disabled=false;return;}
+    result=await supabaseClient.from('site_announcements').update({title,message,image_urls:[...(old.image_urls||[]),...imageUrls],image_size:$('announcementImageSize').value}).eq('id',editingAnnouncementId);
+  }else{
+    result=await supabaseClient.from('site_announcements').insert({title,message,image_urls:imageUrls,image_size:$('announcementImageSize').value,created_by:currentUser.id});
+  }
   submit.disabled=false;
-  if(error){console.error('Announcement publish failed:',error);$('announcementAdminNote').textContent='Изображения загружены, но объявление не опубликовано. Проверь SQL-настройку таблицы.';return;}
-  $('announcementForm').reset();$('announcementImagePreview').innerHTML='';
-  $('announcementAdminNote').textContent='Обращение опубликовано и доступно всем посетителям.';
-  await loadAnnouncements();
+  if(result.error){console.error('Announcement save failed:',result.error);$('announcementAdminNote').textContent='Не удалось сохранить. Проверьте SQL-права администратора.';return;}
+  const wasEdit=!!editingAnnouncementId;resetAnnouncementEditor();$('announcementAdminNote').textContent=wasEdit?'Изменения опубликованного обращения сохранены.':'Обращение опубликовано и доступно всем посетителям.';await loadAnnouncements();
 });
 
 const siteMusic=$('siteMusic');
