@@ -1387,6 +1387,20 @@ body[data-theme="dark"] .admin-cabinet-window::-webkit-scrollbar-thumb{backgroun
   .admin-cabinet-head .admin-cabinet-actions{justify-content:flex-end}
 }
 
+
+.market-product-badge,.market-product-status{display:inline-flex;margin:4px auto;padding:5px 10px;border-radius:999px;background:rgba(181,143,91,.16);color:var(--accent);font-size:11px;font-weight:800}.market-product-status{background:rgba(128,108,89,.12)}
+.announcement-pinned-label{display:inline-flex;margin-bottom:8px;padding:5px 9px;border-radius:999px;background:rgba(181,143,91,.16);color:var(--accent);font-size:11px;font-weight:800}
+/* Расширенный центр управления администратора */
+.admin-tools-wrap{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.admin-tools-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.admin-tools-head h3{margin:0;font:600 21px Georgia,serif}.admin-tools-head input{width:min(360px,100%);padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:var(--input-bg);color:var(--text)}
+.admin-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-tool-results{margin-top:12px;max-height:260px;overflow:auto;font-size:12px;line-height:1.55;color:var(--muted)}
+.admin-tool-results .audit-row{padding:8px 0;border-top:1px solid var(--line)}.admin-inline-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.admin-inline-actions input[type=date],.admin-cabinet-card input[type=url]{min-width:0;max-width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--text)}
+.admin-stat-strip{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}.admin-stat-strip span{padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.admin-stat-strip b{display:block;font-size:20px}
+.admin-favorites-list{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}.admin-favorites-list button{background:var(--surface-soft)!important;color:var(--text)!important}.admin-orb-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(130px,1fr) auto auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}.admin-orb-row input{min-width:0;width:100%;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--input-bg);color:var(--text)}
+.admin-tool[hidden]{display:none!important}.admin-cabinet-card button.is-favorite{outline:2px solid #b89b6f}.admin-cabinet-card .admin-fav-toggle{padding:5px 9px!important;margin-left:6px;font-size:12px}
+@media(max-width:700px){.admin-tools-grid{grid-template-columns:1fr}.admin-orb-row{grid-template-columns:1fr 1fr}.admin-orb-row button{grid-column:auto}}
+body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-inline-actions input,body[data-theme="dark"] .admin-orb-row input{background:#211f1d;color:#eee6dc;border-color:rgba(235,220,202,.18)}
 </style>
 </head>
 <body>
@@ -1593,6 +1607,8 @@ body[data-theme="dark"] .admin-cabinet-window::-webkit-scrollbar-thumb{backgroun
             <label>Осталось<input id="marketProductRemaining" type="number" min="0" step="1" value="0" required></label>
           </div>
           <label>Цена товара<input id="marketProductPrice" type="text" maxlength="80" placeholder="Например: 150 золотых монет или 5 €"></label>
+          <label>Статус товара<select id="marketProductStatus"><option value="available">Доступен</option><option value="sold_out">Закончился</option><option value="coming_soon">Скоро появится</option><option value="temporarily_unavailable">Временно недоступен</option></select></label>
+          <div class="market-editor-grid"><label>Отметка товара<input id="marketProductBadge" type="text" maxlength="30" placeholder="Новинка / Эксклюзив"></label><label class="market-visibility-option"><input id="marketProductBadgeVisible" type="checkbox"> Показывать отметку</label></div>
           <label class="market-visibility-option"><input id="marketProductVisible" type="checkbox" checked> Отображать награду в списке для посетителей</label>
           <label>Изображение товара<input id="marketProductImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
           <label>Размер изображения в карточке
@@ -1657,6 +1673,18 @@ body[data-theme="dark"] .admin-cabinet-window::-webkit-scrollbar-thumb{backgroun
     <div class="admin-cabinet-actions"><button type="button" id="saveExchangeTimer">Сохранить таймер</button><button type="button" id="hideExchangeTimer">Скрыть таймер</button></div>
     <p class="admin-cabinet-note" id="exchangeTimerAdminNote" aria-live="polite"></p>
    </article>
+  </div>
+  <div class="admin-tools-wrap">
+   <div class="admin-tools-head"><h3>Центр управления</h3><input id="adminToolSearch" type="search" placeholder="Поиск по функциям кабинета…" aria-label="Поиск по функциям кабинета"></div>
+   <div class="admin-tools-favorites"><strong>Избранное</strong><div id="adminFavorites" class="admin-favorites-list"><span>Закрепляйте часто используемые инструменты кнопкой ☆.</span></div></div>
+   <div class="admin-tools-grid">
+    <article class="admin-cabinet-card admin-tool" data-tool="participants"><h3>Участники и дубликаты</h3><p>Фильтр VK/OK, поиск повторяющихся ID между шарами, проверка подозрительных записей.</p><div class="admin-inline-actions"><button type="button" id="adminDuplicatesBtn">Найти дубликаты</button><button type="button" id="adminIntegrityBtn">Проверить целостность</button><button type="button" id="adminHistoryBtn">История начислений</button></div><div id="adminDuplicateResults" class="admin-tool-results" aria-live="polite"></div></article>
+    <article class="admin-cabinet-card admin-tool" data-tool="history"><h3>Журнал действий</h3><p>История изменений участников и товаров: кто, когда и что изменил.</p><div class="admin-inline-actions"><input type="date" id="adminHistoryDate"><button type="button" id="adminLoadHistory">Показать за день</button><button type="button" id="adminLoadAudit">Последние действия</button></div><div id="adminHistoryResults" class="admin-tool-results" aria-live="polite"></div></article>
+    <article class="admin-cabinet-card admin-tool" data-tool="statistics"><h3>Статистика посещений</h3><p>Посещения за сегодня, неделю и месяц, пиковые интервалы и просмотры новостей.</p><div class="admin-stat-strip"><span>Сегодня <b id="adminVisitsToday">—</b></span><span>7 дней <b id="adminVisitsWeek">—</b></span><span>30 дней <b id="adminVisitsMonth">—</b></span></div><button type="button" id="adminLoadAnalytics">Обновить аналитику</button><div id="adminAnalyticsResults" class="admin-tool-results"></div></article>
+    <article class="admin-cabinet-card admin-tool" data-tool="globes"><h3>Таймеры и доступность шаров</h3><p>Управление сроками испытаний. Можно закрыть шар вручную или снова открыть его.</p><div id="adminOrbControls" class="admin-orb-controls"></div><p id="adminOrbNote" class="admin-cabinet-note" aria-live="polite"></p></article>
+    <article class="admin-cabinet-card admin-tool" data-tool="google sheets"><h3>Отчёт в Google Таблицы</h3><p>Создаёт таблицу с участниками, соцсетями, игровыми ID, шарами, билетами и итогами.</p><label for="googleSheetsEndpoint">Адрес Google Apps Script</label><input type="url" id="googleSheetsEndpoint" placeholder="https://script.google.com/macros/s/…/exec"><div class="admin-inline-actions"><button type="button" id="saveGoogleSheetsEndpoint">Сохранить адрес</button><button type="button" id="exportGoogleSheets">Создать Google Таблицу</button></div><p id="googleSheetsNote" class="admin-cabinet-note" aria-live="polite"></p></article>
+    <article class="admin-cabinet-card admin-tool" data-tool="settings"><h3>Настройки кабинета</h3><p>Быстрый поиск по функциям и избранные действия сохраняются в этом браузере.</p><label><input type="checkbox" id="adminNotifyLowStock" checked> Показывать предупреждения о низком остатке наград</label><div id="adminSystemStatus" class="admin-tool-results">Проверка состояния разделов…</div></article>
+   </div>
   </div>
  </section>
 </div>
@@ -2069,7 +2097,7 @@ async function renderAnnouncements(rows){
   const {data:reactionData,error:reactionError}=await supabaseClient.from('site_announcement_reactions')
     .select('announcement_id,visitor_id,reaction').in('announcement_id',ids);
   if(!reactionError)reactionRows=reactionData||[];
-  const {data:pollData,error:pollError}=await supabaseClient.from('site_announcement_polls').select('id,announcement_id,question,options').in('announcement_id',ids);
+  const {data:pollData,error:pollError}=await supabaseClient.from('site_announcement_polls').select('id,announcement_id,question,options,closes_at,is_closed').in('announcement_id',ids);
   const polls=!pollError?(pollData||[]):[];
   const {data:voteData,error:voteError}=await supabaseClient.from('site_announcement_poll_votes').select('poll_id,visitor_id,option_index').in('poll_id',polls.map(p=>p.id));
   const votes=!voteError?(voteData||[]):[];
@@ -2087,8 +2115,8 @@ async function renderAnnouncements(rows){
       const pollVotes=votes.filter(v=>String(v.poll_id)===String(poll.id));
       const myVote=pollVotes.find(v=>v.visitor_id===visitorId);
       const total=pollVotes.length;
-      if(myVote){
-        pollMarkup=`<section class="poll-card" data-poll-id="${escapeHtml(String(poll.id))}"><h5>${escapeHtml(poll.question)}</h5><div class="poll-results">${(poll.options||[]).map((option,index)=>{const count=pollVotes.filter(v=>Number(v.option_index)===index).length;const pct=total?Math.round(count/total*100):0;return `<div class="poll-result-row"><span>${escapeHtml(option)}</span><b>${pct}% · ${count}</b><div class="poll-result-track"><i style="width:${pct}%"></i></div></div>`;}).join('')}</div><small class="announcement-date">Всего голосов: ${total}</small></section>`;
+      if(myVote||pollClosed){
+        pollMarkup=`<section class="poll-card" data-poll-id="${escapeHtml(String(poll.id))}"><h5>${escapeHtml(poll.question)}</h5><div class="poll-results">${(poll.options||[]).map((option,index)=>{const count=pollVotes.filter(v=>Number(v.option_index)===index).length;const pct=total?Math.round(count/total*100):0;return `<div class="poll-result-row"><span>${escapeHtml(option)}</span><b>${pct}% · ${count}</b><div class="poll-result-track"><i style="width:${pct}%"></i></div></div>`;}).join('')}</div><small class="announcement-date">${pollClosed?'Опрос закрыт · ':''}Всего голосов: ${total}</small></section>`;
       }else{
         pollMarkup=`<section class="poll-card" data-poll-id="${escapeHtml(String(poll.id))}"><h5>${escapeHtml(poll.question)}</h5>${(poll.options||[]).map((option,index)=>`<label class="poll-choice"><input type="radio" name="poll-${escapeHtml(String(poll.id))}" value="${index}"><span>${escapeHtml(option)}</span></label>`).join('')}<button type="button" class="poll-vote-btn" data-poll-vote="${escapeHtml(String(poll.id))}">Проголосовать</button><small class="announcement-date">Участников: ${total}</small></section>`;
       }
@@ -2096,7 +2124,7 @@ async function renderAnnouncements(rows){
     const richMessage=sanitizeAnnouncementHtml(item.message);
     const editMarkup=isAdmin?`<button class="announcement-edit-btn" type="button" data-edit-announcement="${escapeHtml(String(item.id))}">Редактировать</button>`:'';
     const actions=isAdmin?`<div class="announcement-card-actions">${editMarkup}<button class="announcement-delete-btn" type="button" data-delete-announcement="${escapeHtml(String(item.id))}">Удалить для всех</button></div>`:'';
-    return `<article class="announcement-card"><h4>${escapeHtml(item.title)}</h4><div class="announcement-rich-content">${richMessage}</div>${imageMarkup}${pollMarkup}${reactionMarkup}<time class="announcement-date">${escapeHtml(formatAnnouncementDate(item.created_at))}</time>${actions}</article>`;
+    return `<article class="announcement-card">${item.is_pinned?'<div class="announcement-pinned-label">📌 Закреплено</div>':''}<h4>${escapeHtml(item.title)}</h4><div class="announcement-rich-content">${richMessage}</div>${imageMarkup}${pollMarkup}${reactionMarkup}<time class="announcement-date">${escapeHtml(formatAnnouncementDate(item.created_at))}</time>${actions}</article>`;
   }).join('');
   const newest=rows[0]?.created_at||'';
   let seen='';
@@ -2113,13 +2141,14 @@ async function loadAnnouncements(){
     return;
   }
   const {data,error}=await supabaseClient.from('site_announcements')
-    .select('id,title,message,image_urls,image_size,created_at').order('created_at',{ascending:false}).limit(30);
+    .select('id,title,message,image_urls,image_size,created_at,is_pinned,category_id').order('is_pinned',{ascending:false}).order('created_at',{ascending:false}).limit(30);
   if(error){
     console.error('site_announcements:',error);
     list.innerHTML='<div class="announcement-empty">Не удалось загрузить объявления. Возможно, требуется выполнить SQL-настройку уведомлений.</div>';
     return;
   }
   renderAnnouncements(data||[]);
+  try{const visitorId=getAnnouncementVisitorId();const ids=(data||[]).map(x=>x.id);if(ids.length){await supabaseClient.from('site_announcement_views').upsert(ids.map(id=>({announcement_id:id,visitor_id:visitorId})),{onConflict:'announcement_id,visitor_id,view_day',ignoreDuplicates:true});}}catch(viewError){console.warn('Announcement view tracking:',viewError.message||viewError);}
 }
 $('notificationsBtn').addEventListener('click',async()=>{
   $('notificationsBackdrop').classList.add('open');
@@ -2394,7 +2423,7 @@ function renderAdminScoreStats(){
   if(list){const rows=[...grouped.entries()].sort((a,b)=>b[1]-a[1]);list.innerHTML=rows.length?rows.map(([name,score])=>`<div>${escapeHtml(name)} — <strong>${score}</strong></div>`).join(''):'Нет данных.';}
 }
 const cabinetBackdrop=$('adminCabinetBackdrop');
-$('adminCabinetBtn')?.addEventListener('click',async()=>{if(!isAdmin)return;cabinetBackdrop.classList.add('open');cabinetBackdrop.setAttribute('aria-hidden','false');renderAdminScoreStats();await loadAdminVisitCount();await loadExchangeTimer(true);});
+$('adminCabinetBtn')?.addEventListener('click',async()=>{if(!isAdmin)return;cabinetBackdrop.classList.add('open');cabinetBackdrop.setAttribute('aria-hidden','false');renderAdminScoreStats();await loadAdminVisitCount();await loadExchangeTimer(true);initAdminTools();});
 function closeAdminCabinet(){cabinetBackdrop?.classList.remove('open');cabinetBackdrop?.setAttribute('aria-hidden','true');}
 $('closeAdminCabinet')?.addEventListener('click',closeAdminCabinet);
 $('adminLogoutBtn')?.addEventListener('click',async()=>{if(!isAdmin||!supabaseClient)return;await supabaseClient.auth.signOut();await updateSession(null);closeAdminCabinet();});
@@ -2445,6 +2474,47 @@ async function countSiteVisit(){
  if(!supabaseClient)return;
  const {error}=await supabaseClient.from('site_visits').insert({});
  if(error)console.warn('Site visit was not counted:',error.message);
+}
+
+// Дополнительные инструменты администратора. Все запросы выполняются только после проверки isAdmin.
+function adminOnly(){if(!isAdmin||!supabaseClient){throw new Error('Доступно только авторизованному администратору.');}}
+const adminOut=(id,html)=>{const n=$(id);if(n)n.innerHTML=html;};
+const safeDate=d=>d?new Date(d).toLocaleString('ru-RU'):'—';
+async function loadAdminAudit(date=null){
+ try{adminOnly();let q=supabaseClient.from('admin_audit_log').select('*').order('created_at',{ascending:false}).limit(100);if(date){const a=new Date(date+'T00:00:00');const b=new Date(date+'T23:59:59.999');q=q.gte('created_at',a.toISOString()).lte('created_at',b.toISOString());}const {data,error}=await q;if(error)throw error;adminOut('adminHistoryResults',(data||[]).length?(data||[]).map(x=>`<div class="audit-row"><b>${escapeHtml(x.table_name||'—')} · ${escapeHtml(x.operation||'')}</b><br>${escapeHtml(x.description||'Изменение записи')}<br><small>${escapeHtml(safeDate(x.created_at))} · ${escapeHtml(x.actor_email||x.actor_id||'система')}</small></div>`).join(''):'Записей за этот период нет.');}catch(e){adminOut('adminHistoryResults',`<span>${escapeHtml(e.message||String(e))}</span>`);}
+}
+async function findAdminDuplicates(){
+ try{adminOnly();const map=new Map();records.forEach(r=>{const k=(r.social+'|'+String(r.id).trim()).toLowerCase();if(!map.has(k))map.set(k,[]);map.get(k).push(r);});const dup=[...map.values()].filter(a=>a.length>1);adminOut('adminDuplicateResults',dup.length?dup.map(a=>`<div class="audit-row"><b>${escapeHtml(a[0].social)} · ID ${escapeHtml(a[0].id)}</b><br>${a.length} записи: ${a.map(r=>escapeHtml(orbById(r.orb)?.name||r.orb)).join(', ')}<br><small>Сумма билетов: ${a.reduce((n,r)=>n+Number(r.tickets||0),0)}</small></div>`).join(''):'Повторяющихся ID не найдено.');}catch(e){adminOut('adminDuplicateResults',escapeHtml(e.message||String(e)));}
+}
+async function checkAdminIntegrity(){
+ try{adminOnly();const bad=records.filter(r=>!r.id||!String(r.id).trim()||!Number.isInteger(Number(r.tickets))||Number(r.tickets)<0||!orbById(r.orb));const dup=new Map();records.forEach(r=>{const k=r.social+'|'+r.id;if(!dup.has(k))dup.set(k,[]);dup.get(k).push(r);});const repeated=[...dup.values()].filter(x=>x.length>1).length;adminOut('adminDuplicateResults',`<div class="audit-row"><b>Проверка завершена</b><br>Записей: ${records.length}<br>Пустые или некорректные значения: ${bad.length}<br>Группы повторяющихся ID между шарами: ${repeated}<br><small>Проверка ничего не исправляет и не удаляет автоматически.</small></div>`+(bad.length?bad.map(r=>`<div class="audit-row">Проблемная запись: ${escapeHtml(r.social)} · ${escapeHtml(r.id)} · ${escapeHtml(r.orb)}</div>`).join(''):''));}catch(e){adminOut('adminDuplicateResults',escapeHtml(e.message||String(e)));}
+}
+async function loadAdminAnalytics(){
+ try{adminOnly();const {data,error}=await supabaseClient.from('site_visits').select('created_at').order('created_at',{ascending:false}).limit(10000);if(error)throw error;const now=new Date(),day=86400000;const rows=data||[];const today=rows.filter(x=>new Date(x.created_at)>=new Date(now.getFullYear(),now.getMonth(),now.getDate())).length;const week=rows.filter(x=>now-new Date(x.created_at)<7*day).length;const month=rows.filter(x=>now-new Date(x.created_at)<30*day).length;$('adminVisitsToday').textContent=today;$('adminVisitsWeek').textContent=week;$('adminVisitsMonth').textContent=month;const bins=new Map();rows.forEach(x=>{const d=new Date(x.created_at);d.setMinutes(Math.floor(d.getMinutes()/15)*15,0,0);const k=d.toLocaleString('ru-RU');bins.set(k,(bins.get(k)||0)+1);});const peak=[...bins.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);adminOut('adminAnalyticsResults',peak.length?'<b>Пиковые 15-минутные интервалы:</b>'+peak.map(([t,n])=>`<div class="audit-row">${escapeHtml(t)} — ${n} посещ.</div>`).join(''):'Пока нет данных.');}catch(e){adminOut('adminAnalyticsResults',escapeHtml(e.message||String(e)));}
+}
+async function loadAdminOrbControls(){
+ try{adminOnly();const {data,error}=await supabaseClient.from('site_orb_schedule').select('*').order('orb_id');if(error)throw error;const host=$('adminOrbControls');host.innerHTML=ORBS.map(o=>{const x=(data||[]).find(z=>z.orb_id===o.id)||{};return `<div class="admin-orb-row"><strong>${escapeHtml(o.name)}</strong><input type="datetime-local" data-orb-end="${o.id}" value="${x.ends_at?new Date(x.ends_at).toLocaleString('sv-SE').replace(' ','T').slice(0,16):''}" aria-label="Срок шара ${escapeHtml(o.name)}"><button type="button" data-orb-save="${o.id}">Сохранить</button><button type="button" data-orb-toggle="${o.id}" data-open="${x.is_open===false?'0':'1'}">${x.is_open===false?'Открыть':'Закрыть'}</button></div>`;}).join('');}catch(e){$('adminOrbControls').textContent='Не удалось загрузить настройки шаров: '+(e.message||e);}
+}
+$('adminOrbControls')?.addEventListener('click',async e=>{const save=e.target.closest('[data-orb-save]'),toggle=e.target.closest('[data-orb-toggle]');if(!save&&!toggle)return;try{adminOnly();const id=(save||toggle).dataset.orbSave||(save||toggle).dataset.orbToggle;const end=$(`adminOrbControls`).querySelector(`[data-orb-end="${id}"]`).value;let payload={orb_id:id,updated_at:new Date().toISOString()};if(save){if(!end){$('adminOrbNote').textContent='';}payload.ends_at=end?new Date(end).toISOString():null;}else payload.is_open=toggle.dataset.open==='0';const {error}=await supabaseClient.from('site_orb_schedule').upsert(payload,{onConflict:'orb_id'});if(error)throw error;await loadAdminOrbControls();$('adminOrbNote').textContent='Настройки шара сохранены.';}catch(err){$('adminOrbNote').textContent='Ошибка: '+(err.message||err);}});
+let adminToolsInitialized=false;
+function initAdminTools(){
+ if(!isAdmin)return;
+ if(adminToolsInitialized){loadAdminOrbControls();loadAdminAnalytics();loadAdminAudit();return;}
+ adminToolsInitialized=true;
+ try{$('googleSheetsEndpoint').value=localStorage.getItem('zgot-google-sheets-endpoint')||'';$('adminNotifyLowStock').checked=localStorage.getItem('zgot-admin-low-stock')!=='false';}catch(e){}
+ const favKey='zgot-admin-favorites';let fav=[];try{fav=JSON.parse(localStorage.getItem(favKey)||'[]');}catch(e){}
+ document.querySelectorAll('.admin-tool').forEach(card=>{const h=card.querySelector('h3');if(!h||card.querySelector('.admin-fav-toggle'))return;const b=document.createElement('button');b.type='button';b.className='admin-fav-toggle';b.textContent=fav.includes(card.dataset.tool)?'★':'☆';b.title='Добавить или убрать из избранного';h.appendChild(b);b.addEventListener('click',()=>{fav=fav.includes(card.dataset.tool)?fav.filter(x=>x!==card.dataset.tool):[...fav,card.dataset.tool];try{localStorage.setItem(favKey,JSON.stringify(fav));}catch(e){}b.textContent=fav.includes(card.dataset.tool)?'★':'☆';renderAdminFavorites(fav);});});renderAdminFavorites(fav);
+ $('adminToolSearch').oninput=()=>{const q=$('adminToolSearch').value.trim().toLowerCase();document.querySelectorAll('.admin-tool').forEach(c=>c.hidden=!!q&&!((c.innerText||'').toLowerCase().includes(q)));};
+ $('adminDuplicatesBtn').onclick=findAdminDuplicates;$('adminIntegrityBtn').onclick=checkAdminIntegrity;$('adminHistoryBtn').onclick=()=>loadAdminAudit();$('adminLoadHistory').onclick=()=>loadAdminAudit($('adminHistoryDate').value||null);$('adminLoadAudit').onclick=()=>loadAdminAudit();$('adminLoadAnalytics').onclick=loadAdminAnalytics;
+ $('adminNotifyLowStock').onchange=()=>{try{localStorage.setItem('zgot-admin-low-stock',String($('adminNotifyLowStock').checked));}catch(e){}};
+ $('saveGoogleSheetsEndpoint').onclick=()=>{const url=$('googleSheetsEndpoint').value.trim();try{if(url&&!new URL(url).hostname.endsWith('google.com')&&!new URL(url).hostname.endsWith('googleusercontent.com'))throw new Error();localStorage.setItem('zgot-google-sheets-endpoint',url);$('googleSheetsNote').textContent='Адрес сохранён в этом браузере.';}catch(e){$('googleSheetsNote').textContent='Укажите корректный URL опубликованного Google Apps Script.';}};
+ $('exportGoogleSheets').onclick=exportToGoogleSheets;
+ loadAdminOrbControls();loadAdminAnalytics();loadAdminAudit();
+ $('adminSystemStatus').innerHTML='<div class="audit-row">Участники: подключены</div><div class="audit-row">Розыгрыш: '+(supabaseClient?'подключён':'нет подключения')+'</div><div class="audit-row">Ярмарка: проверяется при открытии</div><div class="audit-row">Новости: подключены</div>';
+}
+function renderAdminFavorites(fav){const host=$('adminFavorites');if(!host)return;const cards=[...document.querySelectorAll('.admin-tool')].filter(c=>fav.includes(c.dataset.tool));host.innerHTML=cards.length?cards.map(c=>`<button type="button" data-fav-tool="${escapeHtml(c.dataset.tool)}">${escapeHtml(c.querySelector('h3').childNodes[0].textContent.trim())}</button>`).join(''):'<span>Закрепляйте часто используемые инструменты кнопкой ☆.</span>';host.querySelectorAll('[data-fav-tool]').forEach(b=>b.onclick=()=>{const c=document.querySelector(`.admin-tool[data-tool="${b.dataset.favTool}"]`);if(c){c.hidden=false;c.scrollIntoView({behavior:'smooth',block:'center'});}});}
+async function exportToGoogleSheets(){
+ try{adminOnly();const url=$('googleSheetsEndpoint').value.trim();if(!url)throw new Error('Сначала укажите адрес Google Apps Script.');const {data:sessionData}=await supabaseClient.auth.getSession();const token=sessionData?.session?.access_token;if(!token)throw new Error('Сессия администратора истекла. Войдите заново.');$('googleSheetsNote').textContent='Формируем отчёт…';const entries=records.map(r=>({orb:orbById(r.orb)?.name||r.orb,social:r.social,id:String(r.id),tickets:Number(r.tickets||0)}));const response=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({access_token:token,entries,generated_at:new Date().toISOString(),project:'ЗГОТ — Новогоднее чудо'})});const result=await response.json();if(!response.ok||!result.success)throw new Error(result.message||'Google Apps Script не подтвердил создание таблицы.');$('googleSheetsNote').innerHTML=`Отчёт создан: <a href="${escapeHtml(result.url)}" target="_blank" rel="noopener">Открыть Google Таблицу</a>`;}catch(e){$('googleSheetsNote').textContent='Не удалось создать таблицу: '+(e.message||e);}
 }
 
 async function init(){
@@ -2803,16 +2873,19 @@ prizeResultBackdrop.addEventListener('click', (event) => {
  function admin(){return Boolean(window.isAdmin || (typeof isAdmin!=='undefined'&&isAdmin));}
  function render(){
   if(adminBar)adminBar.hidden=!admin();
-  const visibleProducts=products.filter(p=>admin()||p.is_visible!==false);
+  const visibleProducts=products.filter(p=>admin()||p.is_visible!==false).sort((a,b)=>Number(a.sort_order||a.id)-Number(b.sort_order||b.id));
   grid.innerHTML=visibleProducts.map(p=>`<article class="market-prize ${p.is_visible===false?'is-hidden-product':''}" data-product="${p.id}">
    ${p.image_url?`<img class="market-prize-image size-${esc(p.image_size||'medium')}" src="${esc(p.image_url)}" alt="${esc(p.title)}">`:`<div class="market-prize-art">${esc(p.icon||'🎁')}</div>`}
    <strong>${esc(p.title)}</strong>
+   ${p.badge&&p.badge_visible?`<span class="market-product-badge">${esc(p.badge)}</span>`:''}
+   ${p.status&&p.status!=='available'?`<span class="market-product-status">${({sold_out:'Закончился',coming_soon:'Скоро появится',temporarily_unavailable:'Временно недоступен'})[p.status]||''}</span>`:''}
    ${p.price?`<div class="market-price">${esc(p.price)}</div>`:''}
    <small>${esc((p.description||'Скоро здесь появится описание').replace(/<[^>]*>/g,'').slice(0,100))}</small>
    <div class="market-stock">${Number(p.remaining_quantity)>0?`Осталось: ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)}`:(Number(p.total_quantity)>0?'Тираж закончился':'Тираж пока не указан')}</div>
    ${p.is_visible===false&&admin()?'<span class="market-hidden-label">Скрыто от посетителей</span>':''}
    <div class="market-prize-actions"><button type="button" class="market-view-btn" data-market-view="${p.id}">Посмотреть<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>${admin()?`<button type="button" class="market-edit-btn" data-market-edit="${p.id}">Изменить</button>`:''}</div>
   </article>`).join('');
+  grid.querySelectorAll('.market-prize').forEach(card=>{if(admin()){card.draggable=true;card.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',card.dataset.product);card.classList.add('is-dragging');});card.addEventListener('dragend',()=>card.classList.remove('is-dragging'));card.addEventListener('dragover',e=>e.preventDefault());card.addEventListener('drop',async e=>{e.preventDefault();const from=Number(e.dataTransfer.getData('text/plain')),to=Number(card.dataset.product);if(!from||from===to)return;const ordered=[...grid.querySelectorAll('.market-prize')].map(x=>Number(x.dataset.product));const a=ordered.indexOf(from),b=ordered.indexOf(to);ordered.splice(a,1);ordered.splice(b,0,from);const updates=ordered.map((id,index)=>({id,sort_order:index+1}));for(const row of updates){const {error}=await supabaseClient.from('market_products').update({sort_order:row.sort_order}).eq('id',row.id);if(error){console.warn('Product order save failed:',error.message);break;}}products=products.map(p=>({...p,sort_order:ordered.indexOf(Number(p.id))+1}));render();});}});
   grid.querySelectorAll('[data-market-view]').forEach(b=>b.addEventListener('click',()=>showDetail(Number(b.dataset.marketView))));
   grid.querySelectorAll('[data-market-edit]').forEach(b=>b.addEventListener('click',()=>openEditor(Number(b.dataset.marketEdit))));
  }
@@ -2847,6 +2920,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
   $m('marketProductTotal').value=Number(p.total_quantity)||0;
   $m('marketProductRemaining').value=Number(p.remaining_quantity)||0;
   $m('marketProductPrice').value=p.price||'';
+  $m('marketProductStatus').value=p.status||'available';$m('marketProductBadge').value=p.badge||'';$m('marketProductBadgeVisible').checked=!!p.badge_visible;
   $m('marketProductVisible').checked=p.is_visible!==false;
   $m('marketProductImageSize').value=p.image_size||'medium';
   $m('marketProductImage').value='';
@@ -2876,7 +2950,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
    if(upErr){note.textContent='Не удалось загрузить изображение: '+upErr.message;return;}
    const {data:pub}=supabaseClient.storage.from('zgot-market-images').getPublicUrl(path);imageUrl=pub.publicUrl;
   }
-  const payload={id,title:$m('marketProductTitle').value.trim(),description:$m('marketProductDescription').value.trim(),total_quantity:total,remaining_quantity:remaining,price:$m('marketProductPrice').value.trim(),is_visible:$m('marketProductVisible').checked,image_url:imageUrl,image_size:$m('marketProductImageSize').value,updated_at:new Date().toISOString()};
+  const payload={id,title:$m('marketProductTitle').value.trim(),description:$m('marketProductDescription').value.trim(),total_quantity:total,remaining_quantity:remaining,price:$m('marketProductPrice').value.trim(),status:$m('marketProductStatus').value,badge:$m('marketProductBadge').value.trim(),badge_visible:$m('marketProductBadgeVisible').checked,is_visible:$m('marketProductVisible').checked,image_url:imageUrl,image_size:$m('marketProductImageSize').value,updated_at:new Date().toISOString()};
   const {error}=await supabaseClient.from('market_products').upsert(payload,{onConflict:'id'});
   if(error){note.textContent='Не удалось сохранить: '+error.message;return;}
   products=products.map(p=>Number(p.id)===id?{...p,...payload}:p);
