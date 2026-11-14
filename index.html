@@ -1407,12 +1407,16 @@ body[data-theme="dark"] .admin-tools-head input,body[data-theme="dark"] .admin-i
 .orb-schedule-status strong{font-size:12px;color:var(--ink)}
 .orb-schedule-status.is-closed strong{color:#c47a70}
 body[data-theme="dark"] .orb-schedule-status strong{color:var(--ink)}
-.admin-orb-row{grid-template-columns:minmax(150px,1.15fr) minmax(170px,1fr) minmax(150px,1fr) auto auto;gap:9px}
-.admin-orb-row .orb-admin-fields{display:grid;gap:5px;min-width:0}
+.admin-orb-row{grid-template-columns:minmax(135px,1fr) minmax(230px,1.55fr) minmax(190px,1.25fr) 46px minmax(112px,auto);gap:10px}
+.admin-orb-row .orb-admin-fields{display:grid;gap:5px;min-width:0;overflow:hidden}
 .admin-orb-row .orb-admin-fields label{display:flex;align-items:center;gap:7px;margin:0;font-size:11px}
-.admin-orb-row .orb-admin-fields input[type=text]{margin:0}
+.admin-orb-row .orb-admin-fields input[type=text]{margin:0;min-width:0;width:100%;max-width:100%;font-size:14px;text-overflow:ellipsis}
 .admin-orb-row .orb-admin-fields input[type=checkbox]{width:15px;height:15px;margin:0;accent-color:#806c59}
-@media(max-width:900px){.admin-orb-row{grid-template-columns:1fr 1fr}.admin-orb-row>strong{grid-column:1/-1}.admin-orb-row .orb-admin-fields{grid-column:1/-1}}
+.admin-orb-row [data-orb-save]{width:44px;min-width:44px;height:44px;padding:0!important;display:inline-flex;align-items:center;justify-content:center;font-size:0!important;background:#477d52!important;color:#fff!important;border:1px solid #5d9868!important;border-radius:13px!important;box-shadow:0 3px 10px rgba(49,105,61,.18)}
+.admin-orb-row [data-orb-save]::before{content:"✓";font-size:25px;font-weight:900;line-height:1}
+.admin-orb-row [data-orb-toggle]{min-width:112px;white-space:normal;padding:10px 13px!important;font-size:13px!important;line-height:1.2}
+@media(max-width:1100px){.admin-orb-row{grid-template-columns:minmax(130px,1fr) minmax(210px,1.5fr) minmax(180px,1.2fr) 44px minmax(100px,auto);gap:7px}}
+@media(max-width:900px){.admin-orb-row{grid-template-columns:1fr 1fr}.admin-orb-row>strong{grid-column:1/-1}.admin-orb-row .orb-admin-fields{grid-column:1/-1}.admin-orb-row [data-orb-save]{grid-column:1}.admin-orb-row [data-orb-toggle]{grid-column:2}}
 
 .modal-backdrop{z-index:220!important}
 /* Кабинет администратора: широкая компоновка без горизонтальной прокрутки */
@@ -2637,7 +2641,7 @@ async function loadAdminOrbControls(){
     <strong>${escapeHtml(o.name)}</strong>
     <div class="orb-admin-fields"><label><input type="checkbox" data-orb-enabled="${o.id}" ${x.is_enabled?'checked':''}> Показывать таймер</label><input type="text" data-orb-label="${o.id}" maxlength="100" value="${escapeHtml(x.label||'До окончания испытаний осталось')}" aria-label="Подпись таймера"></div>
     <input type="datetime-local" data-orb-end="${o.id}" value="${localEnd}" aria-label="Срок шара ${escapeHtml(o.name)}">
-    <button type="button" data-orb-save="${o.id}">Сохранить</button>
+    <button type="button" data-orb-save="${o.id}" aria-label="Сохранить настройки шара ${escapeHtml(o.name)}" title="Сохранить">✓</button>
     <button type="button" data-orb-toggle="${o.id}" data-open="${x.is_open===false?'0':'1'}">${x.is_open===false?'Открыть шар':'Закрыть шар'}</button>
    </div>`;
   }).join('');
