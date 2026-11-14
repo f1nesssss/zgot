@@ -1994,6 +1994,7 @@ function renderOrbs(){
     const expired=timerOn&&remaining<=0;
     const isOpen=schedule.is_open===true&&activeOrbId===o.id&&!expired;
     const closed=!isOpen;
+    const isClosed=closed; // Used by the status CSS class; keep aligned with the button state.
     const timerText=timerOn?(remaining>0?`${escapeHtml(schedule.label||'До окончания испытаний осталось')}: ${formatOrbCountdown(remaining)}`:'Срок испытаний завершён'):'';
     const style=orbStatusStyles[o.id]||DEFAULT_ORB_STATUS;
     const palette=ORB_CLOSED_PALETTES[style.palette]||ORB_CLOSED_PALETTES.rose;
