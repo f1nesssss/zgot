@@ -1172,14 +1172,38 @@ body[data-theme="dark"] .announcement-form input[type="file"]::file-selector-but
 /* Butterfly flight around news modal and reaction controls */
 #notificationsBackdrop{isolation:isolate;overflow:hidden}
 #notificationsBackdrop>.modal{position:relative;z-index:2}
-.news-butterflies{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-.news-butterflies i{position:absolute;width:34px;height:40px;background-image:var(--butterfly-img);background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 2px 5px rgba(25,20,35,.3));animation:newsFlight 5.8s ease-in-out infinite;opacity:.92}
-.news-butterflies i:nth-child(1){left:calc(50% - 440px);top:20%;animation-delay:-1s}.news-butterflies i:nth-child(2){right:calc(50% - 440px);top:24%;animation-delay:-3.2s}.news-butterflies i:nth-child(3){left:calc(50% - 420px);bottom:17%;animation-delay:-2.1s}.news-butterflies i:nth-child(4){right:calc(50% - 420px);bottom:14%;animation-delay:-4.4s}.news-butterflies i:nth-child(5){left:50%;top:5%;width:25px;height:30px;animation-delay:-.7s}
+/* Отдельный слой бабочек: визуально поверх окна, но вне его прокручиваемого содержимого. */
+.news-butterflies{
+  position:fixed!important;inset:auto!important;left:0;top:0;width:0;height:0;
+  display:none;overflow:hidden;pointer-events:none!important;z-index:221;
+  isolation:isolate;border-radius:22px;
+}
+.news-butterflies.is-visible{display:block}
+.news-butterflies i{
+  position:absolute;display:block;width:34px;height:40px;
+  background-image:var(--butterfly-img);background-size:contain;background-repeat:no-repeat;background-position:center;
+  filter:drop-shadow(0 2px 5px rgba(25,20,35,.3));
+  animation:newsFlight 5.8s ease-in-out infinite;opacity:.92;pointer-events:none;
+}
+/* Бабочки заходят с краёв и распределены сверху вниз по всей видимой площади окна. */
+.news-butterflies i:nth-child(1){left:2%;top:9%;animation-delay:-1s}
+.news-butterflies i:nth-child(2){right:3%;top:19%;animation-delay:-3.2s}
+.news-butterflies i:nth-child(3){left:4%;top:31%;animation-delay:-2.1s}
+.news-butterflies i:nth-child(4){right:3%;top:42%;animation-delay:-4.4s}
+.news-butterflies i:nth-child(5){left:2%;top:55%;animation-delay:-.7s}
+.news-butterflies i:nth-child(6){right:4%;top:66%;animation-delay:-2.8s}
+.news-butterflies i:nth-child(7){left:6%;top:78%;animation-delay:-1.7s}
+.news-butterflies i:nth-child(8){right:6%;top:89%;animation-delay:-3.7s}
+.news-butterflies i:nth-child(9){left:50%;top:5%;width:25px;height:30px;animation-delay:-.7s}
 @keyframes newsFlight{0%,100%{transform:translate(0,0) rotate(-9deg) scale(.9)}25%{transform:translate(17px,-19px) rotate(13deg) scale(1.04)}50%{transform:translate(-8px,-34px) rotate(-15deg) scale(.88)}75%{transform:translate(-19px,-12px) rotate(8deg) scale(1.08)}}
 .announcement-reaction{position:relative;overflow:visible}.announcement-reaction .reaction-butterfly{position:absolute;left:50%;top:-19px;width:20px;height:23px;background-image:var(--butterfly-img);background-size:contain;background-repeat:no-repeat;opacity:0;transform:translate(-50%,8px) scale(.5);pointer-events:none}
 .announcement-reaction:hover .reaction-butterfly,.announcement-reaction:focus-visible .reaction-butterfly{opacity:1;animation:reactionButterfly .9s ease-in-out infinite alternate}
 @keyframes reactionButterfly{from{transform:translate(-50%,5px) rotate(-14deg) scale(.75)}to{transform:translate(calc(-50% + 8px),-17px) rotate(18deg) scale(1.08)}}
-@media(max-width:650px){.news-butterflies i{width:24px;height:29px}.news-butterflies i:nth-child(1){left:1%}.news-butterflies i:nth-child(2){right:1%}.news-butterflies i:nth-child(3){left:2%}.news-butterflies i:nth-child(4){right:2%}}
+@media(max-width:650px){
+ .news-butterflies{border-radius:18px}
+ .news-butterflies i{width:24px;height:29px}
+ .news-butterflies i:nth-child(9){width:20px;height:24px}
+}
 @media(prefers-reduced-motion:reduce){.news-butterflies i,.announcement-reaction:hover .reaction-butterfly{animation:none!important}}
 
 
@@ -2576,7 +2600,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
   </div>
 </div>
 
-  <div class="modal-backdrop" id="notificationsBackdrop"><div class="news-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="modal-backdrop" id="notificationsBackdrop"><div class="news-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="modal notifications-modal" role="dialog" aria-modal="true" aria-labelledby="notificationsTitle">
       <div class="modal-top">
         <h3 id="notificationsTitle">Новости</h3>
@@ -4201,5 +4225,69 @@ body.task-modal-open{overflow:hidden}
  .task-window-head-actions .market-close{flex-shrink:0}
 }
 </style>
+<script>
+(() => {
+  const backdrop = document.getElementById('notificationsBackdrop');
+  const modal = backdrop?.querySelector('.notifications-modal');
+  const layer = backdrop?.querySelector('.news-butterflies');
+  if (!backdrop || !modal || !layer) return;
+
+  // Keep the overlay outside the modal DOM so it never participates in its scroll layout.
+  document.body.appendChild(layer);
+
+  let frame = 0;
+  const syncOverlay = () => {
+    frame = 0;
+    if (!backdrop.classList.contains('open')) {
+      layer.classList.remove('is-visible');
+      return;
+    }
+
+    const rect = modal.getBoundingClientRect();
+    const left = Math.max(0, rect.left);
+    const top = Math.max(0, rect.top);
+    const right = Math.min(window.innerWidth, rect.right);
+    const bottom = Math.min(window.innerHeight, rect.bottom);
+
+    if (right <= left || bottom <= top) {
+      layer.classList.remove('is-visible');
+      return;
+    }
+
+    layer.style.left = `${left}px`;
+    layer.style.top = `${top}px`;
+    layer.style.width = `${right - left}px`;
+    layer.style.height = `${bottom - top}px`;
+
+    // Match the dialog's rounded corners only where its real edges are visible.
+    layer.style.borderTopLeftRadius = rect.top >= 0 && rect.left >= 0 ? '22px' : '0';
+    layer.style.borderTopRightRadius = rect.top >= 0 && rect.right <= window.innerWidth ? '22px' : '0';
+    layer.style.borderBottomLeftRadius = rect.bottom <= window.innerHeight && rect.left >= 0 ? '22px' : '0';
+    layer.style.borderBottomRightRadius = rect.bottom <= window.innerHeight && rect.right <= window.innerWidth ? '22px' : '0';
+    layer.classList.add('is-visible');
+  };
+
+  const scheduleSync = () => {
+    if (!frame) frame = window.requestAnimationFrame(syncOverlay);
+  };
+
+  // The backdrop is the scroll container in this layout; track it so the overlay
+  // remains pinned over whichever part of the tall dialog is currently visible.
+  backdrop.addEventListener('scroll', scheduleSync, { passive: true });
+  window.addEventListener('resize', scheduleSync, { passive: true });
+  document.getElementById('notificationsBtn')?.addEventListener('click', scheduleSync);
+  document.getElementById('closeNotifications')?.addEventListener('click', scheduleSync);
+
+  const classObserver = new MutationObserver(scheduleSync);
+  classObserver.observe(backdrop, { attributes: true, attributeFilter: ['class'] });
+
+  if ('ResizeObserver' in window) {
+    const resizeObserver = new ResizeObserver(scheduleSync);
+    resizeObserver.observe(modal);
+  }
+
+  scheduleSync();
+})();
+</script>
 </body>
 </html>
