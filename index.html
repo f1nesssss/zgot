@@ -1235,6 +1235,22 @@ body[data-theme="dark"] .market-window{background:#302a25;color:#f1e8dc;border-c
 @media(max-width:700px){.market-card{padding:23px 18px;align-items:flex-start;flex-direction:column}.market-visit{align-self:flex-end}.market-prizes{grid-template-columns:repeat(2,minmax(0,1fr))}.market-window{padding:20px 16px}.market-window-head h2{font-size:24px}.market-prize{min-height:150px;padding:13px}}
 
 
+ 
+.market-visibility-option{display:flex!important;align-items:center;gap:11px;padding:13px 15px;border:1px solid var(--line);border-radius:13px;background:var(--surface-soft);cursor:pointer}
+.market-visibility-option input{width:18px;height:18px;accent-color:var(--accent);flex:0 0 auto}
+.market-prize.is-hidden-product{opacity:.72;border-style:dashed}
+.market-hidden-label{display:inline-flex;align-self:center;margin:2px auto 6px;padding:5px 10px;border-radius:999px;background:rgba(180,110,90,.14);color:var(--muted);font-size:11px;font-weight:800}
+.market-price{font-size:13px;font-weight:800;color:var(--accent);margin:0 0 3px}
+.market-detail-price{margin:12px auto 4px;font-size:17px;font-weight:800;color:var(--accent)}
+.market-view-btn{position:relative;overflow:visible;min-width:132px;background:var(--accent);color:var(--button-text,#fff);border-color:transparent}
+.market-view-btn .button-butterflies{position:absolute;inset:-13px -10px;pointer-events:none;overflow:visible}
+.market-view-btn .button-butterflies i{position:absolute;display:block;width:21px;height:24px;background-image:var(--butterfly-img);background-size:contain;background-repeat:no-repeat;opacity:0;transform:translate(0,7px) scale(.3);filter:drop-shadow(0 2px 3px rgba(25,20,35,.25))}
+.market-view-btn .button-butterflies i:nth-child(1){left:-7px;top:-7px;--fly-x:-7px;--fly-y:-14px}
+.market-view-btn .button-butterflies i:nth-child(2){right:-8px;top:-8px;--fly-x:8px;--fly-y:-14px}
+.market-view-btn .button-butterflies i:nth-child(3){left:18%;bottom:-10px;--fly-x:-5px;--fly-y:10px}
+.market-view-btn .button-butterflies i:nth-child(4){right:17%;bottom:-10px;--fly-x:6px;--fly-y:10px}
+.market-view-btn:hover .button-butterflies i,.market-view-btn:focus-visible .button-butterflies i{opacity:1;animation:headerButterfly .95s ease-in-out infinite alternate}
+
 /* Ярмарка наград: карточки, подробности и административный редактор */
 .market-admin-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-2px 0 16px;padding:12px 15px;border:1px solid var(--line);border-radius:14px;background:var(--surface-soft);color:var(--text)}
 .market-admin-toolbar small{color:var(--muted)}
@@ -1475,6 +1491,8 @@ body[data-theme="dark"] .market-window{background:#302a25;color:#f1e8dc;border-c
             <label>Общий тираж<input id="marketProductTotal" type="number" min="0" step="1" value="0" required></label>
             <label>Осталось<input id="marketProductRemaining" type="number" min="0" step="1" value="0" required></label>
           </div>
+          <label>Цена товара<input id="marketProductPrice" type="text" maxlength="80" placeholder="Например: 150 золотых монет или 5 €"></label>
+          <label class="market-visibility-option"><input id="marketProductVisible" type="checkbox" checked> Отображать награду в списке для посетителей</label>
           <label>Изображение товара<input id="marketProductImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
           <label>Размер изображения в карточке
             <select id="marketProductImageSize"><option value="small">Маленький</option><option value="medium" selected>Средний</option><option value="large">Большой</option><option value="full">На всю ширину</option></select>
@@ -2581,11 +2599,11 @@ prizeResultBackdrop.addEventListener('click', (event) => {
  const detailBg=$m('marketDetailBackdrop'), editorBg=$m('marketEditorBackdrop');
  if(!grid)return;
  const defaults=[
-  {id:1,title:'Награда 1',description:'Скоро здесь появится описание',icon:'🎁',total_quantity:0,remaining_quantity:0,image_size:'medium'},
-  {id:2,title:'Награда 2',description:'Скоро здесь появится описание',icon:'❄️',total_quantity:0,remaining_quantity:0,image_size:'medium'},
-  {id:3,title:'Награда 3',description:'Скоро здесь появится описание',icon:'✨',total_quantity:0,remaining_quantity:0,image_size:'medium'},
-  {id:4,title:'Награда 4',description:'Скоро здесь появится описание',icon:'🧸',total_quantity:0,remaining_quantity:0,image_size:'medium'},
-  {id:5,title:'Награда 5',description:'Скоро здесь появится описание',icon:'🕯️',total_quantity:0,remaining_quantity:0,image_size:'medium'},
+  {id:1,title:'Награда 1',description:'Скоро здесь появится описание',icon:'🎁',total_quantity:0,remaining_quantity:0,image_size:'medium',is_visible:true,price:''},
+  {id:2,title:'Награда 2',description:'Скоро здесь появится описание',icon:'❄️',total_quantity:0,remaining_quantity:0,image_size:'medium',is_visible:true,price:''},
+  {id:3,title:'Награда 3',description:'Скоро здесь появится описание',icon:'✨',total_quantity:0,remaining_quantity:0,image_size:'medium',is_visible:true,price:''},
+  {id:4,title:'Награда 4',description:'Скоро здесь появится описание',icon:'🧸',total_quantity:0,remaining_quantity:0,image_size:'medium',is_visible:true,price:''},
+  {id:5,title:'Награда 5',description:'Скоро здесь появится описание',icon:'🕯️',total_quantity:0,remaining_quantity:0,image_size:'medium',is_visible:true,price:''},
   {id:6,title:'Награда 6',description:'Скоро здесь появится описание',icon:'🌟',total_quantity:0,remaining_quantity:0,image_size:'medium'}
  ];
  let products=defaults.map(x=>({...x})), activeProduct=null;
@@ -2593,12 +2611,15 @@ prizeResultBackdrop.addEventListener('click', (event) => {
  function admin(){return Boolean(window.isAdmin || (typeof isAdmin!=='undefined'&&isAdmin));}
  function render(){
   if(adminBar)adminBar.hidden=!admin();
-  grid.innerHTML=products.map(p=>`<article class="market-prize" data-product="${p.id}">
+  const visibleProducts=products.filter(p=>admin()||p.is_visible!==false);
+  grid.innerHTML=visibleProducts.map(p=>`<article class="market-prize ${p.is_visible===false?'is-hidden-product':''}" data-product="${p.id}">
    ${p.image_url?`<img class="market-prize-image size-${esc(p.image_size||'medium')}" src="${esc(p.image_url)}" alt="${esc(p.title)}">`:`<div class="market-prize-art">${esc(p.icon||'🎁')}</div>`}
    <strong>${esc(p.title)}</strong>
+   ${p.price?`<div class="market-price">${esc(p.price)}</div>`:''}
    <small>${esc((p.description||'Скоро здесь появится описание').replace(/<[^>]*>/g,'').slice(0,100))}</small>
    <div class="market-stock">${Number(p.remaining_quantity)>0?`Осталось: ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)}`:(Number(p.total_quantity)>0?'Тираж закончился':'Тираж пока не указан')}</div>
-   <div class="market-prize-actions"><button type="button" class="market-view-btn" data-market-view="${p.id}">Посмотреть</button>${admin()?`<button type="button" class="market-edit-btn" data-market-edit="${p.id}">Изменить</button>`:''}</div>
+   ${p.is_visible===false&&admin()?'<span class="market-hidden-label">Скрыто от посетителей</span>':''}
+   <div class="market-prize-actions"><button type="button" class="market-view-btn" data-market-view="${p.id}">Посмотреть<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>${admin()?`<button type="button" class="market-edit-btn" data-market-edit="${p.id}">Изменить</button>`:''}</div>
   </article>`).join('');
   grid.querySelectorAll('[data-market-view]').forEach(b=>b.addEventListener('click',()=>showDetail(Number(b.dataset.marketView))));
   grid.querySelectorAll('[data-market-edit]').forEach(b=>b.addEventListener('click',()=>openEditor(Number(b.dataset.marketEdit))));
@@ -2617,6 +2638,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
    ${p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.title)}">`:`<div class="market-prize-art" style="margin:10px auto 18px">${esc(p.icon||'🎁')}</div>`}
    <h3 id="marketDetailTitle">${esc(p.title)}</h3>
    <div class="market-detail-description">${esc(p.description||'Описание скоро появится')}</div>
+   ${p.price?`<div class="market-detail-price">Цена: ${esc(p.price)}</div>`:''}
    <div class="market-detail-stock">${Number(p.total_quantity)>0?`Осталось ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)} шт.`:'Информация о тираже скоро появится'}</div>
    <button type="button" class="market-buy-btn" id="marketBuyBtn">Купить</button>
   </div>`;
@@ -2632,6 +2654,8 @@ prizeResultBackdrop.addEventListener('click', (event) => {
   $m('marketProductDescription').value=p.description||'';
   $m('marketProductTotal').value=Number(p.total_quantity)||0;
   $m('marketProductRemaining').value=Number(p.remaining_quantity)||0;
+  $m('marketProductPrice').value=p.price||'';
+  $m('marketProductVisible').checked=p.is_visible!==false;
   $m('marketProductImageSize').value=p.image_size||'medium';
   $m('marketProductImage').value='';
   $m('marketEditorCurrentImage').hidden=!p.image_url;
@@ -2660,7 +2684,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
    if(upErr){note.textContent='Не удалось загрузить изображение: '+upErr.message;return;}
    const {data:pub}=supabaseClient.storage.from('zgot-market-images').getPublicUrl(path);imageUrl=pub.publicUrl;
   }
-  const payload={id,title:$m('marketProductTitle').value.trim(),description:$m('marketProductDescription').value.trim(),total_quantity:total,remaining_quantity:remaining,image_url:imageUrl,image_size:$m('marketProductImageSize').value,updated_at:new Date().toISOString()};
+  const payload={id,title:$m('marketProductTitle').value.trim(),description:$m('marketProductDescription').value.trim(),total_quantity:total,remaining_quantity:remaining,price:$m('marketProductPrice').value.trim(),is_visible:$m('marketProductVisible').checked,image_url:imageUrl,image_size:$m('marketProductImageSize').value,updated_at:new Date().toISOString()};
   const {error}=await supabaseClient.from('market_products').upsert(payload,{onConflict:'id'});
   if(error){note.textContent='Не удалось сохранить: '+error.message;return;}
   products=products.map(p=>Number(p.id)===id?{...p,...payload}:p);
