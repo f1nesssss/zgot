@@ -1234,6 +1234,42 @@ body[data-theme="dark"] .market-window{background:#302a25;color:#f1e8dc;border-c
 @media(prefers-reduced-motion:reduce){.market-ice-crystal{animation-duration:.35s!important}}
 @media(max-width:700px){.market-card{padding:23px 18px;align-items:flex-start;flex-direction:column}.market-visit{align-self:flex-end}.market-prizes{grid-template-columns:repeat(2,minmax(0,1fr))}.market-window{padding:20px 16px}.market-window-head h2{font-size:24px}.market-prize{min-height:150px;padding:13px}}
 
+
+/* Ярмарка наград: карточки, подробности и административный редактор */
+.market-admin-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-2px 0 16px;padding:12px 15px;border:1px solid var(--line);border-radius:14px;background:var(--surface-soft);color:var(--text)}
+.market-admin-toolbar small{color:var(--muted)}
+.market-prize{position:relative}
+.market-prize-image{display:block;max-width:100%;height:100px;object-fit:contain;border-radius:12px}
+.market-prize-image.size-small{width:72px;height:72px}.market-prize-image.size-medium{width:112px;height:100px}.market-prize-image.size-large{width:180px;height:130px}.market-prize-image.size-full{width:100%;height:145px;object-fit:cover}
+.market-prize-actions{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:7px;width:100%}
+.market-view-btn,.market-edit-btn,.market-primary-btn,.market-secondary-btn{border:1px solid var(--line);border-radius:999px;padding:10px 18px;font:600 13px inherit;cursor:pointer;transition:transform .22s ease,background .22s ease,box-shadow .22s ease}
+.market-view-btn,.market-primary-btn{background:var(--accent);color:var(--button-text,#fff);border-color:transparent}
+.market-edit-btn,.market-secondary-btn{background:var(--surface-soft);color:var(--text)}
+.market-view-btn:hover,.market-edit-btn:hover,.market-primary-btn:hover,.market-secondary-btn:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(120,95,72,.2);filter:brightness(1.08)}
+.market-stock{font-size:12px;color:var(--muted)}
+.market-detail-backdrop,.market-editor-backdrop{position:fixed;inset:0;z-index:125;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(15,12,10,.66);backdrop-filter:blur(10px)}
+.market-detail-backdrop.open,.market-editor-backdrop.open{display:flex}
+.market-detail-window,.market-editor-window{position:relative;width:min(680px,96vw);max-height:min(86vh,900px);overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--panel,#302923);color:var(--text);padding:28px;box-shadow:0 25px 90px rgba(0,0,0,.3)}
+.market-detail-close{position:absolute;right:18px;top:16px;width:38px;height:38px;border:0;border-radius:50%;background:var(--surface-soft);color:var(--text);font-size:24px;cursor:pointer}
+.market-detail-body{text-align:center;padding:8px 8px 2px}
+.market-detail-body img{display:block;max-width:100%;max-height:310px;object-fit:contain;margin:0 auto 18px;border-radius:14px}
+.market-detail-body h3{font:600 30px Georgia,serif;margin:8px 42px 12px}
+.market-detail-description{white-space:pre-wrap;text-align:left;line-height:1.65;color:var(--muted);margin:18px auto;max-width:560px}
+.market-detail-stock{font-size:14px;color:var(--muted);margin:14px 0 20px}
+.market-buy-btn{display:block;min-width:180px;margin:20px auto 4px;padding:14px 32px;border:0;border-radius:999px;background:var(--accent);color:var(--button-text,#fff);font-weight:700;font-size:16px;cursor:pointer}
+.market-buy-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.market-editor-head{display:flex;align-items:center;justify-content:space-between;padding-right:45px;margin-bottom:18px}
+.market-editor-head h3{font:600 25px Georgia,serif;margin:0}
+.market-editor-form{display:grid;gap:14px}
+.market-editor-form label{display:grid;gap:7px;color:var(--muted);font-size:13px;font-weight:600}
+.market-editor-form input,.market-editor-form textarea,.market-editor-form select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;background:var(--input-bg,rgba(0,0,0,.12));color:var(--text);padding:12px 14px;font:inherit}
+.market-editor-form input[type=file]{padding:10px}
+.market-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.market-editor-note{font-size:12px;color:var(--muted);margin:0}
+.market-editor-current-image img{max-width:180px;max-height:120px;object-fit:contain;border-radius:10px}
+.market-editor-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+@media(max-width:700px){.market-prizes{grid-template-columns:repeat(2,minmax(0,1fr))}.market-detail-window,.market-editor-window{padding:22px 16px}.market-editor-grid{grid-template-columns:1fr}.market-admin-toolbar{align-items:flex-start;flex-direction:column}}
+@media(max-width:420px){.market-prizes{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1417,13 +1453,37 @@ body[data-theme="dark"] .market-window{background:#302a25;color:#f1e8dc;border-c
       <div><div class="market-kicker">✦ Праздничная коллекция ✦</div><h2 id="marketWindowTitle">Новогодняя ярмарка наград</h2></div>
       <button class="market-close" id="closeMarketBtn" type="button" aria-label="Закрыть">×</button>
     </div>
-    <div class="market-prizes">
-      <article class="market-prize"><div class="market-prize-art">🎁</div><strong>Награда 1</strong><small>Скоро здесь появится описание</small></article>
-      <article class="market-prize"><div class="market-prize-art">❄️</div><strong>Награда 2</strong><small>Скоро здесь появится описание</small></article>
-      <article class="market-prize"><div class="market-prize-art">✨</div><strong>Награда 3</strong><small>Скоро здесь появится описание</small></article>
-      <article class="market-prize"><div class="market-prize-art">🧸</div><strong>Награда 4</strong><small>Скоро здесь появится описание</small></article>
-      <article class="market-prize"><div class="market-prize-art">🕯️</div><strong>Награда 5</strong><small>Скоро здесь появится описание</small></article>
-      <article class="market-prize"><div class="market-prize-art">🌟</div><strong>Награда 6</strong><small>Скоро здесь появится описание</small></article>
+    <div class="market-admin-toolbar" id="marketAdminToolbar" hidden>
+      <span>Администрирование ярмарки</span>
+      <small>Изменения сразу становятся видны всем посетителям</small>
+    </div>
+    <div class="market-prizes" id="marketPrizesGrid"></div>
+    <div class="market-detail-backdrop" id="marketDetailBackdrop" aria-hidden="true">
+      <section class="market-detail-window" role="dialog" aria-modal="true" aria-labelledby="marketDetailTitle">
+        <button class="market-detail-close" id="closeMarketDetail" type="button" aria-label="Закрыть">×</button>
+        <div id="marketDetailContent"></div>
+      </section>
+    </div>
+    <div class="market-editor-backdrop" id="marketEditorBackdrop" aria-hidden="true">
+      <section class="market-editor-window" role="dialog" aria-modal="true" aria-labelledby="marketEditorTitle">
+        <div class="market-editor-head"><h3 id="marketEditorTitle">Редактирование товара</h3><button type="button" id="closeMarketEditor" class="market-detail-close">×</button></div>
+        <form id="marketEditorForm" class="market-editor-form">
+          <input type="hidden" id="marketProductId">
+          <label>Название товара<input id="marketProductTitle" maxlength="100" required></label>
+          <label>Описание награды<textarea id="marketProductDescription" rows="5" maxlength="5000" placeholder="Подробно опишите награду..."></textarea></label>
+          <div class="market-editor-grid">
+            <label>Общий тираж<input id="marketProductTotal" type="number" min="0" step="1" value="0" required></label>
+            <label>Осталось<input id="marketProductRemaining" type="number" min="0" step="1" value="0" required></label>
+          </div>
+          <label>Изображение товара<input id="marketProductImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
+          <label>Размер изображения в карточке
+            <select id="marketProductImageSize"><option value="small">Маленький</option><option value="medium" selected>Средний</option><option value="large">Большой</option><option value="full">На всю ширину</option></select>
+          </label>
+          <div class="market-editor-current-image" id="marketEditorCurrentImage" hidden></div>
+          <p class="market-editor-note" id="marketEditorNote">Изображение до 5 МБ. Поддерживаются JPG, PNG, WebP и GIF.</p>
+          <div class="market-editor-actions"><button type="button" id="cancelMarketEditor" class="market-secondary-btn">Отмена</button><button type="submit" class="market-primary-btn">Сохранить товар</button></div>
+        </form>
+      </section>
     </div>
   </section>
 </div>
@@ -1791,6 +1851,7 @@ async function updateSession(session){
   currentUser=session?.user||null;
   isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
   render();
+  window.dispatchEvent(new Event('zgot-auth-updated'));
   if(configured)await loadRecords();
   if($('tasksAdminNote')) $('tasksAdminNote').hidden=!isAdmin;
 }
@@ -2197,6 +2258,7 @@ async function init(){
     currentUser=session?.user||null;
     isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
     render();
+    window.dispatchEvent(new Event('zgot-auth-updated'));
     loadRecords();
   });
   subscribeRealtime();
@@ -2507,6 +2569,116 @@ prizeResultBackdrop.addEventListener('click', (event) => {
  close?.addEventListener('click',closeMarket);
  backdrop?.addEventListener('click',e=>{if(e.target===backdrop)closeMarket()});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop?.classList.contains('open'))closeMarket()});
+})();
+</script>
+
+
+<script>
+/* Управление товарами новогодней ярмарки */
+(()=>{
+ const $m=id=>document.getElementById(id);
+ const grid=$m('marketPrizesGrid'), adminBar=$m('marketAdminToolbar');
+ const detailBg=$m('marketDetailBackdrop'), editorBg=$m('marketEditorBackdrop');
+ if(!grid)return;
+ const defaults=[
+  {id:1,title:'Награда 1',description:'Скоро здесь появится описание',icon:'🎁',total_quantity:0,remaining_quantity:0,image_size:'medium'},
+  {id:2,title:'Награда 2',description:'Скоро здесь появится описание',icon:'❄️',total_quantity:0,remaining_quantity:0,image_size:'medium'},
+  {id:3,title:'Награда 3',description:'Скоро здесь появится описание',icon:'✨',total_quantity:0,remaining_quantity:0,image_size:'medium'},
+  {id:4,title:'Награда 4',description:'Скоро здесь появится описание',icon:'🧸',total_quantity:0,remaining_quantity:0,image_size:'medium'},
+  {id:5,title:'Награда 5',description:'Скоро здесь появится описание',icon:'🕯️',total_quantity:0,remaining_quantity:0,image_size:'medium'},
+  {id:6,title:'Награда 6',description:'Скоро здесь появится описание',icon:'🌟',total_quantity:0,remaining_quantity:0,image_size:'medium'}
+ ];
+ let products=defaults.map(x=>({...x})), activeProduct=null;
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function admin(){return Boolean(window.isAdmin || (typeof isAdmin!=='undefined'&&isAdmin));}
+ function render(){
+  if(adminBar)adminBar.hidden=!admin();
+  grid.innerHTML=products.map(p=>`<article class="market-prize" data-product="${p.id}">
+   ${p.image_url?`<img class="market-prize-image size-${esc(p.image_size||'medium')}" src="${esc(p.image_url)}" alt="${esc(p.title)}">`:`<div class="market-prize-art">${esc(p.icon||'🎁')}</div>`}
+   <strong>${esc(p.title)}</strong>
+   <small>${esc((p.description||'Скоро здесь появится описание').replace(/<[^>]*>/g,'').slice(0,100))}</small>
+   <div class="market-stock">${Number(p.remaining_quantity)>0?`Осталось: ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)}`:(Number(p.total_quantity)>0?'Тираж закончился':'Тираж пока не указан')}</div>
+   <div class="market-prize-actions"><button type="button" class="market-view-btn" data-market-view="${p.id}">Посмотреть</button>${admin()?`<button type="button" class="market-edit-btn" data-market-edit="${p.id}">Изменить</button>`:''}</div>
+  </article>`).join('');
+  grid.querySelectorAll('[data-market-view]').forEach(b=>b.addEventListener('click',()=>showDetail(Number(b.dataset.marketView))));
+  grid.querySelectorAll('[data-market-edit]').forEach(b=>b.addEventListener('click',()=>openEditor(Number(b.dataset.marketEdit))));
+ }
+ async function loadProducts(){
+  if(typeof supabaseClient==='undefined'||!supabaseClient){render();return;}
+  const {data,error}=await supabaseClient.from('market_products').select('*').order('id');
+  if(error){console.warn('Market products could not be loaded:',error.message);render();return;}
+  if(data?.length){products=defaults.map(d=>({...d,...(data.find(x=>Number(x.id)===d.id)||{})}));}
+  render();
+ }
+ function showDetail(id){
+  activeProduct=products.find(p=>Number(p.id)===id);if(!activeProduct)return;
+  const p=activeProduct;
+  $m('marketDetailContent').innerHTML=`<div class="market-detail-body">
+   ${p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.title)}">`:`<div class="market-prize-art" style="margin:10px auto 18px">${esc(p.icon||'🎁')}</div>`}
+   <h3 id="marketDetailTitle">${esc(p.title)}</h3>
+   <div class="market-detail-description">${esc(p.description||'Описание скоро появится')}</div>
+   <div class="market-detail-stock">${Number(p.total_quantity)>0?`Осталось ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)} шт.`:'Информация о тираже скоро появится'}</div>
+   <button type="button" class="market-buy-btn" id="marketBuyBtn">Купить</button>
+  </div>`;
+  detailBg.classList.add('open');detailBg.setAttribute('aria-hidden','false');
+  $m('marketBuyBtn').addEventListener('click',()=>alert('Покупка этой награды пока не подключена. Информация о способе приобретения появится позже.'));
+ }
+ function closeDetail(){detailBg.classList.remove('open');detailBg.setAttribute('aria-hidden','true');}
+ function openEditor(id){
+  if(!admin())return;
+  const p=products.find(x=>Number(x.id)===id);if(!p)return;
+  activeProduct=p;
+  $m('marketProductId').value=p.id;$m('marketProductTitle').value=p.title||'';
+  $m('marketProductDescription').value=p.description||'';
+  $m('marketProductTotal').value=Number(p.total_quantity)||0;
+  $m('marketProductRemaining').value=Number(p.remaining_quantity)||0;
+  $m('marketProductImageSize').value=p.image_size||'medium';
+  $m('marketProductImage').value='';
+  $m('marketEditorCurrentImage').hidden=!p.image_url;
+  $m('marketEditorCurrentImage').innerHTML=p.image_url?`<img src="${esc(p.image_url)}" alt="Текущее изображение"><small>Текущее изображение</small>`:'';
+  $m('marketEditorNote').textContent='Изображение до 5 МБ. Поддерживаются JPG, PNG, WebP и GIF.';
+  closeDetail();editorBg.classList.add('open');editorBg.setAttribute('aria-hidden','false');
+ }
+ function closeEditor(){editorBg.classList.remove('open');editorBg.setAttribute('aria-hidden','true');}
+ async function saveProduct(e){
+  e.preventDefault();if(!admin())return;
+  const id=Number($m('marketProductId').value);
+  const total=Math.max(0,Math.floor(Number($m('marketProductTotal').value)||0));
+  const remaining=Math.max(0,Math.floor(Number($m('marketProductRemaining').value)||0));
+  if(remaining>total){alert('Остаток не может быть больше общего тиража.');return;}
+  if(typeof supabaseClient==='undefined'||!supabaseClient){alert('Нет подключения к Supabase. Изменения не сохранены.');return;}
+  const note=$m('marketEditorNote');note.textContent='Сохраняю товар...';
+  const current=products.find(p=>Number(p.id)===id)||{};
+  let imageUrl=current.image_url||null;
+  const file=$m('marketProductImage').files?.[0];
+  if(file){
+   if(file.size>5*1024*1024){note.textContent='Файл больше 5 МБ.';return;}
+   if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type)){note.textContent='Неподдерживаемый формат изображения.';return;}
+   const ext=({ 'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'})[file.type];
+   const path=`${id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+   const {error:upErr}=await supabaseClient.storage.from('zgot-market-images').upload(path,file,{upsert:false,contentType:file.type,cacheControl:'3600'});
+   if(upErr){note.textContent='Не удалось загрузить изображение: '+upErr.message;return;}
+   const {data:pub}=supabaseClient.storage.from('zgot-market-images').getPublicUrl(path);imageUrl=pub.publicUrl;
+  }
+  const payload={id,title:$m('marketProductTitle').value.trim(),description:$m('marketProductDescription').value.trim(),total_quantity:total,remaining_quantity:remaining,image_url:imageUrl,image_size:$m('marketProductImageSize').value,updated_at:new Date().toISOString()};
+  const {error}=await supabaseClient.from('market_products').upsert(payload,{onConflict:'id'});
+  if(error){note.textContent='Не удалось сохранить: '+error.message;return;}
+  products=products.map(p=>Number(p.id)===id?{...p,...payload}:p);
+  render();closeEditor();note.textContent='Сохранено';
+ }
+ $m('closeMarketDetail')?.addEventListener('click',closeDetail);
+ detailBg?.addEventListener('click',e=>{if(e.target===detailBg)closeDetail();});
+ $m('closeMarketEditor')?.addEventListener('click',closeEditor);
+ $m('cancelMarketEditor')?.addEventListener('click',closeEditor);
+ editorBg?.addEventListener('click',e=>{if(e.target===editorBg)closeEditor();});
+ $m('marketEditorForm')?.addEventListener('submit',saveProduct);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();closeEditor();}});
+ const marketOpen=$m('visitMarketBtn');
+ marketOpen?.addEventListener('click',()=>{loadProducts();});
+ // Re-render when auth status changes or admin logs in.
+ window.addEventListener('zgot-auth-updated',render);
+ if(typeof supabaseClient!=='undefined'&&supabaseClient){supabaseClient.channel('market-products-live').on('postgres_changes',{event:'*',schema:'public',table:'market_products'},()=>loadProducts()).subscribe();}
+ loadProducts();
 })();
 </script>
 
