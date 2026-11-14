@@ -1436,6 +1436,74 @@ body[data-theme="dark"] .orb-schedule-status strong{color:var(--ink)}
 .admin-orb-row{grid-template-columns:minmax(150px,1.1fr) minmax(190px,1fr) minmax(160px,1fr) auto auto!important}
 @media(max-width:1050px){.admin-orb-row{grid-template-columns:1fr 1fr!important}.admin-orb-row>strong,.admin-orb-row .orb-admin-fields{grid-column:1/-1}}
 @media(max-width:650px){.admin-orb-row{grid-template-columns:1fr!important}.admin-orb-row>strong,.admin-orb-row .orb-admin-fields{grid-column:auto}}
+
+/* Корректировка админских кнопок, орб-таймеров и тёмной темы */
+.top-actions .admin-access-button{
+  position:relative; overflow:visible; isolation:isolate;
+  background:var(--surface)!important; color:var(--ink)!important;
+  border:1px solid var(--line)!important;
+  box-shadow:0 3px 12px rgba(70,52,35,.06);
+}
+.top-actions .admin-access-button:hover{
+  background:var(--surface-soft)!important; color:var(--ink)!important;
+  transform:translateY(-2px); box-shadow:0 8px 20px rgba(70,52,35,.13);
+}
+.admin-hover-emojis{position:absolute;inset:-10px 0;pointer-events:none;overflow:visible}
+.admin-hover-emojis i{
+  position:absolute;top:-7px;font-style:normal;font-size:19px;line-height:1;
+  opacity:0;transform:translateY(9px) scale(.55) rotate(-15deg);
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.18));
+}
+.admin-hover-emojis i:first-child{left:14%}
+.admin-hover-emojis i:last-child{right:14%;top:auto;bottom:-8px}
+.admin-access-button:hover .admin-hover-emojis i,
+.admin-access-button:focus-visible .admin-hover-emojis i{
+  animation:adminEmojiFloat 1.05s ease-in-out infinite alternate;
+  opacity:1;
+}
+.admin-access-button:hover .admin-hover-emojis i:last-child,
+.admin-access-button:focus-visible .admin-hover-emojis i:last-child{animation-delay:.22s}
+@keyframes adminEmojiFloat{
+  from{transform:translate(0,5px) scale(.72) rotate(-12deg)}
+  to{transform:translate(5px,-11px) scale(1) rotate(13deg)}
+}
+/* Строки настройки шаров: поля не сжимаются, кнопки не переносят текст */
+.admin-orb-row{
+  grid-template-columns:minmax(155px,1.05fr) minmax(235px,1.15fr) minmax(220px,1fr) minmax(150px,auto) minmax(145px,auto)!important;
+  align-items:center!important; gap:12px!important;
+}
+.admin-orb-row>strong{min-width:0;overflow-wrap:anywhere}
+.admin-orb-row .orb-admin-fields{min-width:0;width:100%}
+.admin-orb-row .orb-admin-fields input{min-width:0;width:100%;box-sizing:border-box}
+.admin-orb-row button{white-space:nowrap;min-width:0;padding:11px 17px}
+@media(max-width:1180px){
+ .admin-orb-row{grid-template-columns:minmax(150px,1fr) minmax(210px,1fr) minmax(210px,1fr)!important}
+ .admin-orb-row>strong{grid-column:1/-1}
+ .admin-orb-row button{justify-self:start}
+}
+@media(max-width:700px){
+ .admin-orb-row{grid-template-columns:1fr!important}
+ .admin-orb-row>strong{grid-column:auto}
+}
+/* Контраст кнопок в обеих темах */
+body[data-theme="dark"] .top-actions .ghost-btn,
+body[data-theme="dark"] .top-actions .admin-access-button{
+  background:#39312b!important;color:#f2e9df!important;border-color:#594b3f!important;
+}
+body[data-theme="dark"] .top-actions .ghost-btn:hover,
+body[data-theme="dark"] .top-actions .admin-access-button:hover{
+  background:#514337!important;color:#fffaf3!important;border-color:#8a725d!important;
+}
+body[data-theme="light"] .top-actions .admin-access-button{
+  background:#fffaf3!important;color:#5a4b3f!important;border-color:#e3d8ca!important;
+}
+body[data-theme="light"] .top-actions .admin-access-button:hover{
+  background:#eee4d8!important;color:#4e4035!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .admin-access-button:hover .admin-hover-emojis i{animation:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -1452,8 +1520,8 @@ body[data-theme="dark"] .orb-schedule-status strong{color:var(--ink)}
     <span class="notification-label">Новости 📰</span><i class="notification-dot" id="notificationDot" hidden></i><span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
   </button>
   <button class="ghost-btn" id="helpBtn">Помощь<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
-  <button class="ghost-btn" id="adminBtn">Вход для администратора</button>
-  <button class="ghost-btn" id="adminCabinetBtn" hidden>Кабинет администратора</button>
+  <button class="ghost-btn admin-access-button" id="adminBtn">Вход для администратора<span class="admin-hover-emojis" aria-hidden="true"><i>🔐</i><i>🔐</i></span></button>
+  <button class="ghost-btn admin-access-button" id="adminCabinetBtn" hidden>Кабинет администратора<span class="admin-hover-emojis" aria-hidden="true"><i>💼</i><i>💼</i></span></button>
 </div>
 </header>
 
@@ -1475,25 +1543,6 @@ body[data-theme="dark"] .orb-schedule-status strong{color:var(--ink)}
   </div>
   <div class="orbs" id="orbs"></div>
 
-  <section class="tasks-section" id="tasksSection" aria-labelledby="tasksTitle">
-    <div class="tasks-head">
-      <h2 id="tasksTitle">Испытания пяти шаров</h2>
-      <p>У каждого хрустального шара — три задания. Выполняйте их в игре и следите за условиями участия. Выберите шар, чтобы открыть его испытания.</p>
-    </div>
-    <div class="task-orb-tabs" id="taskOrbTabs" role="tablist" aria-label="Выбор новогоднего шара">
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="snow_guest" aria-selected="true">Снежный гость<small>3 испытания</small></button>
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="gift_workshop" aria-selected="false">Подарочная мастерская<small>3 испытания</small></button>
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="gingerbread_house" aria-selected="false">Пряничный домик<small>3 испытания</small></button>
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="ice_castle" aria-selected="false">Ледяной замок<small>3 испытания</small></button>
-      <button class="task-orb-tab" type="button" role="tab" data-task-orb="new_year_magic" aria-selected="false">Новогоднее волшебство<small>3 испытания</small></button>
-    </div>
-    <div class="task-panel" id="taskPanel" role="tabpanel" aria-live="polite">
-      <div class="task-panel-top"><div><h3 id="taskOrbTitle">Шар «Снежный гость»</h3><p id="taskOrbDescription">Откройте карточки ниже, чтобы ознакомиться с тремя заданиями этого шара.</p></div><span class="task-count">3 задания</span></div>
-      <div class="task-list" id="taskList"></div>
-    </div>
-    <p class="tasks-admin-note" id="tasksAdminNote" hidden>Административный режим: структура раздела подготовлена. На следующем этапе добавим управление заданиями, публикацией и условиями начисления билетов через общую базу сайта.</p>
-  </section>
-  
   <section class="participants" id="participants">
     <div class="participants-head">
       <div>
@@ -1522,6 +1571,27 @@ body[data-theme="dark"] .orb-schedule-status strong{color:var(--ink)}
       <div class="empty" id="emptyState" hidden>Пока здесь никого нет. Добавьте первого участника.</div>
     </div>
   </section>
+
+  <section class="tasks-section" id="tasksSection" aria-labelledby="tasksTitle">
+    <div class="tasks-head">
+      <h2 id="tasksTitle">Испытания пяти шаров</h2>
+      <p>У каждого хрустального шара — три задания. Выполняйте их в игре и следите за условиями участия. Выберите шар, чтобы открыть его испытания.</p>
+    </div>
+    <div class="task-orb-tabs" id="taskOrbTabs" role="tablist" aria-label="Выбор новогоднего шара">
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="snow_guest" aria-selected="true">Снежный гость<small>3 испытания</small></button>
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="gift_workshop" aria-selected="false">Подарочная мастерская<small>3 испытания</small></button>
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="gingerbread_house" aria-selected="false">Пряничный домик<small>3 испытания</small></button>
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="ice_castle" aria-selected="false">Ледяной замок<small>3 испытания</small></button>
+      <button class="task-orb-tab" type="button" role="tab" data-task-orb="new_year_magic" aria-selected="false">Новогоднее волшебство<small>3 испытания</small></button>
+    </div>
+    <div class="task-panel" id="taskPanel" role="tabpanel" aria-live="polite">
+      <div class="task-panel-top"><div><h3 id="taskOrbTitle">Шар «Снежный гость»</h3><p id="taskOrbDescription">Откройте карточки ниже, чтобы ознакомиться с тремя заданиями этого шара.</p></div><span class="task-count">3 задания</span></div>
+      <div class="task-list" id="taskList"></div>
+    </div>
+    <p class="tasks-admin-note" id="tasksAdminNote" hidden>Административный режим: структура раздела подготовлена. На следующем этапе добавим управление заданиями, публикацией и условиями начисления билетов через общую базу сайта.</p>
+  </section>
+  
+
 <section class="miracle-section" id="miracleSection">
     <div class="miracle-card">
         <div class="miracle-content">
