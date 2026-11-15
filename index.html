@@ -4237,10 +4237,40 @@ prizeResultBackdrop.addEventListener('click', (event) => {
    <div class="market-detail-description">${esc(p.description||'Описание скоро появится')}</div>
    ${p.price?`<div class="market-detail-price">Цена: ${esc(p.price)}</div>`:''}
    <div class="market-detail-stock">${Number(p.total_quantity)>0?`Осталось ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)} шт.`:'Информация о тираже скоро появится'}</div>
-   <button type="button" class="market-buy-btn" id="marketBuyBtn">Купить</button>
+   <button type="button" class="market-buy-btn" id="marketBuyBtn">Оставить заявку →<span class="market-fireworks-layer" aria-hidden="true"></span></button>
   </div>`;
   detailBg.classList.add('open');detailBg.setAttribute('aria-hidden','false');
-  $m('marketBuyBtn').addEventListener('click',()=>alert('Покупка этой награды пока не подключена. Информация о способе приобретения появится позже.'));
+  const applicationBtn=$m('marketBuyBtn');
+  applicationBtn.addEventListener('click',()=>window.open('https://vk.ru/topic-91120784_69118179?offset=0','_blank','noopener,noreferrer'));
+  applicationBtn.addEventListener('mouseenter',()=>{
+    const layer=applicationBtn.querySelector('.market-fireworks-layer');
+    if(!layer)return;
+    layer.replaceChildren();
+    const colors=['#ff6b8a','#ffd166','#70e1ff','#b88cff','#7df0b2','#ff9f5a'];
+    for(let i=0;i<5;i++){
+      const x=8+Math.random()*84, y=15+Math.random()*70;
+      const rocket=document.createElement('i');
+      rocket.className='market-firework-rocket';
+      rocket.style.left=x+'%';rocket.style.top=y+'%';
+      layer.appendChild(rocket);
+      const delay=900+Math.random()*180;
+      window.setTimeout(()=>{
+        if(!rocket.isConnected)return;
+        rocket.remove();
+        for(let j=0;j<9;j++){
+          const spark=document.createElement('i');
+          spark.className='market-firework-spark';
+          spark.style.left=x+'%';spark.style.top=y+'%';
+          spark.style.setProperty('--angle',(j*40+Math.random()*14)+'deg');
+          spark.style.setProperty('--distance',(18+Math.random()*20)+'px');
+          spark.style.setProperty('--spark-color',colors[Math.floor(Math.random()*colors.length)]);
+          layer.appendChild(spark);
+          window.setTimeout(()=>spark.remove(),1900);
+        }
+      },delay);
+      window.setTimeout(()=>rocket.remove(),1200);
+    }
+  });
  }
  function closeDetail(){detailBg.classList.remove('open');detailBg.setAttribute('aria-hidden','true');}
  function openEditor(id){
@@ -4708,7 +4738,7 @@ body.task-modal-open{overflow:hidden}
 
 
 /* Mail activity refinements */
-#greetingCountdown{display:flex!important;position:relative!important;clear:both!important;float:none!important;flex:none!important;width:max-content;max-width:100%;box-sizing:border-box;margin:14px 0 18px!important;white-space:normal;line-height:1.35}
+#greetingCountdown:not([hidden]){display:inline-flex!important;position:relative!important;clear:both!important;float:none!important;flex:none!important;width:max-content;max-width:100%;box-sizing:border-box;margin:14px 0 18px!important;white-space:normal;line-height:1.35} #greetingCountdown[hidden]{display:none!important}
 .greeting-modal .greeting-tooltip{position:relative!important;inset:auto!important;display:block!important;width:100%!important;max-width:none!important;opacity:1!important;visibility:visible!important;transform:none!important;pointer-events:auto!important;margin:0!important}
 .greeting-modal .greeting-tooltip-frame{max-width:100%}
 .greeting-modal .greeting-form-head{display:none!important}
@@ -5305,6 +5335,22 @@ body.task-modal-open{overflow:hidden}
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop?.classList.contains('open'))closeMarket()});
 })();
 </script>
+
+
+
+<style id="greeting-timer-and-market-fireworks-fix">
+/* Timer: no visual footprint when the administrator disables it. */
+#greetingCountdown[hidden]{display:none!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}
+/* Small fireworks stay visually attached to the application button. */
+.market-buy-btn{position:relative;isolation:isolate;overflow:visible;z-index:0}
+.market-fireworks-layer{position:absolute;inset:-28px -34px;pointer-events:none;overflow:visible;z-index:5}
+.market-firework-rocket{position:absolute;width:3px;height:15px;border-radius:99px;background:linear-gradient(to top,rgba(255,255,255,0),#fff4c9 65%,#fff);box-shadow:0 0 7px 2px rgba(255,220,150,.8);transform-origin:center bottom;animation:marketRocketFlight .95s ease-out forwards}
+.market-firework-rocket:after{content:"";position:absolute;left:1px;top:10px;width:1px;height:12px;background:linear-gradient(to bottom,rgba(255,235,180,.75),transparent)}
+.market-firework-spark{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--spark-color);box-shadow:0 0 7px 2px var(--spark-color);animation:marketFireworkBurst 1.8s ease-out forwards;transform:translate(-50%,-50%)}
+@keyframes marketRocketFlight{0%{opacity:0;transform:translateY(23px) scale(.55)}18%{opacity:1}100%{opacity:1;transform:translateY(-12px) scale(1)}}
+@keyframes marketFireworkBurst{0%{opacity:1;transform:translate(-50%,-50%) scale(.8)}100%{opacity:0;transform:translate(calc(-50% + cos(var(--angle))*var(--distance)),calc(-50% + sin(var(--angle))*var(--distance))) scale(.15)}}
+@media(prefers-reduced-motion:reduce){.market-firework-rocket,.market-firework-spark{animation-duration:.01ms!important}}
+</style>
 
 </body>
 </html>
