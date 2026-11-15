@@ -2394,7 +2394,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
           <g transform="translate(92 416)"><path d="M0 15h55v37H0z" fill="#9d5265" stroke="#e8b7a6" stroke-width="2"/><path d="M-3 8h61v13H-3z" fill="#d8a76e"/><path d="M23 8h9v44h-9z" fill="#f0d49c"/><path d="M27 8C8 -5 8 -15 19 -14c8 1 10 13 12 22M28 8C46 -7 52 -15 41 -16c-8 0-11 13-13 24" fill="none" stroke="#f0d49c" stroke-width="4" stroke-linecap="round"/></g>
           <g transform="translate(273 424)"><path d="M0 12h49v32H0z" fill="#315f70" stroke="#9bcbd1" stroke-width="2"/><path d="M-3 5h55v12H-3z" fill="#d5b77d"/><path d="M20 5h9v39h-9z" fill="#f4dfb0"/><path d="M24 5C8 -7 8 -15 18 -14c7 1 8 11 10 19M25 5C41 -7 47 -14 38 -15c-7 0-10 12-13 20" fill="none" stroke="#f4dfb0" stroke-width="4" stroke-linecap="round"/></g>
         </g>
-        <path d="M184 388h52v72h-52z" fill="url(#treeTrunk)" rx="7"/>
+        <path d="M192 365h36v96h-36z" fill="url(#treeTrunk)" rx="7"/><path d="M197 370h6v86h-6z" fill="#d49a66" opacity=".22"/>
         <g fill="url(#treeNeedles)" stroke="#76c6a2" stroke-opacity=".22" stroke-width="2">
           <path d="M210 24 C195 62 176 83 149 113 C166 110 179 108 191 104 C165 137 135 169 105 204 C126 201 144 197 162 191 C128 229 91 269 57 311 C87 305 113 299 143 289 C115 322 91 347 72 371 C120 360 164 349 210 345 C256 349 300 360 348 371 C329 347 305 322 277 289 C307 299 333 305 363 311 C329 269 292 229 258 191 C276 197 294 201 315 204 C285 169 255 137 229 104 C241 108 254 110 271 113 C244 83 225 62 210 24Z"/>
           <path d="M210 70 C191 101 170 127 147 154 C169 149 185 145 200 139 C174 174 146 205 119 239 C145 232 166 225 188 217 C160 250 132 280 105 314 C144 305 176 296 210 292 C244 296 276 305 315 314 C288 280 260 250 232 217 C254 225 275 232 301 239 C274 205 246 174 220 139 C235 145 251 149 273 154 C250 127 229 101 210 70Z" fill="url(#treeBranch)" opacity=".82"/>
@@ -2408,7 +2408,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
           <g class="bauble b5"><path d="M106 305v-8h11v8" stroke="#e5c98f" stroke-width="3" fill="none"/><circle cx="112" cy="325" r="20" fill="url(#emptyBauble)" stroke="#d7f3ff" stroke-opacity=".85" stroke-width="2"/><ellipse cx="106" cy="318" rx="4" ry="7" fill="#fff" opacity=".38"/></g>
           <g class="bauble b6"><path d="M238 342v-8h12v8" stroke="#e5c98f" stroke-width="3" fill="none"/><circle cx="244" cy="364" r="23" fill="url(#emptyBauble)" stroke="#d7f3ff" stroke-opacity=".85" stroke-width="2"/><ellipse cx="236" cy="355" rx="5" ry="8" fill="#fff" opacity=".38"/></g>
         </g>
-        <g id="greetingBaubleImages" pointer-events="none"></g>
+        <g id="greetingBaubleImages" pointer-events="none" style="display:none"></g>
         <g class="greeting-lights"><circle cx="185" cy="149" r="4"/><circle cx="225" cy="180" r="4"/><circle cx="177" cy="218" r="4"/><circle cx="230" cy="251" r="4"/><circle cx="190" cy="291" r="4"/><circle cx="245" cy="326" r="4"/></g><g fill="#f7dfaa"><circle cx="160" cy="150" r="3"/><circle cx="255" cy="220" r="3"/><circle cx="150" cy="264" r="2.5"/><circle cx="270" cy="330" r="3"/><circle cx="215" cy="112" r="2.5"/></g>
       </svg>
       <div class="greeting-tree-caption">Каждое письмо — маленькое чудо</div>
@@ -2486,6 +2486,33 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
       <span>Администрирование ярмарки</span>
       <small>Изменения сразу становятся видны всем посетителям</small>
     </div>
+    
+    <section class="market-intro-content" id="marketIntroContent" aria-label="Информация о магазине"></section>
+    <button type="button" class="greeting-primary market-intro-admin-edit" id="editMarketIntroBtn" hidden>Редактировать информацию магазина</button>
+    <section class="market-intro-editor" id="marketIntroEditor" hidden>
+      <h3>Информация о товарах и системе магазинчика</h3>
+      <label>Текст шапки</label>
+      <div class="rich-tools" aria-label="Форматирование текста">
+        <button type="button" data-command="bold"><b>Ж</b></button>
+        <button type="button" data-command="italic"><i>К</i></button>
+        <button type="button" data-command="underline"><u>Ч</u></button>
+        <button type="button" id="marketIntroLink">Гиперссылка</button>
+      </div>
+      <div id="marketIntroEditorText" contenteditable="true" role="textbox" aria-multiline="true"></div>
+      <div class="greeting-edit-grid">
+        <label>Размер текста (px)<input id="marketIntroFontSize" type="number" min="12" max="32" value="16"></label>
+        <label>Шрифт<select id="marketIntroFont"></select></label>
+        <label>Цвет текста<input id="marketIntroColor" type="color" value="#dceefa"></label>
+      </div>
+      <label>Картинка в шапке (до 20 МБ)<input id="marketIntroImage" type="file" accept="image/jpeg,image/png,image/webp"></label>
+      <img id="marketIntroImagePreview" class="market-intro-banner-preview" alt="Предпросмотр картинки шапки" hidden>
+      <div class="greeting-edit-actions">
+        <button type="button" class="greeting-primary" id="saveMarketIntro">Сохранить информацию</button>
+        <button type="button" class="greeting-more" id="cancelMarketIntro">Отмена</button>
+      </div>
+      <p id="marketIntroNote" aria-live="polite"></p>
+    </section>
+
     <div class="market-prizes" id="marketPrizesGrid"></div>
     <div class="market-detail-backdrop" id="marketDetailBackdrop" aria-hidden="true">
       <section class="market-detail-window" role="dialog" aria-modal="true" aria-labelledby="marketDetailTitle">
@@ -3987,6 +4014,73 @@ prizeResultBackdrop.addEventListener('click', (event) => {
 (()=>{
  const $m=id=>document.getElementById(id);
  const grid=$m('marketPrizesGrid'), adminBar=$m('marketAdminToolbar');
+ const introBox=$m('marketIntroContent'),introEditor=$m('marketIntroEditor'),introOpen=$m('editMarketIntroBtn');
+ const introFonts=['Georgia','Arial','Verdana','Tahoma','Trebuchet MS','Times New Roman','Courier New','Arial Black','Palatino Linotype','Lucida Sans Unicode','Segoe UI','Roboto','system-ui','serif','sans-serif','monospace','Garamond','Bookman Old Style','Century Gothic','Franklin Gothic Medium'];
+ let introSettings={html:'<h3>Праздничная лавка наград</h3><p>Здесь собраны особенные награды новогоднего события. Ознакомься с описаниями товаров, проверь стоимость и доступное количество, а затем выбери понравившуюся награду. Для оформления покупки используй кнопку у выбранного товара.</p><p>Количество некоторых наград ограничено. Если товар закончился, он может быть временно недоступен для обмена.</p>',image_url:'',font_family:'Georgia',font_size:16,text_color:'#dceefa'};
+ const safeIntroHtml=raw=>{
+   const template=document.createElement('template');template.innerHTML=raw||'';
+   template.content.querySelectorAll('script,style,iframe,object,embed,form,input,button').forEach(n=>n.remove());
+   template.content.querySelectorAll('*').forEach(el=>{
+     [...el.attributes].forEach(a=>{if(/^on/i.test(a.name)||((a.name==='href'||a.name==='src')&&!/^(https?:|data:image\/)/i.test(a.value)))el.removeAttribute(a.name);});
+     if(el.tagName==='A'){el.setAttribute('target','_blank');el.setAttribute('rel','noopener noreferrer');}
+   });
+   return template.innerHTML;
+ };
+ const applyIntro=()=>{
+   if(!introBox)return;
+   introBox.innerHTML=(introSettings.image_url?`<img src="${introSettings.image_url}" alt="Иллюстрация к информации о магазине">`:'')+safeIntroHtml(introSettings.html);
+   introBox.style.fontFamily=introSettings.font_family||'Georgia';
+   introBox.style.fontSize=(Number(introSettings.font_size)||16)+'px';
+   introBox.style.color=introSettings.text_color||'#dceefa';
+   if(introOpen)introOpen.hidden=!admin();
+ };
+ const loadIntro=async()=>{
+   if(!introBox)return;
+   if(typeof supabaseClient!=='undefined'&&supabaseClient){
+     const {data}=await supabaseClient.from('greeting_contest_settings').select('market_intro_html,market_intro_image_url,market_intro_font_family,market_intro_font_size,market_intro_text_color').eq('id',true).maybeSingle();
+     if(data)introSettings={html:data.market_intro_html||introSettings.html,image_url:data.market_intro_image_url||'',font_family:data.market_intro_font_family||'Georgia',font_size:data.market_intro_font_size||16,text_color:data.market_intro_text_color||'#dceefa'};
+   }
+   applyIntro();
+ };
+ const introFont=$m('marketIntroFont');
+ if(introFont)introFont.innerHTML=introFonts.map(f=>`<option value="${f}">${f}</option>`).join('');
+ introOpen?.addEventListener('click',()=>{
+   if(!admin())return;
+   $m('marketIntroEditorText').innerHTML=introSettings.html||'<p>Расскажите посетителям, какие товары представлены в магазине и как работает обмен.</p>';
+   $m('marketIntroFontSize').value=introSettings.font_size||16;$m('marketIntroFont').value=introSettings.font_family||'Georgia';$m('marketIntroColor').value=introSettings.text_color||'#dceefa';
+   introEditor.hidden=false;
+ });
+ introEditor?.querySelectorAll('[data-command]').forEach(b=>b.addEventListener('click',()=>{document.execCommand(b.dataset.command,false,null);$m('marketIntroEditorText').focus();}));
+ $m('marketIntroLink')?.addEventListener('click',()=>{const url=prompt('Вставь полный адрес ссылки (https://...)');if(url&&/^https:\/\//i.test(url)){document.execCommand('createLink',false,url);}});
+ $m('marketIntroImage')?.addEventListener('change',e=>{
+   const f=e.target.files?.[0];if(!f)return;
+   if(f.size>20*1024*1024){e.target.value='';$m('marketIntroNote').textContent='Файл больше 20 МБ. Выбери изображение меньшего размера.';return;}
+   const im=$m('marketIntroImagePreview');im.src=URL.createObjectURL(f);im.hidden=false;
+ });
+ $m('cancelMarketIntro')?.addEventListener('click',()=>{introEditor.hidden=true;});
+ $m('saveMarketIntro')?.addEventListener('click',async()=>{
+   if(!admin()||typeof supabaseClient==='undefined'||!supabaseClient)return;
+   const btn=$m('saveMarketIntro');btn.disabled=true;$m('marketIntroNote').textContent='Сохраняем…';
+   try{
+     let imageUrl=introSettings.image_url;const file=$m('marketIntroImage').files?.[0];
+     if(file){
+       const path=`market-header/${crypto.randomUUID()}-${file.name.replace(/[^a-z0-9._-]/gi,'_')}`;
+       const {error:upErr}=await supabaseClient.storage.from('greeting-contest-images').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});
+       if(upErr)throw upErr;
+       imageUrl=supabaseClient.storage.from('greeting-contest-images').getPublicUrl(path).data.publicUrl;
+     }
+     const payload={id:true,market_intro_html:safeIntroHtml($m('marketIntroEditorText').innerHTML),market_intro_image_url:imageUrl,
+       market_intro_font_family:$m('marketIntroFont').value,market_intro_font_size:Number($m('marketIntroFontSize').value),
+       market_intro_text_color:$m('marketIntroColor').value,updated_at:new Date().toISOString()};
+     const {error}=await supabaseClient.from('greeting_contest_settings').upsert(payload,{onConflict:'id'});if(error)throw error;
+     introSettings={html:payload.market_intro_html,image_url:imageUrl,font_family:payload.market_intro_font_family,font_size:payload.market_intro_font_size,text_color:payload.market_intro_text_color};
+     applyIntro();introEditor.hidden=true;$m('marketIntroNote').textContent='Информация магазина сохранена.';
+   }catch(err){$m('marketIntroNote').textContent='Ошибка сохранения: '+err.message;}
+   finally{btn.disabled=false;}
+ });
+ loadIntro();
+ window.addEventListener('zgot-auth-updated',()=>{loadIntro();});
+
  const detailBg=$m('marketDetailBackdrop'), editorBg=$m('marketEditorBackdrop');
  if(!grid)return;
  const defaults=[
@@ -4385,7 +4479,7 @@ body.task-modal-open{overflow:hidden}
 
 
 /* Активность «Письма в Страну Чудес» */
-.greeting-section{position:relative;width:min(1800px,calc(100% - 48px));max-width:1800px;box-sizing:border-box;margin:32px auto 38px;padding:0}
+.greeting-section{position:relative;width:min(100% - 48px, 1500px);max-width:1500px;box-sizing:border-box;margin:32px auto 38px;padding:0}
 .greeting-card{position:relative;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);align-items:center;gap:24px;overflow:visible;padding:34px 36px;border:1px solid rgba(139,199,226,.28);border-radius:24px;background:linear-gradient(135deg,#173b55 0%,#102d45 56%,#0b2137 100%);box-shadow:0 18px 50px rgba(0,8,20,.24),inset 0 1px 0 rgba(255,255,255,.16);color:#eaf5ff}
 .greeting-copy{position:relative;z-index:3;min-width:0}
 .greeting-kicker{color:#e7b66b;font-size:10px;font-weight:900;letter-spacing:.23em}
@@ -4452,11 +4546,11 @@ body.task-modal-open{overflow:hidden}
 @keyframes greetingBauble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
 @keyframes greetingWarmShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @media(max-width:900px){
- .greeting-section{width:calc(100% - 36px);margin:28px auto 34px;padding:0}
+ .greeting-section{width:100%;max-width:none;margin:28px 0 34px;padding:0}
  .greeting-card{grid-template-columns:minmax(0,1fr) minmax(220px,.72fr);padding:25px 22px;gap:12px}
 }
 @media(max-width:650px){
- .greeting-section{width:calc(100% - 28px);margin:26px auto 30px;padding:0}
+ .greeting-section{width:100%;max-width:none;margin:26px 0 30px;padding:0}
  .greeting-card{grid-template-columns:1fr;padding:22px 17px;gap:8px}
  .greeting-visual{min-height:300px;grid-row:1}
  .greeting-tree{width:min(82%,320px);max-height:340px}
@@ -4586,6 +4680,100 @@ body.task-modal-open{overflow:hidden}
       <button type="button" class="greeting-primary" id="saveBaubleGlow">Сохранить свечение</button><p id="greetingBaubleNote" aria-live="polite"></p>`;
     adminModal.querySelector('.greeting-modal-body').append(baubleTools);
     const tipModal=modal('greetingDetailsModal','Подробнее',tip,false);
+    const detailsEditor=document.createElement('section');
+    detailsEditor.className='greeting-details-admin';
+    detailsEditor.id='greetingDetailsEditor';
+    detailsEditor.hidden=true;
+    detailsEditor.innerHTML=`<h4>Редактирование окна «Подробнее»</h4>
+      <div class="greeting-edit-grid">
+        <label>Заголовок<input id="greetingDetailsEditTitle" maxlength="120"></label>
+        <label>Шрифт<select id="greetingDetailsFont"></select></label>
+        <label>Размер текста (px)<input id="greetingDetailsFontSize" type="number" min="12" max="32" value="16"></label>
+        <label>Цвет текста<input id="greetingDetailsTextColor" type="color" value="#b8ccda"></label>
+      </div>
+      <label style="margin-top:10px">Описание<textarea id="greetingDetailsEditDescription" maxlength="2500"></textarea></label>
+      <label style="margin-top:10px">Новая картинка<input id="greetingDetailsImageFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+      <img id="greetingDetailsImagePreview" class="greeting-edit-preview" alt="Предпросмотр новой картинки" hidden>
+      <div class="greeting-edit-actions"><button type="button" class="greeting-primary" id="saveGreetingDetails">Сохранить оформление</button></div>
+      <p id="greetingDetailsSaveNote" aria-live="polite"></p>`;
+    tipModal.querySelector('.greeting-modal-body').append(detailsEditor);
+
+    const detailsCropWrap=document.createElement('div');
+    detailsCropWrap.innerHTML='<p>Выдели область, которая будет показана в окне «Подробнее».</p><img id="greetingDetailsCropImage" style="display:block;max-width:100%;max-height:55vh"><div style="display:flex;gap:8px;margin-top:12px"><button type="button" class="greeting-primary" id="applyGreetingDetailsCrop">Применить область</button><button type="button" class="greeting-more" id="cancelGreetingDetailsCrop">Отмена</button></div>';
+    modal('greetingDetailsCropModal','Выбор области изображения',detailsCropWrap,true);
+    let detailsCropper=null,detailsCroppedFile=null,detailsCropSourceUrl='';
+    async function openDetailsCrop(source){
+      await loadCropper();
+      const im=$('greetingDetailsCropImage');im.onload=()=>{if(detailsCropper)detailsCropper.destroy();detailsCropper=new Cropper(im,{viewMode:1,dragMode:'move',aspectRatio:16/9,autoCropArea:.9,background:false,responsive:true,movable:true,zoomable:true});};
+      im.src=source;openModal('greetingDetailsCropModal');
+    }
+    $('applyGreetingDetailsCrop').addEventListener('click',async()=>{
+      if(!detailsCropper)return;
+      const canvas=detailsCropper.getCroppedCanvas({width:1600,height:900,imageSmoothingQuality:'high'});
+      if(!canvas)return;
+      const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.92));
+      detailsCroppedFile=new File([blob],'details-header-cropped.jpg',{type:'image/jpeg'});
+      const preview=$('greetingDetailsImagePreview');preview.src=URL.createObjectURL(detailsCroppedFile);preview.hidden=false;
+      if(detailsCropper){detailsCropper.destroy();detailsCropper=null;}
+      closeModal('greetingDetailsCropModal');
+      $('greetingDetailsSaveNote').textContent='Область изображения выбрана. Нажми «Сохранить оформление».';
+    });
+    $('cancelGreetingDetailsCrop').addEventListener('click',()=>{if(detailsCropper){detailsCropper.destroy();detailsCropper=null;}closeModal('greetingDetailsCropModal');});
+
+    const detailsEditButton=document.createElement('button');
+    detailsEditButton.type='button';detailsEditButton.id='openGreetingDetailsEditor';
+    detailsEditButton.className='greeting-primary';detailsEditButton.textContent='Редактировать';
+    detailsEditButton.hidden=!admin();
+    tipModal.querySelector('.greeting-modal-body').prepend(detailsEditButton);
+    window.addEventListener('zgot-auth-updated',()=>{detailsEditButton.hidden=!admin();});
+    const fontChoices=['Georgia','Arial','Verdana','Tahoma','Trebuchet MS','Times New Roman','Courier New','Arial Black','Palatino Linotype','Lucida Sans Unicode','Segoe UI','Roboto','system-ui','serif','sans-serif','monospace','Garamond','Bookman Old Style','Century Gothic','Franklin Gothic Medium'];
+    const fontSelect=detailsEditor.querySelector('#greetingDetailsFont');
+    fontSelect.innerHTML=fontChoices.map(f=>`<option value="${f}">${f}</option>`).join('');
+    function syncDetailsEditor(){
+      detailsEditButton.hidden=!admin();
+      detailsEditor.hidden=!admin();
+      $('greetingDetailsEditTitle').value=settings.details_title||$('greetingTooltipTitle').textContent;
+      $('greetingDetailsEditDescription').value=settings.details_description||$('greetingTooltipDescription').textContent;
+      fontSelect.value=settings.details_font_family||'Georgia';
+      $('greetingDetailsFontSize').value=settings.details_font_size||16;
+      $('greetingDetailsTextColor').value=settings.details_text_color||'#b8ccda';
+    }
+    detailsEditButton.addEventListener('click',()=>{if(admin()){syncDetailsEditor();detailsEditor.hidden=false;}});
+    const recropDetails=document.createElement('button');recropDetails.type='button';recropDetails.className='greeting-more';recropDetails.textContent='Изменить область уже загруженной картинки';
+    detailsEditor.querySelector('.greeting-edit-actions').prepend(recropDetails);
+    recropDetails.addEventListener('click',()=>{if(settings.details_image_url)openDetailsCrop(settings.details_image_url);else $('greetingDetailsSaveNote').textContent='Сначала загрузи новую картинку.';});
+    detailsEditor.querySelector('#greetingDetailsImageFile').addEventListener('change',e=>{
+      const f=e.target.files?.[0];if(!f)return;
+      if(f.size>10*1024*1024){e.target.value='';$('greetingDetailsSaveNote').textContent='Максимальный размер картинки — 10 МБ.';return;}
+      openDetailsCrop(URL.createObjectURL(f)).catch(err=>$('greetingDetailsSaveNote').textContent='Не удалось открыть обрезку: '+err.message);
+    });
+    detailsEditor.querySelector('#saveGreetingDetails').addEventListener('click',async()=>{
+      if(!admin()||!connected())return;
+      const title=$('greetingDetailsEditTitle').value.trim(),description=$('greetingDetailsEditDescription').value.trim();
+      let imageUrl=settings.details_image_url||'';
+      const file=detailsCroppedFile||$('greetingDetailsImageFile').files?.[0];
+      const btn=$('saveGreetingDetails');btn.disabled=true;$('greetingDetailsSaveNote').textContent='Сохраняем…';
+      try{
+        if(file){
+          const path=`activity-details/${crypto.randomUUID()}-${file.name.replace(/[^a-z0-9._-]/gi,'_')}`;
+          const {error:upErr}=await supabaseClient.storage.from(bucket).upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});
+          if(upErr)throw upErr;
+          imageUrl=supabaseClient.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+        }
+        const payload={id:true,details_title:title,details_description:description,details_image_url:imageUrl,
+          details_font_family:fontSelect.value,details_font_size:Number($('greetingDetailsFontSize').value),
+          details_text_color:$('greetingDetailsTextColor').value,updated_at:new Date().toISOString()};
+        const {error}=await supabaseClient.from(settingsTable).upsert(payload,{onConflict:'id'});if(error)throw error;
+        settings={...settings,...payload};
+        $('greetingTooltipTitle').textContent=title;$('greetingTooltipDescription').textContent=description;
+        $('greetingTooltipTitle').style.fontFamily=fontSelect.value;$('greetingTooltipDescription').style.fontFamily=fontSelect.value;
+        $('greetingTooltipDescription').style.fontSize=payload.details_font_size+'px';$('greetingTooltipDescription').style.color=payload.details_text_color;
+        if(imageUrl){const im=$('greetingTooltip').querySelector('.greeting-tooltip-frame img');if(im)im.src=imageUrl;}
+        $('greetingDetailsSaveNote').textContent='Изменения сохранены.';
+      }catch(err){$('greetingDetailsSaveNote').textContent='Ошибка сохранения: '+err.message;}
+      finally{btn.disabled=false;}
+    });
+
     tipModal.querySelector('.greeting-modal-head p').textContent='Информация об активности.';
     const preview=document.createElement('div');preview.id='greetingPreviewContent';preview.className='greeting-preview';
     modal('greetingPreviewModal','Предпросмотр письма',preview,true);
@@ -4633,9 +4821,16 @@ body.task-modal-open{overflow:hidden}
   }
   async function loadSettings(){
     if(!connected()){settings.accepting=false;renderSettings();text('greetingPublicStatus','Нет подключения к общей базе сайта.');return;}
-    const {data,error}=await supabaseClient.from(settingsTable).select('title,description,accepting,timer_enabled,timer_deadline,tree_baubles').eq('id',true).maybeSingle();
+    const {data,error}=await supabaseClient.from(settingsTable).select('title,description,accepting,timer_enabled,timer_deadline,tree_baubles,details_title,details_description,details_image_url,details_font_family,details_font_size,details_text_color,market_intro_html,market_intro_image_url,market_intro_font_family,market_intro_font_size,market_intro_text_color').eq('id',true).maybeSingle();
     if(error){console.error(error);settings.accepting=false;renderSettings();text('greetingPublicStatus','Не удалось загрузить настройки почты. Проверь обновление базы данных.');return;}
-    if(data)settings={...settings,...data};treeBaubles=Array.isArray(settings.tree_baubles)?settings.tree_baubles:Array(6).fill(null);renderTreeBaubles();renderSettings();if(admin())fillAdmin();
+    if(data)settings={...settings,...data};
+    if(settings.details_title)$('greetingTooltipTitle').textContent=settings.details_title;
+    if(settings.details_description)$('greetingTooltipDescription').textContent=settings.details_description;
+    if(settings.details_font_family){$('greetingTooltipTitle').style.fontFamily=settings.details_font_family;$('greetingTooltipDescription').style.fontFamily=settings.details_font_family;}
+    if(settings.details_font_size)$('greetingTooltipDescription').style.fontSize=Number(settings.details_font_size)+'px';
+    if(settings.details_text_color)$('greetingTooltipDescription').style.color=settings.details_text_color;
+    if(settings.details_image_url){const di=$('greetingTooltip').querySelector('.greeting-tooltip-frame img');if(di)di.src=settings.details_image_url;}
+    treeBaubles=Array.isArray(settings.tree_baubles)?settings.tree_baubles:Array(6).fill(null);renderTreeBaubles();renderSettings();if(admin())fillAdmin();
   }
   async function saveSettings(){
     if(!admin()||!connected())return;
@@ -4747,32 +4942,33 @@ body.task-modal-open{overflow:hidden}
     box.style.boxShadow=colors.map(c=>`0 0 9px ${c},0 0 18px ${c}55`).join(',')||'0 0 10px rgba(150,220,255,.35)';
   }
   function renderTreeBaubles(){
-    const layer=$('greetingBaubleImages');if(!layer)return;
-    layer.innerHTML='';
     const ns='http://www.w3.org/2000/svg';
+    const groups=[...document.querySelectorAll('.greeting-baubles > g.bauble')];
     const positions=[
-      {x:112,y:187,r:20},{x:263,y:157,r:17},{x:178,y:244,r:22},
-      {x:288,y:277,r:18},{x:94,y:307,r:18},{x:223,y:343,r:21}
+      {cx:132,cy:207,r:20},{cx:280,cy:174,r:17},{cx:200,cy:266,r:22},
+      {cx:306,cy:295,r:18},{cx:112,cy:325,r:18},{cx:244,cy:364,r:21}
     ];
-    treeBaubles.forEach((cfg,i)=>{
-      if(!cfg?.url)return;
+    groups.forEach((group,i)=>{
+      group.querySelectorAll('.greeting-bauble-photo,.greeting-bauble-outline,.greeting-bauble-shine').forEach(n=>n.remove());
+      const cfg=treeBaubles[i];if(!cfg?.url)return;
+      const p=positions[i];
       const image=document.createElementNS(ns,'image');
-      image.setAttribute('href',cfg.url);image.setAttribute('x',positions[i].x);image.setAttribute('y',positions[i].y);
-      image.setAttribute('width',positions[i].r*2);image.setAttribute('height',positions[i].r*2);
+      image.setAttribute('href',cfg.url);image.setAttribute('x',p.cx-p.r);image.setAttribute('y',p.cy-p.r);
+      image.setAttribute('width',p.r*2);image.setAttribute('height',p.r*2);
       image.setAttribute('preserveAspectRatio','xMidYMid slice');image.setAttribute('clip-path',`url(#greetingBallClip${i+1})`);
       image.classList.add('greeting-bauble-photo');
       const colors=Array.isArray(cfg.glow)?cfg.glow.slice(0,3):[];
-      image.style.filter=colors.map(c=>`drop-shadow(0 0 7px ${c})`).join(' ');
-      layer.appendChild(image);
+      image.style.filter=colors.map(c=>`drop-shadow(0 0 7px ${c})`).join(' ')||'none';
+      group.appendChild(image);
       const outline=document.createElementNS(ns,'circle');
-      outline.setAttribute('cx',positions[i].x+positions[i].r);outline.setAttribute('cy',positions[i].y+positions[i].r);
-      outline.setAttribute('r',positions[i].r);outline.setAttribute('fill','none');
-      outline.setAttribute('stroke','#d7f3ff');outline.setAttribute('stroke-opacity','.9');outline.setAttribute('stroke-width','2');
-      layer.appendChild(outline);
+      outline.setAttribute('cx',p.cx);outline.setAttribute('cy',p.cy);outline.setAttribute('r',p.r);
+      outline.setAttribute('fill','none');outline.setAttribute('stroke','#d7f3ff');
+      outline.setAttribute('stroke-opacity','.92');outline.setAttribute('stroke-width','2');
+      outline.classList.add('greeting-bauble-outline');group.appendChild(outline);
       const shine=document.createElementNS(ns,'ellipse');
-      shine.setAttribute('cx',positions[i].x+positions[i].r*.68);shine.setAttribute('cy',positions[i].y+positions[i].r*.62);
-      shine.setAttribute('rx',Math.max(3,positions[i].r*.2));shine.setAttribute('ry',Math.max(5,positions[i].r*.38));
-      shine.setAttribute('fill','#fff');shine.setAttribute('opacity','.38');layer.appendChild(shine);
+      shine.setAttribute('cx',p.cx-p.r*.32);shine.setAttribute('cy',p.cy-p.r*.38);
+      shine.setAttribute('rx',Math.max(3,p.r*.2));shine.setAttribute('ry',Math.max(5,p.r*.38));
+      shine.setAttribute('fill','#fff');shine.setAttribute('opacity','.38');shine.classList.add('greeting-bauble-shine');group.appendChild(shine);
     });
   }
   async function saveBaubleGlow(){
@@ -4847,6 +5043,82 @@ body.task-modal-open{overflow:hidden}
 })();
 </script>
 
+
+<script id="zgot-snowfall-intro-v4">
+(()=>{
+ if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+ if(sessionStorage.getItem('zgotSnowIntroSeen'))return;
+ sessionStorage.setItem('zgotSnowIntroSeen','1');
+ const layer=document.createElement('div');layer.id='zgotSnowIntro';
+ Object.assign(layer.style,{position:'fixed',inset:'0',zIndex:'999999',pointerEvents:'none',overflow:'hidden',background:'rgba(5,17,30,.92)',opacity:'1',transition:'opacity .9s ease'});
+ const style=document.createElement('style');style.textContent=`#zgotSnowIntro .flake{position:absolute;top:-12vh;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#fff 0%,rgba(226,246,255,.92) 38%,rgba(194,227,244,0) 75%);filter:drop-shadow(0 0 5px rgba(226,246,255,.7));opacity:var(--o)}`;
+ document.head.appendChild(style);
+ const count=Math.min(240,Math.max(90,Math.round(innerWidth*innerHeight/6500)));
+ const flakes=[];
+ for(let i=0;i<count;i++){const f=document.createElement('i');f.className='flake';f.style.setProperty('--x',Math.random()*100+'%');f.style.setProperty('--s',(2+Math.random()*7)+'px');f.style.setProperty('--o',(.35+Math.random()*.65));f.style.top=(-10+Math.random()*110)+'vh';layer.appendChild(f);flakes.push({el:f,y:parseFloat(f.style.top),speed:16+Math.random()*48,drift:(Math.random()-.5)*18});}
+ document.body.appendChild(layer);
+ let last=0,start=performance.now(),raf=0;
+ const tick=now=>{
+   const dt=Math.min(.05,(now-last)/1000||0);last=now;
+   for(const f of flakes){f.y+=f.speed*dt;if(f.y>110)f.y=-10;f.el.style.top=f.y+'vh';f.el.style.transform=`translateX(${Math.sin((now-start)/800+f.speed)*f.drift}px)`;}
+   if(now-start>3650){layer.style.opacity='0';setTimeout(()=>{layer.remove();style.remove();},950);return;}
+   raf=requestAnimationFrame(tick);
+ };
+ raf=requestAnimationFrame(tick);
+})();
+</script>
+
 </body>
 </html>
 
+
+<style id="zgot-v4-fixes">
+
+/* v4: аккуратные исправления ёлки, модальных редакторов и общего ритма блоков */
+.greeting-section{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
+.greeting-visual{min-width:0}
+.greeting-tree{width:min(100%,520px)!important;max-height:620px!important;transform:scale(1.12);transform-origin:center bottom}
+.greeting-bauble-photo{pointer-events:none}
+.greeting-bauble-admin .greeting-bauble-preview{overflow:hidden}
+.greeting-details-admin{margin-top:18px;padding:16px;border:1px solid rgba(145,205,231,.3);border-radius:16px;background:rgba(5,22,37,.42)}
+.greeting-details-admin[hidden]{display:none!important}
+.greeting-details-admin .greeting-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.greeting-details-admin label,.market-intro-editor label{display:grid;gap:6px;color:#a9c1d1;font-size:12px;font-weight:750}
+.greeting-details-admin input,.greeting-details-admin textarea,.greeting-details-admin select,
+.market-intro-editor input,.market-intro-editor textarea,.market-intro-editor select{
+ width:100%;box-sizing:border-box;border:1px solid rgba(145,205,231,.28);border-radius:10px;padding:10px 12px;background:#0a2235;color:#eff8ff;font:inherit
+}
+.greeting-details-admin textarea,.market-intro-editor textarea{min-height:100px;resize:vertical}
+.greeting-details-admin .greeting-edit-actions,.market-intro-editor .greeting-edit-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.greeting-details-admin input[type=file],.market-intro-editor input[type=file]{padding:8px}
+.greeting-modal-head .greeting-form-close,.greeting-modal-head button{flex:none}
+.greeting-details-admin .greeting-edit-preview{max-width:100%;max-height:170px;object-fit:contain;border-radius:10px}
+.market-intro-content{margin:0 0 20px;padding:18px 20px;border:1px solid rgba(145,205,231,.26);border-radius:16px;background:linear-gradient(135deg,rgba(28,65,91,.78),rgba(8,30,48,.8));color:#dceefa;line-height:1.65}
+.market-intro-content:empty{display:none}
+.market-intro-editor[hidden]{display:none!important}
+.market-intro-content img{display:block;max-width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin:0 0 12px}
+.market-intro-admin-edit{margin:0 0 16px}
+.market-intro-editor{display:grid;gap:12px;padding:16px;border:1px solid rgba(145,205,231,.28);border-radius:14px;background:rgba(5,22,37,.55)}
+.market-intro-editor .rich-tools{display:flex;gap:6px;flex-wrap:wrap}
+.market-intro-editor .rich-tools button{padding:7px 10px;border-radius:8px}
+.market-intro-editor [contenteditable=true]{min-height:120px;padding:12px;border:1px solid rgba(145,205,231,.28);border-radius:10px;background:#0a2235;color:#eff8ff;outline:none}
+.market-intro-editor .market-intro-banner-preview{max-width:100%;max-height:150px;object-fit:contain;border-radius:10px}
+.market-window{width:min(1120px,calc(100vw - 36px))!important;max-height:90vh;overflow:auto}
+.market-card{width:100%;box-sizing:border-box}
+@media(max-width:700px){
+ .greeting-section{width:100%!important}
+ .greeting-tree{width:min(88%,380px)!important;transform:none}
+ .greeting-details-admin .greeting-edit-grid{grid-template-columns:1fr}
+}
+
+</style>
+
+<style id="zgot-v4-market-size">
+.market-section{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
+.market-card{min-height:190px!important;padding:36px 42px!important}
+@media(max-width:700px){.market-section{width:100%!important}.market-card{padding:24px 20px!important;min-height:0!important}}
+</style>
+
+<style id="zgot-v4-remove-entry-flash">
+.page-entry-glow,.entry-square-glow,.intro-square-flash,.site-enter-glow{display:none!important;animation:none!important;opacity:0!important}
+</style>
