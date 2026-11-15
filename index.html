@@ -2442,9 +2442,9 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
       <h2 id="marketTitle">Новогодняя ярмарка наград</h2>
       <p>Загляни в праздничную ярмарку и познакомься с наградами новогоднего события.</p>
     </div>
-    <a class="market-visit" id="visitMarketBtn" href="https://vk.ru/topic-91120784_69118179?offset=0" target="_blank" rel="noopener noreferrer">Оставить заявку →
-      <span class="market-fireworks" aria-hidden="true"></span>
-    </a>
+    <button class="market-visit" id="visitMarketBtn" type="button">Посетить
+      <span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+    </button>
   </div>
 </section>
 
@@ -5262,37 +5262,47 @@ body.task-modal-open{overflow:hidden}
 
 
 <script>
+/* Новогодняя ярмарка: эффект замерзания экрана и открытие витрины */
 (()=>{
- const button=document.getElementById('visitMarketBtn');
- if(!button)return;
- const layer=button.querySelector('.market-fireworks');
- if(!layer)return;
- let cooldown=false;
- button.addEventListener('pointerenter',()=>{
-   if(cooldown)return;cooldown=true;
-   const rect=button.getBoundingClientRect();
-   const w=rect.width,h=rect.height;
-   const colors=[12,38,52,185,285,330];
-   for(let n=0;n<5;n++){
-     const fw=document.createElement('span');fw.className='market-firework';
-     const edge=n%4;
-     const sx=edge===0?Math.random()*w:edge===1?w:edge===2?Math.random()*w:0;
-     const sy=edge===0?0:edge===1?Math.random()*h:edge===2?h:Math.random()*h;
-     const tx=(Math.random()-.5)*52,ty=(Math.random()-.5)*48-16;
-     fw.style.setProperty('--sx',`${sx}px`);fw.style.setProperty('--sy',`${sy}px`);
-     fw.style.setProperty('--tx',`${tx}px`);fw.style.setProperty('--ty',`${ty}px`);
-     const burst=document.createElement('span');burst.className='burst';
-     const hue=colors[Math.floor(Math.random()*colors.length)];
-     for(let k=0;k<12;k++){
-       const spark=document.createElement('i');spark.style.setProperty('--a',`${k*30}deg`);
-       spark.style.setProperty('--dist',`${17+Math.random()*17}px`);
-       spark.style.setProperty('--hue',String((hue+Math.random()*28)%360));burst.appendChild(spark);
-     }
-     fw.appendChild(Object.assign(document.createElement('span'),{className:'rocket'}));fw.appendChild(burst);layer.appendChild(fw);
-     setTimeout(()=>fw.remove(),2900);
+ const visit=document.getElementById('visitMarketBtn');
+ const frost=document.getElementById('marketFrost');
+ const backdrop=document.getElementById('marketBackdrop');
+ const close=document.getElementById('closeMarketBtn');
+ let opening=false;
+ function openMarket(){
+   if(opening||!visit||!frost||!backdrop)return;
+   opening=true;
+   frost.querySelectorAll('.market-ice-crystal').forEach(node=>node.remove());
+   frost.classList.remove('freeze');void frost.offsetWidth;frost.classList.add('freeze');
+   // Кристаллы инея вспыхивают в случайных местах по всей площади экрана.
+   const shardCount = Math.min(42, Math.max(24, Math.round(window.innerWidth * window.innerHeight / 36000)));
+   for(let i=0;i<shardCount;i++){
+     const shard=document.createElement('span');
+     shard.className='market-ice-crystal';
+     shard.style.setProperty('--x',(2+Math.random()*96)+'%');
+     shard.style.setProperty('--y',(2+Math.random()*96)+'%');
+     shard.style.setProperty('--size',(12+Math.random()*34)+'px');
+     shard.style.setProperty('--rot',(Math.random()*180)+'deg');
+     shard.style.setProperty('--dur',(1.25+Math.random()*.9)+'s');
+     frost.appendChild(shard);
+     setTimeout(()=>shard.remove(),2400);
    }
-   setTimeout(()=>{cooldown=false},850);
- });
+   window.setTimeout(()=>{
+     backdrop.classList.add('open');
+     backdrop.setAttribute('aria-hidden','false');
+     document.body.style.overflow='hidden';
+     opening=false;
+   },1050);
+ }
+ function closeMarket(){
+   backdrop.classList.remove('open');
+   backdrop.setAttribute('aria-hidden','true');
+   document.body.style.overflow='';
+ }
+ visit?.addEventListener('click',openMarket);
+ close?.addEventListener('click',closeMarket);
+ backdrop?.addEventListener('click',e=>{if(e.target===backdrop)closeMarket()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop?.classList.contains('open'))closeMarket()});
 })();
 </script>
 
