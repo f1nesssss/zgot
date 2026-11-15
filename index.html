@@ -2394,7 +2394,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
           <g transform="translate(92 416)"><path d="M0 15h55v37H0z" fill="#9d5265" stroke="#e8b7a6" stroke-width="2"/><path d="M-3 8h61v13H-3z" fill="#d8a76e"/><path d="M23 8h9v44h-9z" fill="#f0d49c"/><path d="M27 8C8 -5 8 -15 19 -14c8 1 10 13 12 22M28 8C46 -7 52 -15 41 -16c-8 0-11 13-13 24" fill="none" stroke="#f0d49c" stroke-width="4" stroke-linecap="round"/></g>
           <g transform="translate(273 424)"><path d="M0 12h49v32H0z" fill="#315f70" stroke="#9bcbd1" stroke-width="2"/><path d="M-3 5h55v12H-3z" fill="#d5b77d"/><path d="M20 5h9v39h-9z" fill="#f4dfb0"/><path d="M24 5C8 -7 8 -15 18 -14c7 1 8 11 10 19M25 5C41 -7 47 -14 38 -15c-7 0-10 12-13 20" fill="none" stroke="#f4dfb0" stroke-width="4" stroke-linecap="round"/></g>
         </g>
-        <path d="M192 365h36v96h-36z" fill="url(#treeTrunk)" rx="7"/><path d="M197 370h6v86h-6z" fill="#d49a66" opacity=".22"/>
+        <path d="M192 340h36v121h-36z" fill="url(#treeTrunk)" rx="7"/><path d="M197 345h6v111h-6z" fill="#d49a66" opacity=".22"/>
         <g fill="url(#treeNeedles)" stroke="#76c6a2" stroke-opacity=".22" stroke-width="2">
           <path d="M210 24 C195 62 176 83 149 113 C166 110 179 108 191 104 C165 137 135 169 105 204 C126 201 144 197 162 191 C128 229 91 269 57 311 C87 305 113 299 143 289 C115 322 91 347 72 371 C120 360 164 349 210 345 C256 349 300 360 348 371 C329 347 305 322 277 289 C307 299 333 305 363 311 C329 269 292 229 258 191 C276 197 294 201 315 204 C285 169 255 137 229 104 C241 108 254 110 271 113 C244 83 225 62 210 24Z"/>
           <path d="M210 70 C191 101 170 127 147 154 C169 149 185 145 200 139 C174 174 146 205 119 239 C145 232 166 225 188 217 C160 250 132 280 105 314 C144 305 176 296 210 292 C244 296 276 305 315 314 C288 280 260 250 232 217 C254 225 275 232 301 239 C274 205 246 174 220 139 C235 145 251 149 273 154 C250 127 229 101 210 70Z" fill="url(#treeBranch)" opacity=".82"/>
@@ -2571,7 +2571,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
         <label>ID участника<input id="formId" required inputmode="numeric" placeholder="Например, 123456"></label>
         <label class="full">Количество билетов<input id="formTickets" type="number" min="1" max="999" value="1" required></label>
       </div>
-      <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelModal">Отмена</button><button class="primary-btn" type="submit">Сохранить участника</button></div>
+      <div class="modal-actions"><button type="button" class="ghost-btn" id="deleteParticipantFromModal" hidden>Удалить запись</button><button type="button" class="ghost-btn" id="cancelModal">Отмена</button><button class="primary-btn" type="submit">Сохранить участника</button></div>
     </form>
   </div>
 </div>
@@ -2607,7 +2607,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
     <div class="admin-team-list" id="adminRosterList" aria-live="polite"><p>Загружаем список команды…</p></div>
     <button type="button" id="refreshAdminRoster">Обновить список</button>
    </article>
-   <article class="admin-cabinet-card"><h3>Участники</h3><p>Добавление и редактирование записей участников.</p><button type="button" id="addBtn">+ Участник</button></article>
+   <article class="admin-cabinet-card"><h3>Участники</h3><p>Добавление, поиск, редактирование и удаление записей участников.</p><button type="button" id="addBtn">+ Участник</button><div class="admin-participant-search"><label for="adminParticipantSearch">Найти записи по игровому ID</label><div class="admin-inline-actions"><input type="search" id="adminParticipantSearch" placeholder="Введи игровой ID"><button type="button" id="adminParticipantSearchBtn">Найти</button></div><div id="adminParticipantSearchResults" class="admin-tool-results" aria-live="polite"></div></div></article>
    <article class="admin-cabinet-card"><h3>Розыгрыш</h3><p>Настройка и контроль новогоднего розыгрыша.</p><button type="button" id="miracleAdminBtn">Управление розыгрышем</button></article>
    <article class="admin-cabinet-card"><h3>Экспорт</h3><p>Выгрузка текущих данных участников.</p><button type="button" id="exportBtn">Экспорт данных</button></article>
    <article class="admin-cabinet-card"><h3>Общее количество баллов</h3><strong class="admin-stat-number" id="adminTotalPoints">0</strong><p>Сумма всех билетов, начисленных участникам по всем шарам.</p><div class="admin-score-list" id="adminScoreList">Нет данных.</div></article>
@@ -2832,7 +2832,7 @@ function renderOrbs(){
     return `<article class="orb-card" style="--accent:${o.tone}">
       <div class="orb-art"><span class="orb-glint">✧</span><img class="orb-image" src="assets/${o.image}" alt="Шар «${o.name}»"></div>
       <div class="orb-title">${o.name}</div>
-      <div class="orb-meta"><span>УЧАСТНИКИ</span><span>${list.length}</span></div>
+      
       <div class="orb-schedule-status ${isClosed?'is-closed':''}" ${closedStyle}><strong>${escapeHtml(status)}</strong></div>
       <div class="orb-bottom"><button class="view-btn market-view-btn" data-view="${o.id}" ${closed?'disabled aria-disabled="true"':''}>${closed?'Недоступен':'Открыть →'}<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button></div>
     </article>`;
@@ -2978,9 +2978,25 @@ function render(){
 function openModal(){
   if(!isAdmin)return;
   $('formOrb').innerHTML=ORBS.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
+  $('modalTitle').textContent='Новый участник';
+  $('formDbId').value='';
+  $('deleteParticipantFromModal').hidden=true;
+  $('participantForm').reset();
   $('modalBackdrop').classList.add('open');$('formId').focus();
 }
-function closeModal(){$('modalBackdrop').classList.remove('open');$('participantForm').reset();}
+function openEditRecord(record){
+  if(!isAdmin||!record)return;
+  $('formOrb').innerHTML=ORBS.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
+  $('modalTitle').textContent='Редактирование участника';
+  $('formDbId').value=record.dbId;
+  $('formOrb').value=record.orb;
+  $('formSocial').value=record.social;
+  $('formId').value=record.id;
+  $('formTickets').value=record.tickets;
+  $('deleteParticipantFromModal').hidden=false;
+  $('modalBackdrop').classList.add('open');$('formId').focus();
+}
+function closeModal(){$('modalBackdrop').classList.remove('open');$('participantForm').reset();$('formDbId').value='';$('modalTitle').textContent='Новый участник';$('deleteParticipantFromModal').hidden=true;}
 function openAuth(){ $('authBackdrop').classList.add('open'); $('authMessage').textContent=''; }
 function closeAuth(){ $('authBackdrop').classList.remove('open'); $('authForm').reset(); }
 async function loadRecords(){
@@ -2991,10 +3007,16 @@ async function loadRecords(){
   lastUpdated = new Date();
 render();
 }
-async function updateRecord(record,tickets){
-  const {error}=await supabaseClient.from('entries').update({tickets}).eq('id',record.dbId);
-  if(error){alert('Не удалось изменить билеты: '+error.message);return;}
+async function updateRecord(record,payload){
+  const {error}=await supabaseClient.from('entries').update({
+    globe_id:payload.orb,
+    social_network:payload.social==='ВК'?'VK':'OK',
+    social_id:payload.id,
+    tickets:payload.tickets
+  }).eq('id',record.dbId);
+  if(error){alert('Не удалось изменить запись: '+error.message);return false;}
   await loadRecords();
+  return true;
 }
 async function deleteRecord(record){
   const {error}=await supabaseClient.from('entries').delete().eq('id',record.dbId);
@@ -3532,8 +3554,40 @@ $('participantForm').addEventListener('submit',async e=>{
   e.preventDefault();if(!isAdmin)return;
   const payload={orb:$('formOrb').value,social:$('formSocial').value,id:$('formId').value.trim(),tickets:Number($('formTickets').value)};
   if(!payload.id){alert('Введи ID участника.');return;}
-  await addRecord(payload);closeModal();
+  if(!Number.isInteger(payload.tickets)||payload.tickets<1||payload.tickets>999){alert('Укажи количество билетов от 1 до 999.');return;}
+  const dbId=$('formDbId').value;
+  if(dbId){
+    const record=records.find(r=>String(r.dbId)===String(dbId));
+    if(!record)return;
+    if(await updateRecord(record,payload))closeModal();
+  }else{
+    await addRecord(payload);closeModal();
+  }
 });
+$('deleteParticipantFromModal').addEventListener('click',async()=>{
+  if(!isAdmin)return;
+  const record=records.find(r=>String(r.dbId)===String($('formDbId').value));
+  if(!record)return;
+  if(confirm(`Удалить запись ID ${record.id} из шара «${orbById(record.orb)?.name||'—'}»?`)){
+    await deleteRecord(record);closeModal();
+  }
+});
+function searchAdminParticipants(){
+  if(!isAdmin)return;
+  const q=$('adminParticipantSearch').value.trim().toLowerCase();
+  const box=$('adminParticipantSearchResults');
+  if(!q){box.innerHTML='<p>Введи игровой ID для поиска.</p>';return;}
+  const found=records.filter(r=>String(r.id).toLowerCase().includes(q));
+  if(!found.length){box.innerHTML='<p>Записей с таким ID не найдено.</p>';return;}
+  box.innerHTML=found.map(r=>`<div class="admin-search-result"><div><strong>${escapeHtml(r.id)}</strong><span>${escapeHtml(orbById(r.orb)?.name||'—')} · ${escapeHtml(r.social)} · ${Number(r.tickets)} бил.</span></div><button type="button" data-admin-edit-record="${String(r.dbId)}">Изменить</button></div>`).join('');
+  box.querySelectorAll('[data-admin-edit-record]').forEach(btn=>btn.addEventListener('click',()=>{
+    const record=records.find(r=>String(r.dbId)===btn.dataset.adminEditRecord);
+    openEditRecord(record);
+  }));
+}
+$('adminParticipantSearchBtn').addEventListener('click',searchAdminParticipants);
+$('adminParticipantSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchAdminParticipants();}});
+$('adminParticipantSearch').addEventListener('input',searchAdminParticipants);
   
 $('totalViewBtn').addEventListener('click',()=>{
     selectedOrb='all';
@@ -4553,7 +4607,7 @@ body.task-modal-open{overflow:hidden}
 
 /* Активность «Письма в Страну Чудес» */
 .greeting-section{position:relative;width:min(100% - 48px, 1500px);max-width:1500px;box-sizing:border-box;margin:32px auto 38px;padding:0}
-.greeting-card{position:relative;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);align-items:center;gap:24px;overflow:visible;padding:34px 36px;border:1px solid rgba(139,199,226,.28);border-radius:24px;background:linear-gradient(135deg,#173b55 0%,#102d45 56%,#0b2137 100%);box-shadow:0 18px 50px rgba(0,8,20,.24),inset 0 1px 0 rgba(255,255,255,.16);color:#eaf5ff}
+.greeting-card{position:relative;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);align-items:start;gap:24px;overflow:visible;padding:34px 36px;border:1px solid rgba(139,199,226,.28);border-radius:24px;background:linear-gradient(135deg,#173b55 0%,#102d45 56%,#0b2137 100%);box-shadow:0 18px 50px rgba(0,8,20,.24),inset 0 1px 0 rgba(255,255,255,.16);color:#eaf5ff}
 .greeting-copy{position:relative;z-index:3;min-width:0}
 .greeting-kicker{color:#e7b66b;font-size:10px;font-weight:900;letter-spacing:.23em}
 .greeting-copy h2{margin:10px 0 12px;font:500 clamp(29px,3.6vw,43px)/1.1 Georgia,serif;color:#f0f7ff}
@@ -4661,7 +4715,7 @@ body.task-modal-open{overflow:hidden}
 .greeting-countdown{display:inline-flex;align-items:center;gap:7px;margin:0 0 16px;padding:9px 14px;border-radius:999px;border:1px solid rgba(231,182,107,.38);background:rgba(115,83,54,.32);color:#ffe1b1;font-size:12px;font-weight:850}
 .greeting-countdown[hidden]{display:none!important}
 @keyframes greetingBulb{0%,100%{opacity:.45;filter:drop-shadow(0 0 2px currentColor)}50%{opacity:1;filter:drop-shadow(0 0 10px currentColor)}}
-.greeting-lights circle{animation:greetingBulb 1.4s ease-in-out infinite alternate}
+.greeting-lights circle{fill:#ffe7a1;color:#ffe7a1;animation:greetingBulb 1.4s ease-in-out infinite alternate}.greeting-lights circle:nth-child(1){fill:#ffe7a1;color:#ffe7a1;animation-delay:0s}
 .greeting-lights circle:nth-child(2){animation-delay:.2s;color:#ffe7a1;fill:#ffe7a1}
 .greeting-lights circle:nth-child(3){animation-delay:.4s;color:#a9e8ff;fill:#a9e8ff}
 .greeting-lights circle:nth-child(4){animation-delay:.6s;color:#ffc0d8;fill:#ffc0d8}
@@ -5022,16 +5076,23 @@ body.task-modal-open{overflow:hidden}
       {cx:306,cy:295,r:18},{cx:112,cy:325,r:18},{cx:244,cy:364,r:21}
     ];
     groups.forEach((group,i)=>{
-      group.querySelectorAll('.greeting-bauble-photo,.greeting-bauble-outline,.greeting-bauble-shine').forEach(n=>n.remove());
+      group.querySelectorAll('.greeting-bauble-glow,.greeting-bauble-photo,.greeting-bauble-outline,.greeting-bauble-shine').forEach(n=>n.remove());
       const cfg=treeBaubles[i];if(!cfg?.url)return;
       const p=positions[i];
+      const colors=Array.isArray(cfg.glow)?cfg.glow.slice(0,3):[];
+      colors.forEach((color,j)=>{
+        const halo=document.createElementNS(ns,'circle');
+        halo.setAttribute('cx',p.cx);halo.setAttribute('cy',p.cy);halo.setAttribute('r',p.r+3+j*2);
+        halo.setAttribute('fill',color);halo.setAttribute('opacity',String(.24/(j+1)));
+        halo.setAttribute('filter','url(#treeGlow)');halo.classList.add('greeting-bauble-glow');
+        group.appendChild(halo);
+      });
       const image=document.createElementNS(ns,'image');
       image.setAttribute('href',cfg.url);image.setAttribute('x',p.cx-p.r);image.setAttribute('y',p.cy-p.r);
       image.setAttribute('width',p.r*2);image.setAttribute('height',p.r*2);
       image.setAttribute('preserveAspectRatio','xMidYMid slice');image.setAttribute('clip-path',`url(#greetingBallClip${i+1})`);
       image.classList.add('greeting-bauble-photo');
-      const colors=Array.isArray(cfg.glow)?cfg.glow.slice(0,3):[];
-      image.style.filter=colors.map(c=>`drop-shadow(0 0 7px ${c})`).join(' ')||'none';
+      image.style.filter='none';
       group.appendChild(image);
       const outline=document.createElementNS(ns,'circle');
       outline.setAttribute('cx',p.cx);outline.setAttribute('cy',p.cy);outline.setAttribute('r',p.r);
@@ -5117,29 +5178,7 @@ body.task-modal-open{overflow:hidden}
 </script>
 
 
-<script id="zgot-snowfall-intro-v4">
-(()=>{
- if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
- if(sessionStorage.getItem('zgotSnowIntroSeen'))return;
- sessionStorage.setItem('zgotSnowIntroSeen','1');
- const layer=document.createElement('div');layer.id='zgotSnowIntro';
- Object.assign(layer.style,{position:'fixed',inset:'0',zIndex:'999999',pointerEvents:'none',overflow:'hidden',background:'rgba(5,17,30,.92)',opacity:'1',transition:'opacity .9s ease'});
- const style=document.createElement('style');style.textContent=`#zgotSnowIntro .flake{position:absolute;top:-12vh;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#fff 0%,rgba(226,246,255,.92) 38%,rgba(194,227,244,0) 75%);filter:drop-shadow(0 0 5px rgba(226,246,255,.7));opacity:var(--o)}`;
- document.head.appendChild(style);
- const count=Math.min(240,Math.max(90,Math.round(innerWidth*innerHeight/6500)));
- const flakes=[];
- for(let i=0;i<count;i++){const f=document.createElement('i');f.className='flake';f.style.setProperty('--x',Math.random()*100+'%');f.style.setProperty('--s',(2+Math.random()*7)+'px');f.style.setProperty('--o',(.35+Math.random()*.65));f.style.top=(-10+Math.random()*110)+'vh';layer.appendChild(f);flakes.push({el:f,y:parseFloat(f.style.top),speed:16+Math.random()*48,drift:(Math.random()-.5)*18});}
- document.body.appendChild(layer);
- let last=0,start=performance.now(),raf=0;
- const tick=now=>{
-   const dt=Math.min(.05,(now-last)/1000||0);last=now;
-   for(const f of flakes){f.y+=f.speed*dt;if(f.y>110)f.y=-10;f.el.style.top=f.y+'vh';f.el.style.transform=`translateX(${Math.sin((now-start)/800+f.speed)*f.drift}px)`;}
-   if(now-start>3650){layer.style.opacity='0';setTimeout(()=>{layer.remove();style.remove();},950);return;}
-   raf=requestAnimationFrame(tick);
- };
- raf=requestAnimationFrame(tick);
-})();
-</script>
+
 
 </body>
 </html>
@@ -5150,7 +5189,7 @@ body.task-modal-open{overflow:hidden}
 /* v4: аккуратные исправления ёлки, модальных редакторов и общего ритма блоков */
 .greeting-section{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important}
 .greeting-visual{min-width:0}
-.greeting-tree{width:min(100%,520px)!important;max-height:620px!important;transform:scale(1.12);transform-origin:center bottom}
+.greeting-tree{width:min(100%,420px)!important;max-height:500px!important;height:auto!important;transform:none!important;transform-origin:center bottom}
 .greeting-bauble-photo{pointer-events:none}
 .greeting-bauble-admin .greeting-bauble-preview{overflow:hidden}
 .greeting-details-admin{margin-top:18px;padding:16px;border:1px solid rgba(145,205,231,.3);border-radius:16px;background:rgba(5,22,37,.42)}
@@ -5215,4 +5254,25 @@ body.task-modal-open{overflow:hidden}
 .admin-team-status.is-online{color:#72e5ad}
 .admin-team-status.is-offline{color:var(--muted)}
 @media(max-width:650px){.admin-team-list{grid-template-columns:1fr}.admin-team-nickname-row{flex-direction:column;align-items:stretch}.admin-team-nickname-row button{width:100%}}
+</style>
+
+<style id="zgot-nov15-admin-and-tree-fixes">
+/* Почта: верхнее выравнивание текста и компактная ёлка внутри своего блока */
+.greeting-card{align-items:start!important}
+.greeting-copy{align-self:start!important;padding-top:8px}
+.greeting-visual{min-width:0;max-width:100%;align-self:center;overflow:visible}
+.greeting-tree{display:block;width:min(100%,420px)!important;max-width:100%;height:auto!important;max-height:500px!important;transform:none!important;margin-inline:auto}
+@media(max-width:700px){.greeting-copy{padding-top:0}.greeting-tree{width:min(88%,380px)!important;max-height:420px!important}}
+/* Лампочки: ни одна не остаётся чёрной */
+.greeting-lights circle{fill:#ffe7a1!important;color:#ffe7a1!important}
+/* Поиск и полное редактирование участника в кабинете */
+.admin-participant-search{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.admin-participant-search>label{display:block;margin-bottom:8px;font-size:12px;font-weight:800;color:var(--muted)}
+.admin-participant-search input{min-width:0;flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg,#0b2033);color:var(--text,var(--ink))}
+.admin-search-result{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;margin-top:7px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.04)}
+.admin-search-result>div{display:grid;gap:3px;min-width:0}
+.admin-search-result span{font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.admin-search-result button{flex:none;padding:8px 12px;border:0;border-radius:999px;background:#2f7894;color:#fff;font-weight:800}
+#deleteParticipantFromModal{color:#b85e52;border-color:rgba(184,94,82,.35)}
+@media(max-width:650px){.admin-search-result{align-items:flex-start;flex-direction:column}.admin-search-result button{width:100%}}
 </style>
