@@ -2359,7 +2359,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
             <label class="greeting-full">Текст поздравления<textarea id="greetingMessage" maxlength="3000" rows="5" placeholder="Напиши своё поздравление…" required></textarea><small class="greeting-counter" id="greetingMessageCounter">0 / 3000</small></label>
             <label class="greeting-full">Изображение к письму <span>JPG, PNG или WebP, до 5 МБ</span><input id="greetingImage" type="file" accept="image/jpeg,image/png,image/webp" required></label>
           </div>
-          <button type="submit" class="greeting-submit" id="submitGreeting" disabled>Отправить письмо</button>
+          <div class="greeting-form-actions"><button type="button" class="greeting-more" id="previewGreetingLetter">Показать письмо</button><button type="submit" class="greeting-submit" id="submitGreeting" disabled>Отправить письмо</button></div>
           <p class="greeting-form-note" id="greetingFormNote" aria-live="polite">Заполни все обязательные поля. Отправка станет доступна, когда администрация откроет приём писем.</p>
         </form>
       </div>
@@ -2369,11 +2369,12 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
         <label>Название активности<input id="greetingAdminTitle" maxlength="100"></label>
         <label>Описание в подсказке<textarea id="greetingAdminDescription" maxlength="1200" rows="4"></textarea></label>
         <label class="greeting-toggle"><input type="checkbox" id="greetingAdminAccepting"> Приём поздравлений открыт — разрешить отправку</label>
+        <div class="greeting-timer-fields"><label><span><input type="checkbox" id="greetingTimerEnabled"> Показывать таймер посетителям</span></label><label>Дата и время окончания<input type="datetime-local" id="greetingTimerDeadline"></label></div>
         <div class="greeting-admin-actions"><button type="button" id="saveGreetingSettings">Сохранить настройки</button><span id="greetingSettingsNote" aria-live="polite"></span></div>
       </div>
     </div>
 
-    <div class="greeting-visual" aria-label="Праздничная ёлка с пустыми шарами">
+    <div class="greeting-visual" aria-label="Праздничная ёлка с пустыми шарами"><button type="button" class="greeting-admin-open" id="openGreetingAdminSettings" hidden>Управление активностью</button>
       <div class="greeting-tree-glow"></div>
       <svg class="greeting-tree" viewBox="0 0 420 500" role="img" aria-label="Новогодняя ёлка с пустыми ёлочными шарами">
         <defs>
@@ -2386,10 +2387,10 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
         <ellipse cx="210" cy="464" rx="126" ry="15" fill="#020c17" opacity=".35"/>
         <path d="M184 388h52v72h-52z" fill="url(#treeTrunk)" rx="7"/>
         <g fill="url(#treeNeedles)" stroke="#76c6a2" stroke-opacity=".22" stroke-width="2">
-          <path d="M210 24 156 125 183 115 118 205 157 191 79 291 137 272 49 365 210 338 371 365 283 272 341 291 263 191 302 205 237 115 264 125Z"/>
-          <path d="M210 68 177 148 196 140 145 218 181 206 112 286 163 271 93 351 210 332 327 351 257 271 308 286 239 206 275 218 224 140 243 148Z" fill="url(#treeBranch)" opacity=".78"/>
+          <path d="M210 24 C195 62 176 83 149 113 C166 110 179 108 191 104 C165 137 135 169 105 204 C126 201 144 197 162 191 C128 229 91 269 57 311 C87 305 113 299 143 289 C115 322 91 347 72 371 C120 360 164 349 210 345 C256 349 300 360 348 371 C329 347 305 322 277 289 C307 299 333 305 363 311 C329 269 292 229 258 191 C276 197 294 201 315 204 C285 169 255 137 229 104 C241 108 254 110 271 113 C244 83 225 62 210 24Z"/>
+          <path d="M210 70 C191 101 170 127 147 154 C169 149 185 145 200 139 C174 174 146 205 119 239 C145 232 166 225 188 217 C160 250 132 280 105 314 C144 305 176 296 210 292 C244 296 276 305 315 314 C288 280 260 250 232 217 C254 225 275 232 301 239 C274 205 246 174 220 139 C235 145 251 149 273 154 C250 127 229 101 210 70Z" fill="url(#treeBranch)" opacity=".82"/>
         </g>
-        <g fill="none" stroke="#f4d28b" stroke-width="3" stroke-linecap="round" opacity=".9">
+        <g class="greeting-garland" fill="none" stroke="#f4d28b" stroke-width="3" stroke-linecap="round" opacity=".95">
           <path d="M185 130 C260 160 135 205 231 235 S154 290 249 325 S172 355 210 385"/>
           <path d="M240 168 C150 197 270 245 178 275 S267 328 171 357" opacity=".72"/>
         </g>
@@ -2402,7 +2403,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
           <g class="bauble b5"><path d="M106 305v-8h11v8" stroke="#e5c98f" stroke-width="3" fill="none"/><circle cx="112" cy="325" r="20" fill="url(#emptyBauble)" stroke="#d7f3ff" stroke-opacity=".85" stroke-width="2"/><ellipse cx="106" cy="318" rx="4" ry="7" fill="#fff" opacity=".38"/></g>
           <g class="bauble b6"><path d="M238 342v-8h12v8" stroke="#e5c98f" stroke-width="3" fill="none"/><circle cx="244" cy="364" r="23" fill="url(#emptyBauble)" stroke="#d7f3ff" stroke-opacity=".85" stroke-width="2"/><ellipse cx="236" cy="355" rx="5" ry="8" fill="#fff" opacity=".38"/></g>
         </g>
-        <g fill="#f7dfaa"><circle cx="160" cy="150" r="3"/><circle cx="255" cy="220" r="3"/><circle cx="150" cy="264" r="2.5"/><circle cx="270" cy="330" r="3"/><circle cx="215" cy="112" r="2.5"/></g>
+        <g class="greeting-lights"><circle cx="185" cy="149" r="4"/><circle cx="225" cy="180" r="4"/><circle cx="177" cy="218" r="4"/><circle cx="230" cy="251" r="4"/><circle cx="190" cy="291" r="4"/><circle cx="245" cy="326" r="4"/></g><g fill="#f7dfaa"><circle cx="160" cy="150" r="3"/><circle cx="255" cy="220" r="3"/><circle cx="150" cy="264" r="2.5"/><circle cx="270" cy="330" r="3"/><circle cx="215" cy="112" r="2.5"/></g>
       </svg>
       <div class="greeting-tree-caption">Каждое письмо — маленькое чудо</div>
     </div>
@@ -4378,7 +4379,7 @@ body.task-modal-open{overflow:hidden}
 
 
 /* Активность «Письма в Страну Чудес» */
-.greeting-section{max-width:1240px;margin:32px auto 38px;padding:0 28px}
+.greeting-section{position:relative;left:50%;transform:translateX(-50%);width:calc(100vw - 56px);max-width:none;box-sizing:border-box;margin:32px 0 38px;padding:0}
 .greeting-card{position:relative;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);align-items:center;gap:24px;overflow:visible;padding:34px 36px;border:1px solid rgba(139,199,226,.28);border-radius:24px;background:linear-gradient(135deg,#173b55 0%,#102d45 56%,#0b2137 100%);box-shadow:0 18px 50px rgba(0,8,20,.24),inset 0 1px 0 rgba(255,255,255,.16);color:#eaf5ff}
 .greeting-copy{position:relative;z-index:3;min-width:0}
 .greeting-kicker{color:#e7b66b;font-size:10px;font-weight:900;letter-spacing:.23em}
@@ -4445,181 +4446,250 @@ body.task-modal-open{overflow:hidden}
 @keyframes greetingBauble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
 @keyframes greetingWarmShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @media(max-width:900px){
- .greeting-section{padding:0 18px}
+ .greeting-section{width:calc(100vw - 36px);margin:28px 0 34px;padding:0}
  .greeting-card{grid-template-columns:minmax(0,1fr) minmax(220px,.72fr);padding:25px 22px;gap:12px}
- .greeting-tooltip{left:auto;right:12px;top:calc(100% - 14px);width:min(340px,calc(100% - 24px));transform:translateY(8px) scale(.97)}
- .greeting-card:has(#greetingMoreBtn:hover) .greeting-tooltip,.greeting-card:has(#greetingMoreBtn:focus-visible) .greeting-tooltip,.greeting-tooltip.is-open{transform:translateY(0) scale(1)}
 }
 @media(max-width:650px){
- .greeting-section{padding:0 16px;margin:26px auto 30px}
+ .greeting-section{width:calc(100vw - 28px);margin:26px 0 30px;padding:0}
  .greeting-card{grid-template-columns:1fr;padding:22px 17px;gap:8px}
  .greeting-visual{min-height:300px;grid-row:1}
  .greeting-tree{width:min(82%,320px);max-height:340px}
  .greeting-tree-caption{margin-top:-5px}
  .greeting-copy{grid-row:2}
- .greeting-tooltip{top:170px;right:12px;width:calc(100% - 24px);max-width:360px}
  .greeting-form-grid{grid-template-columns:1fr}
  .greeting-full{grid-column:auto}
 }
 @media(prefers-reduced-motion:reduce){.greeting-tree-glow,.greeting-tree-star,.greeting-baubles .bauble,.greeting-tooltip-frame,.greeting-tooltip-frame:before{animation:none!important}}
 
+
+.greeting-admin-open{position:absolute;top:8px;right:8px;z-index:5;border:1px solid rgba(231,182,107,.48);border-radius:999px;padding:9px 13px;background:rgba(9,27,42,.82);color:#f6d7a2;font-size:10px;font-weight:850;cursor:pointer;box-shadow:0 5px 18px rgba(0,0,0,.2)}
+.greeting-admin-open:hover{background:rgba(115,83,54,.75)}
+.greeting-form-actions{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;margin-top:13px}
+.greeting-form-actions .greeting-submit{margin-top:0}
+.greeting-modal{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(2,9,17,.76);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.greeting-modal.is-open{display:flex}
+.greeting-modal-card{position:relative;width:min(760px,96vw);max-height:min(90vh,900px);overflow:auto;padding:24px;border:1px solid rgba(148,207,232,.36);border-radius:22px;background:linear-gradient(145deg,#173b55,#0b2033);box-shadow:0 28px 90px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.14);color:#eff8ff}
+.greeting-modal-card.greeting-modal-wide{width:min(920px,96vw)}
+.greeting-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:16px}
+.greeting-modal-head h3{margin:0;color:#f2f8ff;font:600 25px Georgia,serif}
+.greeting-modal-head p{margin:6px 0 0;color:#a9c1d1;font-size:12px}
+.greeting-modal-close{flex:0 0 auto;width:36px;height:36px;border:1px solid rgba(157,220,244,.25);border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:22px;cursor:pointer}
+.greeting-modal .greeting-form-panel,.greeting-modal .greeting-admin-inline{display:block!important;margin:0;border:0;padding:0;background:transparent}
+.greeting-modal .greeting-tooltip{display:block}
+.greeting-preview{padding:18px;border:1px solid rgba(143,205,232,.25);border-radius:15px;background:rgba(4,19,33,.5)}
+.greeting-preview h4{margin:0 0 12px;font:600 21px Georgia,serif}
+.greeting-preview p{white-space:pre-wrap;overflow-wrap:anywhere;color:#c6d8e5;line-height:1.65}
+.greeting-preview img{display:block;max-width:100%;max-height:360px;object-fit:contain;margin:12px auto 0;border-radius:12px}
+.greeting-crop-modal img{display:block;max-width:100%;max-height:55vh}
+.greeting-crop-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:15px}
+.greeting-timer-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.greeting-timer-fields label{display:grid;gap:6px;color:#b6cad8;font-size:11px;font-weight:800}
+.greeting-timer-fields input{width:100%;box-sizing:border-box;border:1px solid rgba(143,199,226,.25);border-radius:10px;padding:11px;background:#0b2033;color:#eff8ff}
+.greeting-countdown{display:inline-flex;align-items:center;gap:7px;margin:0 0 16px;padding:9px 14px;border-radius:999px;border:1px solid rgba(231,182,107,.38);background:rgba(115,83,54,.32);color:#ffe1b1;font-size:12px;font-weight:850}
+.greeting-countdown[hidden]{display:none!important}
+@keyframes greetingBulb{0%,100%{opacity:.45;filter:drop-shadow(0 0 2px currentColor)}50%{opacity:1;filter:drop-shadow(0 0 10px currentColor)}}
+.greeting-lights circle{animation:greetingBulb 1.4s ease-in-out infinite alternate}
+.greeting-lights circle:nth-child(2){animation-delay:.2s;color:#ffe7a1;fill:#ffe7a1}
+.greeting-lights circle:nth-child(3){animation-delay:.4s;color:#a9e8ff;fill:#a9e8ff}
+.greeting-lights circle:nth-child(4){animation-delay:.6s;color:#ffc0d8;fill:#ffc0d8}
+.greeting-lights circle:nth-child(5){animation-delay:.8s;color:#fff0ad;fill:#fff0ad}
+.greeting-lights circle:nth-child(6){animation-delay:1s;color:#b6f2d8;fill:#b6f2d8}
+.greeting-garland{stroke-dasharray:8 7;animation:greetingGarland 3s linear infinite}
+@keyframes greetingGarland{to{stroke-dashoffset:-60}}
+@media(max-width:650px){.greeting-form-actions{grid-template-columns:1fr}.greeting-timer-fields{grid-template-columns:1fr}.greeting-modal{padding:10px}.greeting-modal-card{padding:17px;max-height:94vh}.greeting-admin-open{top:0;right:0}}
+
 </style>
 
 <script>
-/* Почта Страны Чудес: отправка, настройки активности и администрирование */
+/* Почта Страны Чудес v2: модальные окна, предпросмотр, кадрирование и таймер */
 (()=> {
-  const byId=id=>document.getElementById(id);
-  const section=byId('greetingContest');
-  if(!section)return;
-  const bucket='greeting-contest-images';
-  const settingsTable='greeting_contest_settings';
-  const submissionsTable='greeting_contest_submissions';
+  const $=id=>document.getElementById(id);
+  const section=$('greetingContest'); if(!section)return;
+  const bucket='greeting-contest-images', settingsTable='greeting_contest_settings', submissionsTable='greeting_contest_submissions';
   const defaultTitle='Письма в Страну Чудес';
   const defaultDescription='Напиши поздравление игроку Аватарии, персонажу Страны Чудес или всему проекту. Приложи картинку, укажи социальную сеть и игровой ID. Администрация выберет самые душевные письма и наградит их авторов.';
-  let settings={title:defaultTitle,description:defaultDescription,accepting:false};
-  let adminRows=[];
-  let realtime=null;
-  const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const setText=(id,value)=>{if(byId(id))byId(id).textContent=value;};
-  const isConnected=()=>Boolean(window.supabase && typeof supabaseClient!=='undefined' && supabaseClient);
-  const setFormNote=(message,isError=false)=>{setText('greetingFormNote',message);byId('greetingFormNote').style.color=isError?'#ffad9f':'#9fb7c8';};
-  const validId=()=>/^[0-9]{1,30}$/.test(byId('greetingGameId').value.trim());
-  const fileValid=()=>{const file=byId('greetingImage').files?.[0];return Boolean(file&&['image/jpeg','image/png','image/webp'].includes(file.type)&&file.size<=5*1024*1024);};
-  function updateFormState(){
-    const ready=Boolean(settings.accepting && byId('greetingSocial').value && validId() && byId('greetingCategory').value && byId('greetingMessage').value.trim() && fileValid());
-    byId('submitGreeting').disabled=!ready;
-    if(!settings.accepting)setFormNote('Приём писем пока закрыт администрацией.');
-    else if(!byId('greetingSocial').value||!validId())setFormNote('Выбери социальную сеть и укажи игровой ID (1–30 цифр).');
-    else if(!byId('greetingCategory').value||!byId('greetingMessage').value.trim())setFormNote('Выбери адресата и напиши текст поздравления.');
-    else if(!fileValid())setFormNote('Прикрепи изображение JPG, PNG или WebP размером до 5 МБ.');
-    else setFormNote('Всё готово. Можно отправлять письмо.');
+  let settings={title:defaultTitle,description:defaultDescription,accepting:false,timer_enabled:false,timer_deadline:null};
+  let adminRows=[], cropper=null, cropperScriptPromise=null, croppedFile=null, timerInterval=null;
+  const connected=()=>Boolean(window.supabase&&typeof supabaseClient!=='undefined'&&supabaseClient);
+  const admin=()=>Boolean(typeof isAdmin!=='undefined'&&isAdmin);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const text=(id,v)=>{if($(id))$(id).textContent=v;};
+  const modal=(id,title,content,wide=false)=>{
+    let el=$(id);
+    if(!el){el=document.createElement('div');el.id=id;el.className='greeting-modal';el.innerHTML=`<div class="greeting-modal-card ${wide?'greeting-modal-wide':''}" role="dialog" aria-modal="true"><div class="greeting-modal-head"><div><h3>${esc(title)}</h3><p></p></div><button type="button" class="greeting-modal-close" aria-label="Закрыть">×</button></div><div class="greeting-modal-body"></div></div>`;document.body.appendChild(el);
+      el.addEventListener('click',e=>{if(e.target===el||e.target.closest('.greeting-modal-close'))closeModal(id);});
+    }
+    el.querySelector('.greeting-modal-head h3').textContent=title;
+    el.querySelector('.greeting-modal-body').append(content);
+    return el;
+  };
+  const openModal=id=>{const el=$(id);if(el){el.classList.add('is-open');document.body.style.overflow='hidden';}};
+  const closeModal=id=>{const el=$(id);if(el){el.classList.remove('is-open');document.body.style.overflow='';}};
+  function createModalShells(){
+    const form=$('greetingFormPanel'),adminPanel=$('greetingInlineAdmin'),tip=$('greetingTooltip');
+    form.removeAttribute('hidden');
+    const formModal=modal('greetingFormModal','Твоё праздничное письмо',form,true);
+    formModal.querySelector('.greeting-modal-head p').textContent='Заполни данные, проверь письмо и отправь его в праздничную почту.';
+    const adminModal=modal('greetingAdminModal','Управление активностью',adminPanel,true);
+    adminModal.querySelector('.greeting-modal-head p').textContent='Настройки приёма работ, таймера и подсказки.';
+    const tipModal=modal('greetingDetailsModal','Подробнее',tip,false);
+    tipModal.querySelector('.greeting-modal-head p').textContent='Информация об активности.';
+    const preview=document.createElement('div');preview.id='greetingPreviewContent';preview.className='greeting-preview';
+    modal('greetingPreviewModal','Предпросмотр письма',preview,true);
+    const crop=document.createElement('div');crop.className='greeting-crop-modal';crop.innerHTML='<p class="greeting-form-note">Выдели нужную область изображения, затем нажми «Обрезать».</p><img id="greetingCropImage" alt="Область кадрирования"><div class="greeting-crop-actions"><button type="button" class="greeting-more" id="cancelGreetingCrop">Отмена</button><button type="button" class="greeting-primary" id="applyGreetingCrop">Обрезать фотографию</button></div>';
+    modal('greetingCropModal','Выбрать область фотографии',crop,true);
+    // Admin editing is intentionally inside its own modal, never permanently visible in the activity block.
+    $('greetingInlineAdmin').hidden=false;
+  }
+  function setNote(message,error=false){text('greetingFormNote',message);$('greetingFormNote').style.color=error?'#ffad9f':'#9fb7c8';}
+  function validId(){return /^[0-9]{1,30}$/.test($('greetingGameId').value.trim());}
+  function selectedFile(){return croppedFile||$('greetingImage').files?.[0]||null;}
+  function fileValid(){const f=selectedFile();return Boolean(f&&['image/jpeg','image/png','image/webp'].includes(f.type)&&f.size<=5*1024*1024);}
+  function updateForm(){
+    const ok=settings.accepting&&['VK','OK'].includes($('greetingSocial').value)&&validId()&&$('greetingCategory').value&&$('greetingMessage').value.trim()&&fileValid();
+    $('submitGreeting').disabled=!ok;
+    if(!settings.accepting)setNote('Приём писем пока закрыт администрацией.');
+    else if(!$('greetingSocial').value||!validId())setNote('Выбери социальную сеть и укажи игровой ID (1–30 цифр).');
+    else if(!$('greetingCategory').value||!$('greetingMessage').value.trim())setNote('Выбери адресата и напиши текст поздравления.');
+    else if(!fileValid())setNote('Прикрепи изображение JPG, PNG или WebP размером до 5 МБ.');
+    else setNote('Всё готово. Можно отправлять письмо.');
+  }
+  function countdown(){
+    if(timerInterval)clearInterval(timerInterval);
+    const pill=$('greetingCountdown');
+    if(!settings.timer_enabled||!settings.timer_deadline){pill.hidden=true;return;}
+    pill.hidden=false;
+    const tick=()=>{
+      const left=new Date(settings.timer_deadline).getTime()-Date.now();
+      if(left<=0){pill.textContent='Приём работ завершён';return;}
+      const days=Math.floor(left/86400000),hours=Math.floor(left%86400000/3600000),mins=Math.floor(left%3600000/60000),secs=Math.floor(left%60000/1000);
+      pill.textContent=`До окончания приёма: ${days?days+' д. ':''}${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+    };tick();timerInterval=setInterval(tick,1000);
   }
   function renderSettings(){
-    setText('greetingTooltipTitle',settings.title||defaultTitle);
-    setText('greetingTooltipDescription',settings.description||defaultDescription);
-    setText('greetingPublicStatus',settings.accepting?'Приём писем открыт — ждем твоё поздравление!':'Приём писем пока закрыт администрацией.');
-    byId('openGreetingForm').disabled=!settings.accepting;
-    byId('openGreetingForm').title=settings.accepting?'':'Приём писем пока закрыт';
-    updateFormState();
+    text('greetingTooltipTitle',settings.title||defaultTitle);text('greetingTooltipDescription',settings.description||defaultDescription);
+    text('greetingPublicStatus',settings.accepting?'Приём писем открыт — ждем твоё поздравление!':'Приём писем пока закрыт администрацией.');
+    $('openGreetingForm').disabled=!settings.accepting;$('openGreetingForm').title=settings.accepting?'':'Приём писем пока закрыт';
+    countdown();updateForm();
+  }
+  function fillAdmin(){
+    $('greetingAdminTitle').value=settings.title||defaultTitle;$('greetingAdminDescription').value=settings.description||defaultDescription;
+    $('greetingAdminAccepting').checked=Boolean(settings.accepting);
+    $('greetingTimerEnabled').checked=Boolean(settings.timer_enabled);
+    $('greetingTimerDeadline').value=settings.timer_deadline?new Date(settings.timer_deadline).toISOString().slice(0,16):'';
   }
   async function loadSettings(){
-    if(!isConnected()){settings.accepting=false;renderSettings();setText('greetingPublicStatus','Почта временно недоступна: нет подключения к общей базе.');return;}
-    const {data,error}=await supabaseClient.from(settingsTable).select('title,description,accepting').eq('id',true).maybeSingle();
-    if(error){console.error('Greeting settings:',error);settings.accepting=false;renderSettings();setText('greetingPublicStatus','Не удалось загрузить настройки почты.');return;}
-    if(data)settings={...settings,...data};
-    renderSettings();
-    if(typeof isAdmin!=='undefined'&&isAdmin)fillAdminSettings();
-  }
-  function fillAdminSettings(){
-    byId('greetingAdminTitle').value=settings.title||defaultTitle;
-    byId('greetingAdminDescription').value=settings.description||defaultDescription;
-    byId('greetingAdminAccepting').checked=Boolean(settings.accepting);
+    if(!connected()){settings.accepting=false;renderSettings();text('greetingPublicStatus','Нет подключения к общей базе сайта.');return;}
+    const {data,error}=await supabaseClient.from(settingsTable).select('title,description,accepting,timer_enabled,timer_deadline').eq('id',true).maybeSingle();
+    if(error){console.error(error);settings.accepting=false;renderSettings();text('greetingPublicStatus','Не удалось загрузить настройки почты. Проверь обновление базы данных.');return;}
+    if(data)settings={...settings,...data};renderSettings();if(admin())fillAdmin();
   }
   async function saveSettings(){
-    if(typeof isAdmin==='undefined'||!isAdmin||!isConnected())return;
-    const title=byId('greetingAdminTitle').value.trim()||defaultTitle;
-    const description=byId('greetingAdminDescription').value.trim()||defaultDescription;
-    const accepting=byId('greetingAdminAccepting').checked;
-    byId('saveGreetingSettings').disabled=true;setText('greetingSettingsNote','Сохраняем…');
-    const {error}=await supabaseClient.from(settingsTable).upsert({id:true,title,description,accepting,updated_at:new Date().toISOString()},{onConflict:'id'});
-    byId('saveGreetingSettings').disabled=false;
-    if(error){console.error(error);setText('greetingSettingsNote','Не удалось сохранить: '+error.message);return;}
-    settings={title,description,accepting};renderSettings();setText('greetingSettingsNote','Настройки сохранены.');
+    if(!admin()||!connected())return;
+    const title=$('greetingAdminTitle').value.trim()||defaultTitle,description=$('greetingAdminDescription').value.trim()||defaultDescription;
+    const accepting=$('greetingAdminAccepting').checked,timer_enabled=$('greetingTimerEnabled').checked;
+    const timer_deadline=$('greetingTimerDeadline').value?new Date($('greetingTimerDeadline').value).toISOString():null;
+    if(timer_enabled&&!timer_deadline){text('greetingSettingsNote','Укажи дату и время окончания таймера.');return;}
+    $('saveGreetingSettings').disabled=true;text('greetingSettingsNote','Сохраняем…');
+    const {error}=await supabaseClient.from(settingsTable).upsert({id:true,title,description,accepting,timer_enabled,timer_deadline,updated_at:new Date().toISOString()},{onConflict:'id'});
+    $('saveGreetingSettings').disabled=false;
+    if(error){console.error(error);text('greetingSettingsNote','Ошибка сохранения: '+error.message+' — проверь SQL-обновление.');return;}
+    settings={title,description,accepting,timer_enabled,timer_deadline};renderSettings();text('greetingSettingsNote','Настройки сохранены.');
   }
-  async function submitLetter(event){
-    event.preventDefault();
-    if(!settings.accepting){setFormNote('Приём писем закрыт администрацией.',true);return;}
-    if(!isConnected()){setFormNote('Нет подключения к общей базе сайта. Попробуй позже.',true);return;}
-    const social=byId('greetingSocial').value,id=byId('greetingGameId').value.trim();
-    const category=byId('greetingCategory').value,message=byId('greetingMessage').value.trim();
-    const file=byId('greetingImage').files?.[0];
-    if(!['VK','OK'].includes(social)||!/^[0-9]{1,30}$/.test(id)||!category||!message||!fileValid()){
-      updateFormState();setFormNote('Проверь все поля и изображение.',true);return;
-    }
-    const submit=byId('submitGreeting');submit.disabled=true;submit.textContent='Отправляем…';
-    const path=`${social}/${id}/${crypto.randomUUID()}.${file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg'}`;
+  async function loadCropper(){
+    if(window.Cropper)return;
+    if(!cropperScriptPromise)cropperScriptPromise=new Promise((resolve,reject)=>{
+      if(!document.querySelector('link[data-cropper-css]')){const l=document.createElement('link');l.rel='stylesheet';l.href='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css';l.dataset.cropperCss='1';document.head.appendChild(l);}
+      const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js';s.onload=resolve;s.onerror=()=>reject(new Error('Не удалось загрузить инструмент кадрирования.'));document.head.appendChild(s);
+    });
+    await cropperScriptPromise;
+  }
+  async function startCrop(){
+    const f=$('greetingImage').files?.[0];if(!f)return;
+    if(!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>5*1024*1024){setNote('Поддерживаются JPG, PNG или WebP до 5 МБ.',true);$('greetingImage').value='';return;}
     try{
-      const {error:uploadError}=await supabaseClient.storage.from(bucket).upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});
-      if(uploadError)throw uploadError;
-      const {error}=await supabaseClient.from(submissionsTable).insert({
-        social_network:social,social_id:id,category,recipient:byId('greetingRecipient').value.trim(),
-        message,image_path:path
-      });
-      if(error){
-        await supabaseClient.storage.from(bucket).remove([path]);
-        if(error.code==='23505'||/duplicate|unique/i.test(error.message||''))throw new Error('С этого ID уже отправляли поздравление. Повторная работа не принимается.');
-        throw error;
-      }
-      byId('greetingSubmissionForm').reset();
-      setText('greetingMessageCounter','0 / 3000');
-      setFormNote('Письмо успешно отправлено! Спасибо за участие.');
-      byId('greetingFormPanel').hidden=true;
-      if(typeof isAdmin!=='undefined'&&isAdmin)await loadAdminSubmissions();
-    }catch(error){
-      console.error('Greeting submission failed:',error);
-      setFormNote(error.message||'Не удалось отправить письмо. Попробуй позже.',true);
-    }finally{
-      submit.textContent='Отправить письмо';updateFormState();
-    }
+      await loadCropper();const img=$('greetingCropImage');img.src=URL.createObjectURL(f);openModal('greetingCropModal');
+      img.onload=()=>{if(cropper)cropper.destroy();cropper=new Cropper(img,{viewMode:1,dragMode:'move',autoCropArea:.85,background:false, responsive:true, movable:true,zoomable:true,rotatable:false,scalable:false});};
+    }catch(e){setNote(e.message,true);}
+  }
+  async function applyCrop(){
+    if(!cropper)return;
+    const canvas=cropper.getCroppedCanvas({maxWidth:2400,maxHeight:2400,imageSmoothingQuality:'high'});
+    if(!canvas){setNote('Не удалось обрезать изображение.',true);return;}
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.92));
+    croppedFile=new File([blob],'greeting-cropped.jpg',{type:'image/jpeg'});
+    const dt=new DataTransfer();dt.items.add(croppedFile);$('greetingImage').files=dt.files;
+    cropper.destroy();cropper=null;closeModal('greetingCropModal');updateForm();setNote('Область фотографии выбрана и обрезана. Можно посмотреть письмо.');
+  }
+  function previewLetter(){
+    const f=selectedFile(),url=f?URL.createObjectURL(f):'';
+    const target=$('greetingPreviewContent');
+    target.innerHTML=`<h4>${esc($('greetingCategory').selectedOptions[0]?.textContent||'Адресат не выбран')}</h4>
+      <p><b>Кому:</b> ${esc($('greetingRecipient').value||'—')}</p>
+      <p><b>Социальная сеть:</b> ${esc($('greetingSocial').selectedOptions[0]?.textContent||'—')} · <b>ID:</b> ${esc($('greetingGameId').value||'—')}</p>
+      <p>${esc($('greetingMessage').value||'Текст поздравления пока не написан.')}</p>${url?`<img src="${url}" alt="Предпросмотр прикреплённого изображения">`:'<p>Изображение ещё не прикреплено.</p>'}`;
+    openModal('greetingPreviewModal');
+  }
+  async function submitLetter(e){
+    e.preventDefault();if(!settings.accepting){setNote('Приём писем закрыт администрацией.',true);return;}
+    if(!connected()){setNote('Нет подключения к общей базе сайта.',true);return;}
+    const social=$('greetingSocial').value,id=$('greetingGameId').value.trim(),category=$('greetingCategory').value,message=$('greetingMessage').value.trim(),file=selectedFile();
+    if(!['VK','OK'].includes(social)||!validId()||!category||!message||!fileValid()){updateForm();return;}
+    const btn=$('submitGreeting');btn.disabled=true;btn.textContent='Отправляем…';
+    const path=`${social}/${id}/${crypto.randomUUID()}.jpg`;
+    try{
+      const {error:upErr}=await supabaseClient.storage.from(bucket).upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});if(upErr)throw upErr;
+      const {error}=await supabaseClient.from(submissionsTable).insert({social_network:social,social_id:id,category,recipient:$('greetingRecipient').value.trim(),message,image_path:path});
+      if(error){await supabaseClient.storage.from(bucket).remove([path]);if(error.code==='23505'||/duplicate|unique/i.test(error.message||''))throw new Error('С этого ID уже отправляли поздравление. Повторная работа не принимается.');throw error;}
+      $('greetingSubmissionForm').reset();croppedFile=null;text('greetingMessageCounter','0 / 3000');setNote('Письмо успешно отправлено! Спасибо за участие.');closeModal('greetingFormModal');updateForm();if(admin())await loadAdminSubmissions();
+    }catch(err){console.error(err);setNote(err.message||'Не удалось отправить письмо.',true);}
+    finally{btn.textContent='Отправить письмо';updateForm();}
   }
   async function loadAdminSubmissions(){
-    if(typeof isAdmin==='undefined'||!isAdmin||!isConnected())return;
-    const box=byId('greetingAdminCabinetList');box.innerHTML='<div class="greeting-admin-empty">Загружаем письма…</div>';
+    if(!admin()||!connected())return;
+    const box=$('greetingAdminCabinetList');box.innerHTML='<div class="greeting-admin-empty">Загружаем письма…</div>';
     const {data,error}=await supabaseClient.from(submissionsTable).select('*').order('created_at',{ascending:false});
     if(error){box.innerHTML=`<div class="greeting-admin-empty">Ошибка загрузки: ${esc(error.message)}</div>`;return;}
-    adminRows=data||[];setText('greetingAdminCount',adminRows.length);
+    adminRows=data||[];text('greetingAdminCount',adminRows.length);
     if(!adminRows.length){box.innerHTML='<div class="greeting-admin-empty">Пока не поступило ни одного письма.</div>';return;}
-    const urls=await Promise.all(adminRows.map(async row=>{
-      const {data:publicData}=supabaseClient.storage.from(bucket).getPublicUrl(row.image_path);
-      return publicData?.publicUrl||'';
-    }));
-    box.innerHTML='<div class="greeting-admin-list">'+adminRows.map((row,index)=>`<article class="greeting-admin-item">
-      <h4>${esc(row.category)}${row.recipient?' · '+esc(row.recipient):''}</h4>
-      <p><b>${row.social_network==='VK'?'ВКонтакте':'Одноклассники'} · ID ${esc(row.social_id)}</b> · ${esc(new Date(row.created_at).toLocaleString('ru-RU'))}</p>
-      <p>${esc(row.message)}</p>
-      <img src="${esc(urls[index])}" alt="Изображение к поздравлению" loading="lazy">
-      <a href="${esc(urls[index])}" target="_blank" rel="noopener">Открыть / сохранить изображение</a>
-      <button type="button" class="greeting-more" data-delete-greeting="${esc(row.id)}">Удалить письмо</button>
-    </article>`).join('')+'</div>';
+    const urls=adminRows.map(row=>supabaseClient.storage.from(bucket).getPublicUrl(row.image_path).data?.publicUrl||'');
+    box.innerHTML='<div class="greeting-admin-list">'+adminRows.map((row,i)=>`<article class="greeting-admin-item"><h4>${esc(row.category)}${row.recipient?' · '+esc(row.recipient):''}</h4><p><b>${row.social_network==='VK'?'ВКонтакте':'Одноклассники'} · ID ${esc(row.social_id)}</b> · ${esc(new Date(row.created_at).toLocaleString('ru-RU'))}</p><p>${esc(row.message)}</p><img src="${esc(urls[i])}" alt="Изображение к поздравлению" loading="lazy"><a href="${esc(urls[i])}" target="_blank" rel="noopener">Открыть / сохранить изображение</a><button type="button" class="greeting-more" data-delete-greeting="${esc(row.id)}">Удалить письмо</button></article>`).join('')+'</div>';
   }
-  function applyAdminVisibility(){
-    const admin=Boolean(typeof isAdmin!=='undefined'&&isAdmin);
-    byId('greetingInlineAdmin').hidden=!admin;
-    if(admin){fillAdminSettings();loadAdminSubmissions();}
+  function applyAdmin(){
+    $('openGreetingAdminSettings').hidden=!admin();
+    if(admin()){fillAdmin();loadAdminSubmissions();}
   }
-  byId('greetingMoreBtn').addEventListener('click',()=>{
-    const open=byId('greetingTooltip').classList.toggle('is-open');
-    byId('greetingMoreBtn').setAttribute('aria-expanded',String(open));
-    byId('greetingTooltip').setAttribute('aria-hidden',String(!open));
-  });
-  byId('openGreetingForm').addEventListener('click',()=>{byId('greetingFormPanel').hidden=false;byId('greetingFormPanel').scrollIntoView({behavior:'smooth',block:'nearest'});});
-  byId('closeGreetingForm').addEventListener('click',()=>byId('greetingFormPanel').hidden=true);
-  byId('greetingSubmissionForm').addEventListener('submit',submitLetter);
-  ['greetingSocial','greetingGameId','greetingCategory','greetingMessage'].forEach(id=>byId(id).addEventListener('input',updateFormState));
-  byId('greetingImage').addEventListener('change',updateFormState);
-  byId('greetingMessage').addEventListener('input',()=>setText('greetingMessageCounter',`${byId('greetingMessage').value.length} / 3000`));
-  byId('saveGreetingSettings').addEventListener('click',saveSettings);
-  byId('openGreetingAdminList').addEventListener('click',()=>{byId('greetingAdminCabinetList').scrollIntoView({behavior:'smooth',block:'nearest'});loadAdminSubmissions();});
-  byId('greetingAdminCabinetList').addEventListener('click',async event=>{
-    const button=event.target.closest('[data-delete-greeting]');
-    if(!button||!isAdmin||!confirm('Удалить это поздравление и прикреплённое изображение?'))return;
-    const row=adminRows.find(item=>String(item.id)===button.dataset.deleteGreeting);if(!row)return;
-    button.disabled=true;
-    const {error}=await supabaseClient.from(submissionsTable).delete().eq('id',row.id);
-    if(error){alert('Не удалось удалить письмо: '+error.message);button.disabled=false;return;}
+  createModalShells();
+  const countdownPill=document.createElement('div');countdownPill.id='greetingCountdown';countdownPill.className='greeting-countdown';countdownPill.hidden=true;
+  $('greetingPublicStatus').before(countdownPill);
+  $('openGreetingForm').addEventListener('click',()=>{if(settings.accepting)openModal('greetingFormModal');});
+  $('greetingMoreBtn').addEventListener('click',()=>openModal('greetingDetailsModal'));
+  $('openGreetingAdminSettings').addEventListener('click',()=>{if(admin()){fillAdmin();openModal('greetingAdminModal');}});
+  $('closeGreetingForm').addEventListener('click',()=>closeModal('greetingFormModal'));
+  $('greetingSubmissionForm').addEventListener('submit',submitLetter);
+  $('previewGreetingLetter').addEventListener('click',previewLetter);
+  $('greetingImage').addEventListener('change',()=>{croppedFile=null;startCrop();updateForm();});
+  $('cancelGreetingCrop').addEventListener('click',()=>{if(cropper){cropper.destroy();cropper=null;}closeModal('greetingCropModal');});
+  $('applyGreetingCrop').addEventListener('click',applyCrop);
+  ['greetingSocial','greetingGameId','greetingCategory','greetingMessage'].forEach(id=>$(id).addEventListener('input',updateForm));
+  $('greetingMessage').addEventListener('input',()=>text('greetingMessageCounter',`${$('greetingMessage').value.length} / 3000`));
+  $('saveGreetingSettings').addEventListener('click',saveSettings);
+  $('openGreetingAdminList').addEventListener('click',loadAdminSubmissions);
+  $('greetingAdminCabinetList').addEventListener('click',async e=>{
+    const b=e.target.closest('[data-delete-greeting]');if(!b||!admin()||!confirm('Удалить это поздравление и изображение?'))return;
+    const row=adminRows.find(x=>String(x.id)===b.dataset.deleteGreeting);if(!row)return;b.disabled=true;
+    const {error}=await supabaseClient.from(submissionsTable).delete().eq('id',row.id);if(error){alert(error.message);b.disabled=false;return;}
     await supabaseClient.storage.from(bucket).remove([row.image_path]);await loadAdminSubmissions();
   });
-  window.addEventListener('zgot-auth-updated',applyAdminVisibility);
-  if(isConnected()){
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.greeting-modal.is-open').forEach(m=>closeModal(m.id));});
+  window.addEventListener('zgot-auth-updated',applyAdmin);
+  if(connected()){
     loadSettings();
-    realtime=supabaseClient.channel('greeting-contest-live')
+    supabaseClient.channel('greeting-contest-live-v2')
       .on('postgres_changes',{event:'*',schema:'public',table:settingsTable},loadSettings)
-      .on('postgres_changes',{event:'*',schema:'public',table:submissionsTable},()=>{if(isAdmin)loadAdminSubmissions();})
-      .subscribe();
-  }else{
-    renderSettings();
-  }
-  applyAdminVisibility();
+      .on('postgres_changes',{event:'*',schema:'public',table:submissionsTable},()=>{if(admin())loadAdminSubmissions();}).subscribe();
+  }else{settings.accepting=false;renderSettings();text('greetingPublicStatus','Нет подключения к общей базе сайта.');}
+  applyAdmin();renderSettings();
 })();
 </script>
 
