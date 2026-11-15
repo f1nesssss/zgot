@@ -2596,6 +2596,17 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
  <section class="admin-cabinet-window" role="dialog" aria-modal="true" aria-labelledby="adminCabinetTitle">
   <div class="admin-cabinet-head"><h2 id="adminCabinetTitle">Кабинет администратора</h2><div class="admin-cabinet-actions"><button type="button" id="adminLogoutBtn">Выйти из панели</button><button class="admin-cabinet-close" id="closeAdminCabinet" type="button" aria-label="Закрыть">×</button></div></div>
   <div class="admin-cabinet-grid">
+   <article class="admin-cabinet-card admin-team-card">
+    <h3>Команда администраторов</h3>
+    <p>Список аккаунтов проверяющих и их текущий статус на сайте.</p>
+    <div class="admin-team-self">
+     <label for="adminNicknameInput">Твой никнейм в команде</label>
+     <div class="admin-team-nickname-row"><input type="text" id="adminNicknameInput" maxlength="32" placeholder="Например, Егор"><button type="button" id="saveAdminNickname">Сохранить ник</button></div>
+     <p class="admin-cabinet-note" id="adminNicknameNote" aria-live="polite"></p>
+    </div>
+    <div class="admin-team-list" id="adminRosterList" aria-live="polite"><p>Загружаем список команды…</p></div>
+    <button type="button" id="refreshAdminRoster">Обновить список</button>
+   </article>
    <article class="admin-cabinet-card"><h3>Участники</h3><p>Добавление и редактирование записей участников.</p><button type="button" id="addBtn">+ Участник</button></article>
    <article class="admin-cabinet-card"><h3>Розыгрыш</h3><p>Настройка и контроль новогоднего розыгрыша.</p><button type="button" id="miracleAdminBtn">Управление розыгрышем</button></article>
    <article class="admin-cabinet-card"><h3>Экспорт</h3><p>Выгрузка текущих данных участников.</p><button type="button" id="exportBtn">Экспорт данных</button></article>
@@ -2795,6 +2806,7 @@ const orbById=id=>ORBS.find(o=>o.id===id);
 const configured = Boolean(window.APP_CONFIG?.SUPABASE_URL && window.APP_CONFIG?.SUPABASE_ANON_KEY &&
   !window.APP_CONFIG.SUPABASE_URL.includes('YOUR_') && !window.APP_CONFIG.SUPABASE_ANON_KEY.includes('YOUR_'));
 let supabaseClient=null, records=PREVIEW.map(x=>({...x})), isAdmin=false, currentUser=null, selectedOrb='all', realtimeChannel=null, lastUpdated=null;
+let adminPresenceTimer=null, adminRosterTimer=null;
 
 function setNote(message, error=false){
     const note = $('connectionNote');
@@ -2998,13 +3010,75 @@ async function addRecord(payload){
 }
 async function updateSession(session){
   currentUser=session?.user||null;
-  isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
+  isAdmin=false;
+  stopAdminPresence();
+  if(currentUser && supabaseClient){
+    try{
+      const {data,error}=await supabaseClient.rpc('is_site_admin');
+      if(error)throw error;
+      isAdmin=data===true;
+    }catch(err){
+      console.error('Admin permission check failed:',err);
+      setNote('Не удалось проверить права администратора. Проверь SQL-миграцию команды.',true);
+    }
+  }
   render();
   window.dispatchEvent(new Event('zgot-auth-updated'));
   if(configured)await loadRecords();
   if($('tasksAdminNote')) $('tasksAdminNote').hidden=!isAdmin;
   if($('taskAdminTools')) $('taskAdminTools').hidden=!isAdmin;
+  if(isAdmin)startAdminPresence();
 }
+function stopAdminPresence(){
+  if(adminPresenceTimer){clearInterval(adminPresenceTimer);adminPresenceTimer=null;}
+  if(adminRosterTimer){clearInterval(adminRosterTimer);adminRosterTimer=null;}
+}
+async function sendAdminHeartbeat(){
+  if(!isAdmin||!supabaseClient)return;
+  const {error}=await supabaseClient.rpc('touch_site_admin_presence');
+  if(error)console.warn('Admin presence heartbeat failed:',error.message);
+}
+function startAdminPresence(){
+  stopAdminPresence();
+  sendAdminHeartbeat();
+  adminPresenceTimer=setInterval(sendAdminHeartbeat,30000);
+}
+async function loadAdminRoster(){
+  if(!isAdmin||!supabaseClient)return;
+  const list=$('adminRosterList');if(!list)return;
+  list.innerHTML='<p>Обновляем список команды…</p>';
+  const {data,error}=await supabaseClient.from('site_admins')
+    .select('user_id,nickname,last_seen_at,created_at').order('created_at',{ascending:true});
+  if(error){list.innerHTML='<p>Не удалось загрузить список: '+escapeHtml(error.message)+'</p>';return;}
+  const now=Date.now();
+  const rows=data||[];
+  if(!rows.length){list.innerHTML='<p>Пока нет добавленных администраторов.</p>';return;}
+  list.innerHTML=rows.map(row=>{
+    const online=!!row.last_seen_at&&(now-new Date(row.last_seen_at).getTime())<90000;
+    const own=row.user_id===currentUser?.id;
+    const nickname=(row.nickname||'').trim()||'Без никнейма';
+    return `<div class="admin-team-member">
+      <div class="admin-team-member-main"><span class="admin-team-avatar">✦</span><div><span class="admin-team-name">${escapeHtml(nickname)}</span>${own?'<span class="admin-team-you">это ты</span>':''}</div></div>
+      <span class="admin-team-status ${online?'is-online':'is-offline'}">${online?'На сайте':'Оффлайн'}</span>
+    </div>`;
+  }).join('');
+  const me=rows.find(row=>row.user_id===currentUser?.id);
+  if(me&&$('adminNicknameInput')&&document.activeElement!==$('adminNicknameInput'))$('adminNicknameInput').value=me.nickname||'';
+}
+async function saveAdminNickname(){
+  if(!isAdmin||!supabaseClient||!currentUser)return;
+  const input=$('adminNicknameInput'),note=$('adminNicknameNote'),button=$('saveAdminNickname');
+  const nickname=(input?.value||'').trim();
+  if(!nickname){note.textContent='Введи никнейм.';return;}
+  if(nickname.length>32){note.textContent='Максимум 32 символа.';return;}
+  button.disabled=true;note.textContent='Сохраняем…';
+  const {error}=await supabaseClient.from('site_admins').update({nickname}).eq('user_id',currentUser.id);
+  button.disabled=false;
+  if(error){note.textContent='Не удалось сохранить: '+error.message;return;}
+  note.textContent='Никнейм сохранён.';
+  await loadAdminRoster();
+}
+
 function subscribeRealtime(){
   if(!supabaseClient||realtimeChannel)return;
   realtimeChannel=supabaseClient.channel('entries-live')
@@ -3515,9 +3589,13 @@ function renderAdminScoreStats(){
   if(list){const rows=[...grouped.entries()].sort((a,b)=>b[1]-a[1]);list.innerHTML=rows.length?rows.map(([name,score])=>`<div>${escapeHtml(name)} — <strong>${score}</strong></div>`).join(''):'Нет данных.';}
 }
 const cabinetBackdrop=$('adminCabinetBackdrop');
-$('adminCabinetBtn')?.addEventListener('click',async()=>{if(!isAdmin)return;cabinetBackdrop.classList.add('open');cabinetBackdrop.setAttribute('aria-hidden','false');renderAdminScoreStats();await loadAdminVisitCount();await loadExchangeTimer(true);initAdminTools();});
-function closeAdminCabinet(){cabinetBackdrop?.classList.remove('open');cabinetBackdrop?.setAttribute('aria-hidden','true');}
+$('adminCabinetBtn')?.addEventListener('click',async()=>{if(!isAdmin)return;cabinetBackdrop.classList.add('open');cabinetBackdrop.setAttribute('aria-hidden','false');renderAdminScoreStats();await loadAdminVisitCount();await loadExchangeTimer(true);initAdminTools();await loadAdminRoster();if(adminRosterTimer)clearInterval(adminRosterTimer);adminRosterTimer=setInterval(loadAdminRoster,15000);});
+function closeAdminCabinet(){cabinetBackdrop?.classList.remove('open');cabinetBackdrop?.setAttribute('aria-hidden','true');if(adminRosterTimer){clearInterval(adminRosterTimer);adminRosterTimer=null;}}
 $('closeAdminCabinet')?.addEventListener('click',closeAdminCabinet);
+$('saveAdminNickname')?.addEventListener('click',saveAdminNickname);
+$('refreshAdminRoster')?.addEventListener('click',loadAdminRoster);
+$('adminNicknameInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();saveAdminNickname();}});
+
 $('adminLogoutBtn')?.addEventListener('click',async()=>{if(!isAdmin||!supabaseClient)return;await supabaseClient.auth.signOut();await updateSession(null);closeAdminCabinet();});
 cabinetBackdrop?.addEventListener('click',e=>{if(e.target===cabinetBackdrop)closeAdminCabinet();});
 async function loadAdminVisitCount(){
@@ -3690,12 +3768,7 @@ async function init(){
   exchangeTimerRefreshInterval=setInterval(()=>loadExchangeTimer(),60000);
   if(orbScheduleTick)clearInterval(orbScheduleTick);orbScheduleTick=setInterval(()=>{if(Object.keys(orbScheduleState).length)renderOrbs();},60000);
   supabaseClient.auth.onAuthStateChange((_event,session)=>{
-    currentUser=session?.user||null;
-    isAdmin=Boolean(currentUser && currentUser.id===window.APP_CONFIG.ADMIN_USER_ID);
-    render();
-    window.dispatchEvent(new Event('zgot-auth-updated'));
-    if($('taskAdminTools')) $('taskAdminTools').hidden=!isAdmin;
-    loadRecords();
+    setTimeout(()=>{updateSession(session);},0);
   });
   subscribeRealtime();
   announcementChannel=supabaseClient.channel('site-announcements-live')
@@ -5121,4 +5194,25 @@ body.task-modal-open{overflow:hidden}
 
 <style id="zgot-v4-remove-entry-flash">
 .page-entry-glow,.entry-square-glow,.intro-square-flash,.site-enter-glow{display:none!important;animation:none!important;opacity:0!important}
+</style>
+
+
+<style id="zgot-admin-team-v5">
+.admin-team-card{grid-column:1/-1}
+.admin-team-self{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(7,24,39,.28);margin:12px 0}
+.admin-team-self label{display:block!important;margin:0 0 7px!important}
+.admin-team-nickname-row{display:flex;gap:8px;align-items:center}
+.admin-team-nickname-row input{flex:1;min-width:0;width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--input-bg);color:var(--text);font:inherit}
+.admin-team-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.admin-team-member{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(7,24,39,.2);min-width:0}
+.admin-team-member-main{display:flex;align-items:center;gap:9px;min-width:0}
+.admin-team-avatar{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--surface-soft);color:var(--text);flex:none}
+.admin-team-name{font-weight:800;overflow-wrap:anywhere}
+.admin-team-you{font-size:10px;color:var(--muted);margin-left:5px}
+.admin-team-status{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;white-space:nowrap}
+.admin-team-status:before{content:"";width:8px;height:8px;border-radius:50%;background:#8b9299;box-shadow:0 0 0 3px rgba(139,146,153,.12)}
+.admin-team-status.is-online:before{background:#54d69a;box-shadow:0 0 0 3px rgba(84,214,154,.14),0 0 10px rgba(84,214,154,.45)}
+.admin-team-status.is-online{color:#72e5ad}
+.admin-team-status.is-offline{color:var(--muted)}
+@media(max-width:650px){.admin-team-list{grid-template-columns:1fr}.admin-team-nickname-row{flex-direction:column;align-items:stretch}.admin-team-nickname-row button{width:100%}}
 </style>
