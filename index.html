@@ -2368,6 +2368,20 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
         <div class="greeting-admin-inline-head"><strong>Управление почтой</strong><span>Видно только администраторам</span></div>
         <label>Название активности<input id="greetingAdminTitle" maxlength="100"></label>
         <label>Описание в подсказке<textarea id="greetingAdminDescription" maxlength="1200" rows="4"></textarea></label>
+        <details class="greeting-section-copy-editor">
+          <summary>Редактировать весь блок «Письма в Страну Чудес»</summary>
+          <div class="greeting-section-copy-grid">
+            <label>Надпись над заголовком<input id="greetingSectionKickerEdit" maxlength="120"></label>
+            <label>Заголовок блока<input id="greetingSectionTitleEdit" maxlength="140"></label>
+            <label class="full">Описание блока<textarea id="greetingSectionDescriptionEdit" maxlength="1200" rows="3"></textarea></label>
+            <label>Первая плашка<input id="greetingSectionBadgeOneEdit" maxlength="160"></label>
+            <label>Вторая плашка<input id="greetingSectionBadgeTwoEdit" maxlength="160"></label>
+            <label>Текст основной кнопки<input id="greetingSectionFormButtonEdit" maxlength="80"></label>
+            <label>Текст кнопки «Подробнее»<input id="greetingSectionDetailsButtonEdit" maxlength="80"></label>
+            <label class="full">Статус при открытом приёме<input id="greetingSectionOpenStatusEdit" maxlength="220"></label>
+            <label class="full">Статус при закрытом приёме<input id="greetingSectionClosedStatusEdit" maxlength="220"></label>
+          </div>
+        </details>
         <label class="greeting-toggle"><input type="checkbox" id="greetingAdminAccepting"> Приём поздравлений открыт — разрешить отправку</label>
         <div class="greeting-timer-fields"><label><span><input type="checkbox" id="greetingTimerEnabled"> Показывать таймер посетителям</span></label><label>Дата и время окончания<input type="datetime-local" id="greetingTimerDeadline"></label></div>
         <div class="greeting-admin-actions"><button type="button" id="saveGreetingSettings">Сохранить настройки</button><span id="greetingSettingsNote" aria-live="polite"></span></div>
@@ -4132,7 +4146,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
  const loadIntro=async()=>{
    if(!introBox)return;
    if(typeof supabaseClient!=='undefined'&&supabaseClient){
-     const {data}=await supabaseClient.from('greeting_contest_settings').select('market_intro_html,market_intro_image_url,market_intro_font_family,market_intro_font_size,market_intro_text_color').eq('id',true).maybeSingle();
+     const {data}=await supabaseClient.from('greeting_contest_settings').select('market_intro_html,market_intro_image_url,market_intro_font_family,market_intro_font_size,market_intro_text_color,section_kicker,section_title,section_description,section_badge_one,section_badge_two,section_form_button,section_details_button,section_open_status,section_closed_status').eq('id',true).maybeSingle();
      if(data)introSettings={html:data.market_intro_html||introSettings.html,image_url:data.market_intro_image_url||'',font_family:data.market_intro_font_family||'Georgia',font_size:data.market_intro_font_size||16,text_color:data.market_intro_text_color||'#dceefa'};
    }
    applyIntro();
@@ -4711,6 +4725,15 @@ body.task-modal-open{overflow:hidden}
 .greeting-modal-close .button-butterflies i:nth-child(5){left:48%;top:-16px;--fly-x:0px;--fly-y:-17px;--fly-r:8deg}
 .greeting-gifts{filter:drop-shadow(0 5px 9px rgba(0,0,0,.28))}
 .greeting-bauble-photo{pointer-events:none}
+.greeting-section-copy-editor{margin:14px 0;padding:12px;border:1px solid rgba(143,199,226,.22);border-radius:12px;background:rgba(5,22,36,.32)}
+.greeting-section-copy-editor summary{cursor:pointer;color:#f3d7a7;font-weight:800}
+.greeting-section-copy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.greeting-section-copy-grid label{display:grid;gap:5px;color:#b9cbd8;font-size:11px;font-weight:800}
+.greeting-section-copy-grid label.full{grid-column:1/-1}
+.greeting-section-copy-grid input,.greeting-section-copy-grid textarea{width:100%;box-sizing:border-box;padding:9px;border:1px solid rgba(143,199,226,.25);border-radius:9px;background:#0b2033;color:#eff8ff}
+.greeting-bauble-actions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.greeting-bauble-actions button{font-size:11px;padding:9px 12px}
+@media(max-width:650px){.greeting-section-copy-grid{grid-template-columns:1fr}.greeting-section-copy-grid label.full{grid-column:auto}.greeting-bauble-actions button{flex:1}}
 .greeting-bauble-admin{margin-top:18px;padding:15px;border:1px solid rgba(231,182,107,.38);border-radius:15px;background:rgba(6,23,38,.35)}
 .greeting-bauble-admin h4{margin:0 0 7px;color:#f5e3c3;font:600 17px Georgia,serif}
 .greeting-bauble-admin p{margin:0 0 12px;color:#a9c1d1;font-size:11px}
@@ -4760,7 +4783,7 @@ body.task-modal-open{overflow:hidden}
   const bucket='greeting-contest-images', settingsTable='greeting_contest_settings', submissionsTable='greeting_contest_submissions';
   const defaultTitle='Письма в Страну Чудес';
   const defaultDescription='Напиши поздравление игроку Аватарии, персонажу Страны Чудес или всему проекту. Приложи картинку, укажи социальную сеть и игровой ID. Администрация выберет самые душевные письма и наградит их авторов.';
-  let settings={title:defaultTitle,description:defaultDescription,accepting:false,timer_enabled:false,timer_deadline:null};
+  let settings={title:defaultTitle,description:defaultDescription,accepting:false,timer_enabled:false,timer_deadline:null,section_kicker:'✦ ПОЧТА СТРАНЫ ЧУДЕС ✦',section_title:'Письма в Страну Чудес',section_description:'Оставь тёплое поздравление для игроков Аватарии, героев Страны Чудес или всего нашего проекта. Самые душевные письма администрация отметит приятными наградами.',section_badge_one:'✦ Твоё письмо может стать частью праздника',section_badge_two:'✦ Одно письмо на ID',section_form_button:'Написать поздравление',section_details_button:'Подробнее',section_open_status:'Приём писем открыт — ждем твоё поздравление!',section_closed_status:'Приём писем пока закрыт администрацией.'};
   let adminRows=[], cropper=null, cropperScriptPromise=null, croppedFile=null, timerInterval=null, pendingBaubleSlot=null, treeBaubles=Array(6).fill(null);
   const connected=()=>Boolean(window.supabase&&typeof supabaseClient!=='undefined'&&supabaseClient);
   const admin=()=>Boolean(typeof isAdmin!=='undefined'&&isAdmin);
@@ -4792,6 +4815,10 @@ body.task-modal-open{overflow:hidden}
       <label>Изображение внутри шара<input type="file" id="greetingBaubleFile" accept="image/jpeg,image/png,image/webp"></label>
       <div class="greeting-bauble-preview" id="greetingBaublePreview"></div>
       <label>Цвета свечения (до 3)</label><div class="greeting-glow-palette" id="greetingGlowPalette"></div>
+      <div class="greeting-bauble-actions">
+        <button type="button" class="greeting-more" id="removeBaubleImage">Удалить картинку</button>
+        <button type="button" class="greeting-more" id="resetBaubleSlot">Сбросить оформление шара</button>
+      </div>
       <button type="button" class="greeting-primary" id="saveBaubleGlow">Сохранить свечение</button><p id="greetingBaubleNote" aria-live="polite"></p>`;
     adminModal.querySelector('.greeting-modal-body').append(baubleTools);
     const tipModal=modal('greetingDetailsModal','Подробнее',tip,false);
@@ -4924,19 +4951,35 @@ body.task-modal-open{overflow:hidden}
   }
   function renderSettings(){
     text('greetingTooltipTitle',settings.title||defaultTitle);text('greetingTooltipDescription',settings.description||defaultDescription);
-    text('greetingPublicStatus',settings.accepting?'Приём писем открыт — ждем твоё поздравление!':'Приём писем пока закрыт администрацией.');
+    text('greetingPublicStatus',settings.accepting?(settings.section_open_status||'Приём писем открыт — ждем твоё поздравление!'):(settings.section_closed_status||'Приём писем пока закрыт администрацией.'));
+    text('greetingSectionKicker',settings.section_kicker||'✦ ПОЧТА СТРАНЫ ЧУДЕС ✦');
+    text('greetingSectionTitle',settings.section_title||'Письма в Страну Чудес');
+    text('greetingSectionDescription',settings.section_description||'Оставь тёплое поздравление для игроков Аватарии, героев Страны Чудес или всего нашего проекта. Самые душевные письма администрация отметит приятными наградами.');
+    text('greetingSectionBadgeOne',settings.section_badge_one||'✦ Твоё письмо может стать частью праздника');
+    text('greetingSectionBadgeTwo',settings.section_badge_two||'✦ Одно письмо на ID');
+    text('openGreetingForm',settings.section_form_button||'Написать поздравление');
+    text('greetingMoreBtn',settings.section_details_button||'Подробнее');
     $('openGreetingForm').disabled=!settings.accepting;$('openGreetingForm').title=settings.accepting?'':'Приём писем пока закрыт';
     countdown();updateForm();
   }
   function fillAdmin(){
     $('greetingAdminTitle').value=settings.title||defaultTitle;$('greetingAdminDescription').value=settings.description||defaultDescription;
+    $('greetingSectionKickerEdit').value=settings.section_kicker||'✦ ПОЧТА СТРАНЫ ЧУДЕС ✦';
+    $('greetingSectionTitleEdit').value=settings.section_title||'Письма в Страну Чудес';
+    $('greetingSectionDescriptionEdit').value=settings.section_description||'Оставь тёплое поздравление для игроков Аватарии, героев Страны Чудес или всего нашего проекта. Самые душевные письма администрация отметит приятными наградами.';
+    $('greetingSectionBadgeOneEdit').value=settings.section_badge_one||'✦ Твоё письмо может стать частью праздника';
+    $('greetingSectionBadgeTwoEdit').value=settings.section_badge_two||'✦ Одно письмо на ID';
+    $('greetingSectionFormButtonEdit').value=settings.section_form_button||'Написать поздравление';
+    $('greetingSectionDetailsButtonEdit').value=settings.section_details_button||'Подробнее';
+    $('greetingSectionOpenStatusEdit').value=settings.section_open_status||'Приём писем открыт — ждем твоё поздравление!';
+    $('greetingSectionClosedStatusEdit').value=settings.section_closed_status||'Приём писем пока закрыт администрацией.';
     $('greetingAdminAccepting').checked=Boolean(settings.accepting);
     $('greetingTimerEnabled').checked=Boolean(settings.timer_enabled);
     $('greetingTimerDeadline').value=settings.timer_deadline?new Date(settings.timer_deadline).toISOString().slice(0,16):'';
   }
   async function loadSettings(){
     if(!connected()){settings.accepting=false;renderSettings();text('greetingPublicStatus','Нет подключения к общей базе сайта.');return;}
-    const {data,error}=await supabaseClient.from(settingsTable).select('title,description,accepting,timer_enabled,timer_deadline,tree_baubles,details_title,details_description,details_image_url,details_font_family,details_font_size,details_text_color,market_intro_html,market_intro_image_url,market_intro_font_family,market_intro_font_size,market_intro_text_color').eq('id',true).maybeSingle();
+    const {data,error}=await supabaseClient.from(settingsTable).select('title,description,accepting,timer_enabled,timer_deadline,tree_baubles,details_title,details_description,details_image_url,details_font_family,details_font_size,details_text_color,market_intro_html,market_intro_image_url,market_intro_font_family,market_intro_font_size,market_intro_text_color,section_kicker,section_title,section_description,section_badge_one,section_badge_two,section_form_button,section_details_button,section_open_status,section_closed_status').eq('id',true).maybeSingle();
     if(error){console.error(error);settings.accepting=false;renderSettings();text('greetingPublicStatus','Не удалось загрузить настройки почты. Проверь обновление базы данных.');return;}
     if(data)settings={...settings,...data};
     if(settings.details_title)$('greetingTooltipTitle').textContent=settings.details_title;
@@ -4950,14 +4993,19 @@ body.task-modal-open{overflow:hidden}
   async function saveSettings(){
     if(!admin()||!connected())return;
     const title=$('greetingAdminTitle').value.trim()||defaultTitle,description=$('greetingAdminDescription').value.trim()||defaultDescription;
+    const section_kicker=$('greetingSectionKickerEdit').value.trim(),section_title=$('greetingSectionTitleEdit').value.trim(),section_description=$('greetingSectionDescriptionEdit').value.trim();
+    const section_badge_one=$('greetingSectionBadgeOneEdit').value.trim(),section_badge_two=$('greetingSectionBadgeTwoEdit').value.trim();
+    const section_form_button=$('greetingSectionFormButtonEdit').value.trim(),section_details_button=$('greetingSectionDetailsButtonEdit').value.trim();
+    const section_open_status=$('greetingSectionOpenStatusEdit').value.trim(),section_closed_status=$('greetingSectionClosedStatusEdit').value.trim();
     const accepting=$('greetingAdminAccepting').checked,timer_enabled=$('greetingTimerEnabled').checked;
     const timer_deadline=$('greetingTimerDeadline').value?new Date($('greetingTimerDeadline').value).toISOString():null;
     if(timer_enabled&&!timer_deadline){text('greetingSettingsNote','Укажи дату и время окончания таймера.');return;}
     $('saveGreetingSettings').disabled=true;text('greetingSettingsNote','Сохраняем…');
-    const {error}=await supabaseClient.from(settingsTable).upsert({id:true,title,description,accepting,timer_enabled,timer_deadline,updated_at:new Date().toISOString()},{onConflict:'id'});
+    const payload={id:true,title,description,accepting,timer_enabled,timer_deadline,section_kicker,section_title,section_description,section_badge_one,section_badge_two,section_form_button,section_details_button,section_open_status,section_closed_status,updated_at:new Date().toISOString()};
+    const {error}=await supabaseClient.from(settingsTable).upsert(payload,{onConflict:'id'});
     $('saveGreetingSettings').disabled=false;
     if(error){console.error(error);text('greetingSettingsNote','Ошибка сохранения: '+error.message+' — проверь SQL-обновление.');return;}
-    settings={title,description,accepting,timer_enabled,timer_deadline};renderSettings();text('greetingSettingsNote','Настройки сохранены.');
+    settings={...settings,...payload};renderSettings();text('greetingSettingsNote','Настройки сохранены.');
   }
   async function loadCropper(){
     if(window.Cropper)return;
@@ -4989,7 +5037,7 @@ body.task-modal-open{overflow:hidden}
       if(uploadError){text('greetingBaubleNote','Ошибка загрузки: '+uploadError.message);return;}
       const url=supabaseClient.storage.from(bucket).getPublicUrl(path).data?.publicUrl;
       const selected=[...document.querySelectorAll('#greetingGlowPalette input:checked')].map(x=>x.value);
-      treeBaubles[slot]={...(treeBaubles[slot]||{}),url,glow:selected};
+      treeBaubles[slot]={...(treeBaubles[slot]||{}),url,path,glow:selected};
       const {error}=await supabaseClient.from(settingsTable).upsert({id:true,tree_baubles:treeBaubles,updated_at:new Date().toISOString()},{onConflict:'id'});
       if(error){text('greetingBaubleNote','Изображение загружено, но настройки не сохранены: '+error.message);return;}
       settings.tree_baubles=treeBaubles;renderTreeBaubles();updateBaublePreview();text('greetingBaubleNote','Изображение шара сохранено.');
@@ -5102,6 +5150,48 @@ body.task-modal-open{overflow:hidden}
     if(error){text('greetingBaubleNote','Не удалось сохранить: '+error.message);return;}
     settings.tree_baubles=treeBaubles;renderTreeBaubles();updateBaublePreview();text('greetingBaubleNote','Свечение шара сохранено.');
   }
+  function getBaubleStoragePath(cfg){
+    if(cfg?.path)return cfg.path;
+    if(!cfg?.url)return null;
+    try{
+      const url=new URL(cfg.url),marker=`/storage/v1/object/public/${bucket}/`;
+      const at=url.pathname.indexOf(marker);
+      return at>=0?decodeURIComponent(url.pathname.slice(at+marker.length)):null;
+    }catch(_){return null;}
+  }
+  async function persistBaubles(note){
+    const {error}=await supabaseClient.from(settingsTable).upsert({id:true,tree_baubles:treeBaubles,updated_at:new Date().toISOString()},{onConflict:'id'});
+    if(error)throw error;
+    settings.tree_baubles=treeBaubles;renderTreeBaubles();updateBaublePreview();
+    text('greetingBaubleNote',note);
+  }
+  async function removeBaubleImage(){
+    if(!admin()||!connected())return;
+    const slot=Number($('greetingBaubleSlot').value),cfg=treeBaubles[slot]||{};
+    if(!cfg.url){text('greetingBaubleNote','В этом шаре нет загруженной картинки.');return;}
+    const btn=$('removeBaubleImage');btn.disabled=true;
+    try{
+      const path=getBaubleStoragePath(cfg);
+      if(path){const {error}=await supabaseClient.storage.from(bucket).remove([path]);if(error)throw error;}
+      treeBaubles[slot]={...cfg,url:null,path:null};
+      await persistBaubles('Картинка удалена. Цвета свечения сохранены.');
+    }catch(err){text('greetingBaubleNote','Не удалось удалить картинку: '+err.message);}
+    finally{btn.disabled=false;}
+  }
+  async function resetBaubleSlot(){
+    if(!admin()||!connected())return;
+    const slot=Number($('greetingBaubleSlot').value),cfg=treeBaubles[slot]||{};
+    if(!confirm(`Сбросить всё оформление шара ${slot+1}? Картинка и выбранные цвета будут удалены.`))return;
+    const btn=$('resetBaubleSlot');btn.disabled=true;
+    try{
+      const path=getBaubleStoragePath(cfg);
+      if(path){const {error}=await supabaseClient.storage.from(bucket).remove([path]);if(error)throw error;}
+      treeBaubles[slot]={url:null,path:null,glow:[]};
+      document.querySelectorAll('#greetingGlowPalette input').forEach(x=>x.checked=false);
+      await persistBaubles('Оформление шара полностью сброшено.');
+    }catch(err){text('greetingBaubleNote','Не удалось сбросить оформление: '+err.message);}
+    finally{btn.disabled=false;}
+  }
   function chooseBaubleFile(){
     const f=$('greetingBaubleFile').files?.[0];if(!f)return;
     if(!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>5*1024*1024){text('greetingBaubleNote','Поддерживаются JPG, PNG или WebP до 5 МБ.');return;}
@@ -5124,6 +5214,8 @@ body.task-modal-open{overflow:hidden}
   });
   $('greetingBaubleFile').addEventListener('change',chooseBaubleFile);
   $('saveBaubleGlow').addEventListener('click',saveBaubleGlow);
+  $('removeBaubleImage').addEventListener('click',removeBaubleImage);
+  $('resetBaubleSlot').addEventListener('click',resetBaubleSlot);
   const countdownPill=document.createElement('div');countdownPill.id='greetingCountdown';countdownPill.className='greeting-countdown';countdownPill.hidden=true;
   $('greetingPublicStatus').before(countdownPill);
   $('openGreetingForm').addEventListener('click',()=>{if(settings.accepting)openModal('greetingFormModal');});
