@@ -2383,16 +2383,21 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
           <linearGradient id="treeTrunk" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#6d402b"/><stop offset=".5" stop-color="#a56a3e"/><stop offset="1" stop-color="#4b2d22"/></linearGradient>
           <radialGradient id="emptyBauble"><stop offset="0" stop-color="#eafaff" stop-opacity=".10"/><stop offset=".7" stop-color="#9bd8ed" stop-opacity=".16"/><stop offset="1" stop-color="#d8f5ff" stop-opacity=".5"/></radialGradient>
           <filter id="treeGlow"><feGaussianBlur stdDeviation="5"/></filter>
+          <clipPath id="greetingBallClip1"><circle cx="132" cy="207" r="20"/></clipPath>
+          <clipPath id="greetingBallClip2"><circle cx="280" cy="174" r="17"/></clipPath>
+          <clipPath id="greetingBallClip3"><circle cx="200" cy="266" r="22"/></clipPath>
+          <clipPath id="greetingBallClip4"><circle cx="306" cy="295" r="18"/></clipPath>
+          <clipPath id="greetingBallClip5"><circle cx="112" cy="325" r="18"/></clipPath>
+          <clipPath id="greetingBallClip6"><circle cx="244" cy="364" r="21"/></clipPath>
         </defs>
-        <ellipse cx="210" cy="464" rx="126" ry="15" fill="#020c17" opacity=".35"/>
+        <ellipse cx="210" cy="464" rx="126" ry="15" fill="#020c17" opacity=".35"/><g class="greeting-gifts" aria-hidden="true">
+          <g transform="translate(92 416)"><path d="M0 15h55v37H0z" fill="#9d5265" stroke="#e8b7a6" stroke-width="2"/><path d="M-3 8h61v13H-3z" fill="#d8a76e"/><path d="M23 8h9v44h-9z" fill="#f0d49c"/><path d="M27 8C8 -5 8 -15 19 -14c8 1 10 13 12 22M28 8C46 -7 52 -15 41 -16c-8 0-11 13-13 24" fill="none" stroke="#f0d49c" stroke-width="4" stroke-linecap="round"/></g>
+          <g transform="translate(273 424)"><path d="M0 12h49v32H0z" fill="#315f70" stroke="#9bcbd1" stroke-width="2"/><path d="M-3 5h55v12H-3z" fill="#d5b77d"/><path d="M20 5h9v39h-9z" fill="#f4dfb0"/><path d="M24 5C8 -7 8 -15 18 -14c7 1 8 11 10 19M25 5C41 -7 47 -14 38 -15c-7 0-10 12-13 20" fill="none" stroke="#f4dfb0" stroke-width="4" stroke-linecap="round"/></g>
+        </g>
         <path d="M184 388h52v72h-52z" fill="url(#treeTrunk)" rx="7"/>
         <g fill="url(#treeNeedles)" stroke="#76c6a2" stroke-opacity=".22" stroke-width="2">
           <path d="M210 24 C195 62 176 83 149 113 C166 110 179 108 191 104 C165 137 135 169 105 204 C126 201 144 197 162 191 C128 229 91 269 57 311 C87 305 113 299 143 289 C115 322 91 347 72 371 C120 360 164 349 210 345 C256 349 300 360 348 371 C329 347 305 322 277 289 C307 299 333 305 363 311 C329 269 292 229 258 191 C276 197 294 201 315 204 C285 169 255 137 229 104 C241 108 254 110 271 113 C244 83 225 62 210 24Z"/>
           <path d="M210 70 C191 101 170 127 147 154 C169 149 185 145 200 139 C174 174 146 205 119 239 C145 232 166 225 188 217 C160 250 132 280 105 314 C144 305 176 296 210 292 C244 296 276 305 315 314 C288 280 260 250 232 217 C254 225 275 232 301 239 C274 205 246 174 220 139 C235 145 251 149 273 154 C250 127 229 101 210 70Z" fill="url(#treeBranch)" opacity=".82"/>
-        </g>
-        <g class="greeting-garland" fill="none" stroke="#f4d28b" stroke-width="3" stroke-linecap="round" opacity=".95">
-          <path d="M185 130 C260 160 135 205 231 235 S154 290 249 325 S172 355 210 385"/>
-          <path d="M240 168 C150 197 270 245 178 275 S267 328 171 357" opacity=".72"/>
         </g>
         <path d="M210 4 218 22 238 24 223 37 227 57 210 46 193 57 197 37 182 24 202 22Z" fill="#f6d78e" stroke="#fff1c8" stroke-width="2" class="greeting-tree-star"/>
         <g class="greeting-baubles">
@@ -2403,6 +2408,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
           <g class="bauble b5"><path d="M106 305v-8h11v8" stroke="#e5c98f" stroke-width="3" fill="none"/><circle cx="112" cy="325" r="20" fill="url(#emptyBauble)" stroke="#d7f3ff" stroke-opacity=".85" stroke-width="2"/><ellipse cx="106" cy="318" rx="4" ry="7" fill="#fff" opacity=".38"/></g>
           <g class="bauble b6"><path d="M238 342v-8h12v8" stroke="#e5c98f" stroke-width="3" fill="none"/><circle cx="244" cy="364" r="23" fill="url(#emptyBauble)" stroke="#d7f3ff" stroke-opacity=".85" stroke-width="2"/><ellipse cx="236" cy="355" rx="5" ry="8" fill="#fff" opacity=".38"/></g>
         </g>
+        <g id="greetingBaubleImages" pointer-events="none"></g>
         <g class="greeting-lights"><circle cx="185" cy="149" r="4"/><circle cx="225" cy="180" r="4"/><circle cx="177" cy="218" r="4"/><circle cx="230" cy="251" r="4"/><circle cx="190" cy="291" r="4"/><circle cx="245" cy="326" r="4"/></g><g fill="#f7dfaa"><circle cx="160" cy="150" r="3"/><circle cx="255" cy="220" r="3"/><circle cx="150" cy="264" r="2.5"/><circle cx="270" cy="330" r="3"/><circle cx="215" cy="112" r="2.5"/></g>
       </svg>
       <div class="greeting-tree-caption">Каждое письмо — маленькое чудо</div>
@@ -4379,7 +4385,7 @@ body.task-modal-open{overflow:hidden}
 
 
 /* Активность «Письма в Страну Чудес» */
-.greeting-section{position:relative;left:50%;transform:translateX(-50%);width:calc(100vw - 56px);max-width:none;box-sizing:border-box;margin:32px 0 38px;padding:0}
+.greeting-section{position:relative;width:min(1800px,calc(100% - 48px));max-width:1800px;box-sizing:border-box;margin:32px auto 38px;padding:0}
 .greeting-card{position:relative;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);align-items:center;gap:24px;overflow:visible;padding:34px 36px;border:1px solid rgba(139,199,226,.28);border-radius:24px;background:linear-gradient(135deg,#173b55 0%,#102d45 56%,#0b2137 100%);box-shadow:0 18px 50px rgba(0,8,20,.24),inset 0 1px 0 rgba(255,255,255,.16);color:#eaf5ff}
 .greeting-copy{position:relative;z-index:3;min-width:0}
 .greeting-kicker{color:#e7b66b;font-size:10px;font-weight:900;letter-spacing:.23em}
@@ -4446,11 +4452,11 @@ body.task-modal-open{overflow:hidden}
 @keyframes greetingBauble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
 @keyframes greetingWarmShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @media(max-width:900px){
- .greeting-section{width:calc(100vw - 36px);margin:28px 0 34px;padding:0}
+ .greeting-section{width:calc(100% - 36px);margin:28px auto 34px;padding:0}
  .greeting-card{grid-template-columns:minmax(0,1fr) minmax(220px,.72fr);padding:25px 22px;gap:12px}
 }
 @media(max-width:650px){
- .greeting-section{width:calc(100vw - 28px);margin:26px 0 30px;padding:0}
+ .greeting-section{width:calc(100% - 28px);margin:26px auto 30px;padding:0}
  .greeting-card{grid-template-columns:1fr;padding:22px 17px;gap:8px}
  .greeting-visual{min-height:300px;grid-row:1}
  .greeting-tree{width:min(82%,320px);max-height:340px}
@@ -4494,9 +4500,46 @@ body.task-modal-open{overflow:hidden}
 .greeting-lights circle:nth-child(4){animation-delay:.6s;color:#ffc0d8;fill:#ffc0d8}
 .greeting-lights circle:nth-child(5){animation-delay:.8s;color:#fff0ad;fill:#fff0ad}
 .greeting-lights circle:nth-child(6){animation-delay:1s;color:#b6f2d8;fill:#b6f2d8}
-.greeting-garland{stroke-dasharray:8 7;animation:greetingGarland 3s linear infinite}
+
 @keyframes greetingGarland{to{stroke-dashoffset:-60}}
 @media(max-width:650px){.greeting-form-actions{grid-template-columns:1fr}.greeting-timer-fields{grid-template-columns:1fr}.greeting-modal{padding:10px}.greeting-modal-card{padding:17px;max-height:94vh}.greeting-admin-open{top:0;right:0}}
+
+
+/* Mail activity refinements */
+#greetingCountdown{display:flex!important;position:relative!important;clear:both!important;float:none!important;flex:none!important;width:max-content;max-width:100%;box-sizing:border-box;margin:14px 0 18px!important;white-space:normal;line-height:1.35}
+.greeting-modal .greeting-tooltip{position:relative!important;inset:auto!important;display:block!important;width:100%!important;max-width:none!important;opacity:1!important;visibility:visible!important;transform:none!important;pointer-events:auto!important;margin:0!important}
+.greeting-modal .greeting-tooltip-frame{max-width:100%}
+.greeting-modal .greeting-form-head{display:none!important}
+.greeting-modal .greeting-form-panel{padding:0!important;margin:0!important}
+.greeting-modal .greeting-modal-card{overflow-x:hidden}
+.greeting-modal-close{position:relative;overflow:visible}
+.greeting-modal-close .button-butterflies{position:absolute;inset:-13px -10px;overflow:visible;pointer-events:none}
+.greeting-modal-close .button-butterflies i{position:absolute;display:block;width:22px;height:26px;background-image:var(--butterfly-img);background-size:contain;background-repeat:no-repeat;opacity:0;filter:drop-shadow(0 2px 3px rgba(25,20,35,.28))}
+.greeting-modal-close:hover .button-butterflies i,.greeting-modal-close:focus-visible .button-butterflies i{opacity:1;animation:headerButterfly .95s ease-in-out infinite alternate}
+.greeting-modal-close .button-butterflies i:nth-child(1){left:-7px;top:-8px;--fly-x:-5px;--fly-y:-13px;--fly-r:-22deg}
+.greeting-modal-close .button-butterflies i:nth-child(2){right:-9px;top:-9px;--fly-x:8px;--fly-y:-15px;--fly-r:24deg}
+.greeting-modal-close .button-butterflies i:nth-child(3){left:17%;bottom:-13px;--fly-x:-7px;--fly-y:11px;--fly-r:-30deg}
+.greeting-modal-close .button-butterflies i:nth-child(4){right:15%;bottom:-12px;--fly-x:9px;--fly-y:9px;--fly-r:30deg}
+.greeting-modal-close .button-butterflies i:nth-child(5){left:48%;top:-16px;--fly-x:0px;--fly-y:-17px;--fly-r:8deg}
+.greeting-gifts{filter:drop-shadow(0 5px 9px rgba(0,0,0,.28))}
+.greeting-bauble-photo{pointer-events:none}
+.greeting-bauble-admin{margin-top:18px;padding:15px;border:1px solid rgba(231,182,107,.38);border-radius:15px;background:rgba(6,23,38,.35)}
+.greeting-bauble-admin h4{margin:0 0 7px;color:#f5e3c3;font:600 17px Georgia,serif}
+.greeting-bauble-admin p{margin:0 0 12px;color:#a9c1d1;font-size:11px}
+.greeting-bauble-admin label{display:block;margin:8px 0;color:#b9cbd8;font-size:11px;font-weight:800}
+.greeting-bauble-admin select,.greeting-bauble-admin input[type=file]{width:100%;box-sizing:border-box;margin-top:5px;padding:9px;border:1px solid rgba(143,199,226,.25);border-radius:10px;background:#0b2033;color:#eff8ff}
+.greeting-glow-palette{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:10px 0}
+.greeting-glow-choice{display:flex!important;align-items:center;gap:5px;margin:0!important;padding:7px 5px;border:1px solid rgba(143,199,226,.16);border-radius:9px;background:rgba(255,255,255,.035);font-size:9px!important}
+.greeting-glow-choice input{accent-color:#e5bd80}
+.greeting-glow-swatch{width:12px;height:12px;flex:0 0 auto;border-radius:50%;background:var(--swatch);box-shadow:0 0 8px var(--swatch)}
+.greeting-bauble-preview{width:70px;height:70px;margin:10px auto;border-radius:50%;border:2px solid rgba(220,245,255,.75);background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.55),rgba(120,185,210,.2) 50%,rgba(4,20,35,.4));overflow:hidden;box-shadow:0 0 10px rgba(150,220,255,.35)}
+.greeting-bauble-preview img{width:100%;height:100%;object-fit:cover}
+.greeting-reveal{opacity:0;transform:translateY(18px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.2,1);position:relative}
+.greeting-reveal.is-visible{opacity:1;transform:translateY(0)}
+.greeting-reveal.is-visible:before{content:"";position:absolute;inset:-8px;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at 25% 45%,rgba(210,239,255,.12),transparent 28%),radial-gradient(circle at 75% 55%,rgba(239,206,157,.1),transparent 30%);opacity:0;animation:greetingParticleReveal 1s ease-out both}
+@keyframes greetingParticleReveal{0%{opacity:0;transform:scale(.96);filter:blur(10px)}35%{opacity:.8}100%{opacity:0;transform:scale(1.015);filter:blur(2px)}}
+@media(prefers-reduced-motion:reduce){.greeting-reveal,.greeting-reveal.is-visible{opacity:1;transform:none;transition:none}.greeting-reveal.is-visible:before{display:none}}
+@media(max-width:650px){.greeting-glow-palette{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 </style>
 
@@ -4509,29 +4552,39 @@ body.task-modal-open{overflow:hidden}
   const defaultTitle='Письма в Страну Чудес';
   const defaultDescription='Напиши поздравление игроку Аватарии, персонажу Страны Чудес или всему проекту. Приложи картинку, укажи социальную сеть и игровой ID. Администрация выберет самые душевные письма и наградит их авторов.';
   let settings={title:defaultTitle,description:defaultDescription,accepting:false,timer_enabled:false,timer_deadline:null};
-  let adminRows=[], cropper=null, cropperScriptPromise=null, croppedFile=null, timerInterval=null;
+  let adminRows=[], cropper=null, cropperScriptPromise=null, croppedFile=null, timerInterval=null, pendingBaubleSlot=null, treeBaubles=Array(6).fill(null);
   const connected=()=>Boolean(window.supabase&&typeof supabaseClient!=='undefined'&&supabaseClient);
   const admin=()=>Boolean(typeof isAdmin!=='undefined'&&isAdmin);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const text=(id,v)=>{if($(id))$(id).textContent=v;};
   const modal=(id,title,content,wide=false)=>{
     let el=$(id);
-    if(!el){el=document.createElement('div');el.id=id;el.className='greeting-modal';el.innerHTML=`<div class="greeting-modal-card ${wide?'greeting-modal-wide':''}" role="dialog" aria-modal="true"><div class="greeting-modal-head"><div><h3>${esc(title)}</h3><p></p></div><button type="button" class="greeting-modal-close" aria-label="Закрыть">×</button></div><div class="greeting-modal-body"></div></div>`;document.body.appendChild(el);
+    if(!el){el=document.createElement('div');el.id=id;el.className='greeting-modal';el.innerHTML=`<div class="greeting-modal-card ${wide?'greeting-modal-wide':''}" role="dialog" aria-modal="true"><div class="greeting-modal-head"><div><h3>${esc(title)}</h3><p></p></div><button type="button" class="greeting-modal-close" aria-label="Закрыть">×<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button></div><div class="greeting-modal-body"></div></div>`;document.body.appendChild(el);
       el.addEventListener('click',e=>{if(e.target===el||e.target.closest('.greeting-modal-close'))closeModal(id);});
     }
     el.querySelector('.greeting-modal-head h3').textContent=title;
     el.querySelector('.greeting-modal-body').append(content);
     return el;
   };
-  const openModal=id=>{const el=$(id);if(el){el.classList.add('is-open');document.body.style.overflow='hidden';}};
-  const closeModal=id=>{const el=$(id);if(el){el.classList.remove('is-open');document.body.style.overflow='';}};
+  const openModal=id=>{const el=$(id);if(el){el.classList.add('is-open');el.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}};
+  const closeModal=id=>{const el=$(id);if(el){el.classList.remove('is-open');el.setAttribute('aria-hidden','true');document.body.style.overflow='';}};
   function createModalShells(){
     const form=$('greetingFormPanel'),adminPanel=$('greetingInlineAdmin'),tip=$('greetingTooltip');
     form.removeAttribute('hidden');
     const formModal=modal('greetingFormModal','Твоё праздничное письмо',form,true);
     formModal.querySelector('.greeting-modal-head p').textContent='Заполни данные, проверь письмо и отправь его в праздничную почту.';
     const adminModal=modal('greetingAdminModal','Управление активностью',adminPanel,true);
-    adminModal.querySelector('.greeting-modal-head p').textContent='Настройки приёма работ, таймера и подсказки.';
+    adminModal.querySelector('.greeting-modal-head p').textContent='Настройки приёма работ, таймера, оформления ёлочных шаров и подсказки.';
+    const baubleTools=document.createElement('section');
+    baubleTools.className='greeting-bauble-admin';
+    baubleTools.id='greetingBaubleAdmin';
+    baubleTools.innerHTML=`<h4>Оформление шаров на ёлочке</h4><p>Выбери шар, загрузи изображение, выдели область круглой игрушки и настрой свечение. Можно выбрать не более трёх цветов.</p>
+      <label>Номер шара<select id="greetingBaubleSlot">${[1,2,3,4,5,6].map(n=>`<option value="${n-1}">Шар ${n}</option>`).join('')}</select></label>
+      <label>Изображение внутри шара<input type="file" id="greetingBaubleFile" accept="image/jpeg,image/png,image/webp"></label>
+      <div class="greeting-bauble-preview" id="greetingBaublePreview"></div>
+      <label>Цвета свечения (до 3)</label><div class="greeting-glow-palette" id="greetingGlowPalette"></div>
+      <button type="button" class="greeting-primary" id="saveBaubleGlow">Сохранить свечение</button><p id="greetingBaubleNote" aria-live="polite"></p>`;
+    adminModal.querySelector('.greeting-modal-body').append(baubleTools);
     const tipModal=modal('greetingDetailsModal','Подробнее',tip,false);
     tipModal.querySelector('.greeting-modal-head p').textContent='Информация об активности.';
     const preview=document.createElement('div');preview.id='greetingPreviewContent';preview.className='greeting-preview';
@@ -4580,9 +4633,9 @@ body.task-modal-open{overflow:hidden}
   }
   async function loadSettings(){
     if(!connected()){settings.accepting=false;renderSettings();text('greetingPublicStatus','Нет подключения к общей базе сайта.');return;}
-    const {data,error}=await supabaseClient.from(settingsTable).select('title,description,accepting,timer_enabled,timer_deadline').eq('id',true).maybeSingle();
+    const {data,error}=await supabaseClient.from(settingsTable).select('title,description,accepting,timer_enabled,timer_deadline,tree_baubles').eq('id',true).maybeSingle();
     if(error){console.error(error);settings.accepting=false;renderSettings();text('greetingPublicStatus','Не удалось загрузить настройки почты. Проверь обновление базы данных.');return;}
-    if(data)settings={...settings,...data};renderSettings();if(admin())fillAdmin();
+    if(data)settings={...settings,...data};treeBaubles=Array.isArray(settings.tree_baubles)?settings.tree_baubles:Array(6).fill(null);renderTreeBaubles();renderSettings();if(admin())fillAdmin();
   }
   async function saveSettings(){
     if(!admin()||!connected())return;
@@ -4609,7 +4662,7 @@ body.task-modal-open{overflow:hidden}
     if(!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>5*1024*1024){setNote('Поддерживаются JPG, PNG или WebP до 5 МБ.',true);$('greetingImage').value='';return;}
     try{
       await loadCropper();const img=$('greetingCropImage');img.src=URL.createObjectURL(f);openModal('greetingCropModal');
-      img.onload=()=>{if(cropper)cropper.destroy();cropper=new Cropper(img,{viewMode:1,dragMode:'move',autoCropArea:.85,background:false, responsive:true, movable:true,zoomable:true,rotatable:false,scalable:false});};
+      img.onload=()=>{if(cropper)cropper.destroy();cropper=new Cropper(img,{viewMode:1,dragMode:'move',aspectRatio:pendingBaubleSlot===null?NaN:1,autoCropArea:.85,background:false,responsive:true,movable:true,zoomable:true,rotatable:false,scalable:false});};
     }catch(e){setNote(e.message,true);}
   }
   async function applyCrop(){
@@ -4617,9 +4670,26 @@ body.task-modal-open{overflow:hidden}
     const canvas=cropper.getCroppedCanvas({maxWidth:2400,maxHeight:2400,imageSmoothingQuality:'high'});
     if(!canvas){setNote('Не удалось обрезать изображение.',true);return;}
     const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.92));
-    croppedFile=new File([blob],'greeting-cropped.jpg',{type:'image/jpeg'});
-    const dt=new DataTransfer();dt.items.add(croppedFile);$('greetingImage').files=dt.files;
-    cropper.destroy();cropper=null;closeModal('greetingCropModal');updateForm();setNote('Область фотографии выбрана и обрезана. Можно посмотреть письмо.');
+    if(pendingBaubleSlot!==null){
+      const slot=pendingBaubleSlot, file=new File([blob],`bauble-${slot+1}.jpg`,{type:'image/jpeg'});
+      if(!connected()||!admin()){text('greetingBaubleNote','Нет доступа к сохранению оформления.');return;}
+      text('greetingBaubleNote','Загружаем изображение шара…');
+      const path=`tree-decor/bauble-${slot+1}-${crypto.randomUUID()}.jpg`;
+      const {error:uploadError}=await supabaseClient.storage.from(bucket).upload(path,file,{cacheControl:'3600',upsert:false,contentType:'image/jpeg'});
+      if(uploadError){text('greetingBaubleNote','Ошибка загрузки: '+uploadError.message);return;}
+      const url=supabaseClient.storage.from(bucket).getPublicUrl(path).data?.publicUrl;
+      const selected=[...document.querySelectorAll('#greetingGlowPalette input:checked')].map(x=>x.value);
+      treeBaubles[slot]={...(treeBaubles[slot]||{}),url,glow:selected};
+      const {error}=await supabaseClient.from(settingsTable).upsert({id:true,tree_baubles:treeBaubles,updated_at:new Date().toISOString()},{onConflict:'id'});
+      if(error){text('greetingBaubleNote','Изображение загружено, но настройки не сохранены: '+error.message);return;}
+      settings.tree_baubles=treeBaubles;renderTreeBaubles();updateBaublePreview();text('greetingBaubleNote','Изображение шара сохранено.');
+      pendingBaubleSlot=null;
+    }else{
+      croppedFile=new File([blob],'greeting-cropped.jpg',{type:'image/jpeg'});
+      const dt=new DataTransfer();dt.items.add(croppedFile);$('greetingImage').files=dt.files;
+      updateForm();setNote('Область фотографии выбрана и обрезана. Можно посмотреть письмо.');
+    }
+    cropper.destroy();cropper=null;closeModal('greetingCropModal');
   }
   function previewLetter(){
     const f=selectedFile(),url=f?URL.createObjectURL(f):'';
@@ -4655,16 +4725,92 @@ body.task-modal-open{overflow:hidden}
     const urls=adminRows.map(row=>supabaseClient.storage.from(bucket).getPublicUrl(row.image_path).data?.publicUrl||'');
     box.innerHTML='<div class="greeting-admin-list">'+adminRows.map((row,i)=>`<article class="greeting-admin-item"><h4>${esc(row.category)}${row.recipient?' · '+esc(row.recipient):''}</h4><p><b>${row.social_network==='VK'?'ВКонтакте':'Одноклассники'} · ID ${esc(row.social_id)}</b> · ${esc(new Date(row.created_at).toLocaleString('ru-RU'))}</p><p>${esc(row.message)}</p><img src="${esc(urls[i])}" alt="Изображение к поздравлению" loading="lazy"><a href="${esc(urls[i])}" target="_blank" rel="noopener">Открыть / сохранить изображение</a><button type="button" class="greeting-more" data-delete-greeting="${esc(row.id)}">Удалить письмо</button></article>`).join('')+'</div>';
   }
+  const glowColors=[
+    ['Белый','#fff4d6'],['Золотой','#ffd36f'],['Янтарный','#ffad4d'],['Красный','#ff5268'],['Розовый','#ff83bd'],
+    ['Малиновый','#e94b9b'],['Фиолетовый','#a875ff'],['Сиреневый','#c4a1ff'],['Синий','#5f8dff'],['Голубой','#69d9ff'],
+    ['Бирюзовый','#48e0cf'],['Мятный','#8df2c5'],['Зелёный','#78df77'],['Лаймовый','#c5ef63'],['Ледяной','#c7f4ff']
+  ];
+  function renderGlowPalette(){
+    const box=$('greetingGlowPalette');if(!box)return;
+    box.innerHTML=glowColors.map(([name,color])=>`<label class="greeting-glow-choice"><input type="checkbox" value="${color}"><span class="greeting-glow-swatch" style="--swatch:${color}"></span>${name}</label>`).join('');
+    box.addEventListener('change',e=>{
+      if(e.target.type!=='checkbox')return;
+      const checked=[...box.querySelectorAll('input:checked')];
+      if(checked.length>3){e.target.checked=false;text('greetingBaubleNote','Можно выбрать максимум три цвета свечения.');}
+      updateBaublePreview();
+    });
+  }
+  function updateBaublePreview(){
+    const slot=Number($('greetingBaubleSlot')?.value||0),cfg=treeBaubles[slot]||{},box=$('greetingBaublePreview');if(!box)return;
+    const colors=[...document.querySelectorAll('#greetingGlowPalette input:checked')].map(x=>x.value);
+    box.innerHTML=cfg.url?`<img src="${esc(cfg.url)}" alt="Предпросмотр шара">`:'';
+    box.style.boxShadow=colors.map(c=>`0 0 9px ${c},0 0 18px ${c}55`).join(',')||'0 0 10px rgba(150,220,255,.35)';
+  }
+  function renderTreeBaubles(){
+    const layer=$('greetingBaubleImages');if(!layer)return;
+    layer.innerHTML='';
+    const ns='http://www.w3.org/2000/svg';
+    const positions=[
+      {x:112,y:187,r:20},{x:263,y:157,r:17},{x:178,y:244,r:22},
+      {x:288,y:277,r:18},{x:94,y:307,r:18},{x:223,y:343,r:21}
+    ];
+    treeBaubles.forEach((cfg,i)=>{
+      if(!cfg?.url)return;
+      const image=document.createElementNS(ns,'image');
+      image.setAttribute('href',cfg.url);image.setAttribute('x',positions[i].x);image.setAttribute('y',positions[i].y);
+      image.setAttribute('width',positions[i].r*2);image.setAttribute('height',positions[i].r*2);
+      image.setAttribute('preserveAspectRatio','xMidYMid slice');image.setAttribute('clip-path',`url(#greetingBallClip${i+1})`);
+      image.classList.add('greeting-bauble-photo');
+      const colors=Array.isArray(cfg.glow)?cfg.glow.slice(0,3):[];
+      image.style.filter=colors.map(c=>`drop-shadow(0 0 7px ${c})`).join(' ');
+      layer.appendChild(image);
+      const outline=document.createElementNS(ns,'circle');
+      outline.setAttribute('cx',positions[i].x+positions[i].r);outline.setAttribute('cy',positions[i].y+positions[i].r);
+      outline.setAttribute('r',positions[i].r);outline.setAttribute('fill','none');
+      outline.setAttribute('stroke','#d7f3ff');outline.setAttribute('stroke-opacity','.9');outline.setAttribute('stroke-width','2');
+      layer.appendChild(outline);
+      const shine=document.createElementNS(ns,'ellipse');
+      shine.setAttribute('cx',positions[i].x+positions[i].r*.68);shine.setAttribute('cy',positions[i].y+positions[i].r*.62);
+      shine.setAttribute('rx',Math.max(3,positions[i].r*.2));shine.setAttribute('ry',Math.max(5,positions[i].r*.38));
+      shine.setAttribute('fill','#fff');shine.setAttribute('opacity','.38');layer.appendChild(shine);
+    });
+  }
+  async function saveBaubleGlow(){
+    if(!admin()||!connected())return;
+    const slot=Number($('greetingBaubleSlot').value),selected=[...document.querySelectorAll('#greetingGlowPalette input:checked')].map(x=>x.value);
+    if(selected.length>3){text('greetingBaubleNote','Можно выбрать максимум три цвета.');return;}
+    treeBaubles[slot]={...(treeBaubles[slot]||{}),glow:selected};
+    const {error}=await supabaseClient.from(settingsTable).upsert({id:true,tree_baubles:treeBaubles,updated_at:new Date().toISOString()},{onConflict:'id'});
+    if(error){text('greetingBaubleNote','Не удалось сохранить: '+error.message);return;}
+    settings.tree_baubles=treeBaubles;renderTreeBaubles();updateBaublePreview();text('greetingBaubleNote','Свечение шара сохранено.');
+  }
+  function chooseBaubleFile(){
+    const f=$('greetingBaubleFile').files?.[0];if(!f)return;
+    if(!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>5*1024*1024){text('greetingBaubleNote','Поддерживаются JPG, PNG или WebP до 5 МБ.');return;}
+    pendingBaubleSlot=Number($('greetingBaubleSlot').value);
+    loadCropper().then(()=>{
+      const img=$('greetingCropImage');img.src=URL.createObjectURL(f);openModal('greetingCropModal');
+      img.onload=()=>{if(cropper)cropper.destroy();cropper=new Cropper(img,{viewMode:1,dragMode:'move',aspectRatio:1,autoCropArea:.9,background:false,responsive:true,movable:true,zoomable:true,rotatable:false,scalable:false});};
+    }).catch(e=>text('greetingBaubleNote',e.message));
+  }
   function applyAdmin(){
     $('openGreetingAdminSettings').hidden=!admin();
     if(admin()){fillAdmin();loadAdminSubmissions();}
   }
   createModalShells();
+  renderGlowPalette();
+  $('greetingBaubleSlot').addEventListener('change',()=>{
+    const cfg=treeBaubles[Number($('greetingBaubleSlot').value)]||{};
+    document.querySelectorAll('#greetingGlowPalette input').forEach(x=>x.checked=(cfg.glow||[]).includes(x.value));
+    updateBaublePreview();
+  });
+  $('greetingBaubleFile').addEventListener('change',chooseBaubleFile);
+  $('saveBaubleGlow').addEventListener('click',saveBaubleGlow);
   const countdownPill=document.createElement('div');countdownPill.id='greetingCountdown';countdownPill.className='greeting-countdown';countdownPill.hidden=true;
   $('greetingPublicStatus').before(countdownPill);
   $('openGreetingForm').addEventListener('click',()=>{if(settings.accepting)openModal('greetingFormModal');});
   $('greetingMoreBtn').addEventListener('click',()=>openModal('greetingDetailsModal'));
-  $('openGreetingAdminSettings').addEventListener('click',()=>{if(admin()){fillAdmin();openModal('greetingAdminModal');}});
+  $('openGreetingAdminSettings').addEventListener('click',()=>{if(admin()){fillAdmin();const cfg=treeBaubles[Number($('greetingBaubleSlot').value)]||{};document.querySelectorAll('#greetingGlowPalette input').forEach(x=>x.checked=(cfg.glow||[]).includes(x.value));updateBaublePreview();openModal('greetingAdminModal');}});
   $('closeGreetingForm').addEventListener('click',()=>closeModal('greetingFormModal'));
   $('greetingSubmissionForm').addEventListener('submit',submitLetter);
   $('previewGreetingLetter').addEventListener('click',previewLetter);
@@ -4690,6 +4836,14 @@ body.task-modal-open{overflow:hidden}
       .on('postgres_changes',{event:'*',schema:'public',table:submissionsTable},()=>{if(admin())loadAdminSubmissions();}).subscribe();
   }else{settings.accepting=false;renderSettings();text('greetingPublicStatus','Нет подключения к общей базе сайта.');}
   applyAdmin();renderSettings();
+  const revealTargets=[...document.querySelectorAll('.hero,.exchange-timer,.participants,#miracleSection,.greeting-section,#marketSection')];
+  revealTargets.forEach(el=>el.classList.add('greeting-reveal'));
+  if('IntersectionObserver' in window){
+    const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+      if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver.unobserve(entry.target);}
+    }),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+    revealTargets.forEach(el=>revealObserver.observe(el));
+  }else revealTargets.forEach(el=>el.classList.add('is-visible'));
 })();
 </script>
 
