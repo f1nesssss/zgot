@@ -2259,6 +2259,47 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 /* Чуть опускаем декоративные звёзды от верхнего края внутреннего блока итогов. */
 .greeting-results-effects.decor:before{transform:translateY(9px)!important;}
 </style>
+
+<style id="winter-blue-admin-refresh-v1">
+/* Единое холодное свечение сверху карточек новогодних шаров */
+.orb-card{position:relative;isolation:isolate}
+.orb-card::before{content:"";position:absolute;z-index:5;pointer-events:none;left:18px;right:18px;top:0;height:2px;border-radius:50%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.28) 9%,rgba(255,255,255,.96) 50%,rgba(255,255,255,.28) 91%,transparent 100%);box-shadow:0 0 5px rgba(255,255,255,.82),0 0 13px rgba(207,242,255,.58),0 0 24px rgba(160,220,245,.28)}
+
+/* Полное оформление кабинета администратора в основной тёмно-синей палитре */
+.admin-cabinet-backdrop{background:rgba(2,10,19,.78)!important;-webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important}
+.admin-cabinet-window{width:min(1220px,97vw)!important;max-width:1220px!important;max-height:94vh!important;box-sizing:border-box!important;padding:clamp(18px,2.2vw,30px)!important;overflow:auto!important;background:linear-gradient(145deg,#173a54 0%,#102b42 56%,#0b2033 100%)!important;color:#eaf4fb!important;border:1px solid rgba(145,202,231,.42)!important;border-radius:24px!important;box-shadow:0 28px 90px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.12)!important}
+.admin-cabinet-head{padding-bottom:14px;border-bottom:1px solid rgba(154,205,230,.2)}
+.admin-cabinet-head h2,.admin-cabinet-window h3,.admin-cabinet-window h4{color:#f0f7fc!important}
+.admin-cabinet-window p,.admin-cabinet-window label,.admin-cabinet-window small,.admin-cabinet-window .admin-cabinet-note,.admin-cabinet-window .admin-score-list{color:#a9c2d3!important}
+.admin-cabinet-grid,.admin-tools-grid{width:100%;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.admin-cabinet-card,.admin-cabinet-window .admin-cabinet-card,.admin-cabinet-window .admin-tool{box-sizing:border-box!important;min-width:0!important;max-width:100%!important;padding:16px!important;background:linear-gradient(150deg,rgba(23,55,79,.96),rgba(10,31,49,.96))!important;color:#eaf4fb!important;border:1px solid rgba(137,192,222,.28)!important;border-radius:17px!important;box-shadow:0 8px 24px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.045)!important}
+.admin-cabinet-card h3{font-size:16px!important;margin-bottom:9px!important}
+.admin-cabinet-window button,.admin-cabinet-window .admin-cabinet-card button,.admin-cabinet-window .admin-tool button{box-sizing:border-box!important;max-width:100%!important;min-height:38px!important;padding:9px 14px!important;border:1px solid rgba(147,207,235,.42)!important;border-radius:999px!important;background:linear-gradient(110deg,#28627f,#347f9b)!important;color:#f5fbff!important;font-weight:750!important;white-space:normal!important;overflow-wrap:anywhere!important;box-shadow:0 4px 12px rgba(0,0,0,.15)!important}
+.admin-cabinet-window button:hover{background:linear-gradient(110deg,#347b9b,#4094ae)!important;transform:translateY(-1px)}
+.admin-cabinet-window .admin-cabinet-close{width:42px!important;height:42px!important;min-height:42px!important;padding:0!important;background:#286783!important;color:#fff!important;border:1px solid rgba(166,220,244,.4)!important}
+.admin-cabinet-window input:not([type=checkbox]):not([type=radio]),.admin-cabinet-window select,.admin-cabinet-window textarea{box-sizing:border-box!important;min-width:0!important;max-width:100%!important;background:#0b2235!important;color:#eaf4fb!important;border:1px solid rgba(130,186,216,.3)!important;border-radius:11px!important}
+.admin-cabinet-window input::placeholder,.admin-cabinet-window textarea::placeholder{color:#7895a9!important}
+.admin-cabinet-window input[type=checkbox]{accent-color:#39a0c2}
+.admin-cabinet-window .admin-inline-actions{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.admin-cabinet-window .admin-inline-actions>*{min-width:0;max-width:100%}
+.admin-cabinet-window .admin-tools-wrap{min-width:0;width:100%}
+.admin-cabinet-window .admin-tools-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.admin-cabinet-window .admin-tools-head input{width:min(340px,100%);margin-left:auto}
+.admin-cabinet-window .admin-stat-strip span{background:rgba(7,27,43,.72)!important;border:1px solid rgba(137,192,222,.25)!important;border-radius:12px!important;color:#dcecf6!important}
+.admin-cabinet-window .admin-tool-results{color:#b9d0df!important;overflow-wrap:anywhere}
+.admin-cabinet-window .admin-orb-row{min-width:0}
+.admin-activity-hub{grid-column:1/-1!important}
+.admin-activity-grid{display:grid;grid-template-columns:minmax(220px,.78fr) minmax(300px,1.22fr);gap:12px;min-width:0}
+.admin-activity-panel{box-sizing:border-box;min-width:0;padding:14px;border:1px solid rgba(137,192,222,.22);border-radius:14px;background:rgba(6,25,41,.55)}
+.admin-activity-panel h4{margin:0 0 8px;font-size:14px;color:#edf7fd!important}
+.admin-activity-panel p{margin:5px 0 10px}
+.admin-activity-log{grid-column:1/-1}
+.admin-activity-panel .admin-stat-number{color:#f4f9fd}
+.admin-activity-panel .admin-tool-results{max-height:220px}
+@media(max-width:900px){.admin-cabinet-window{width:calc(100vw - 20px)!important}.admin-cabinet-grid,.admin-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.admin-activity-grid{grid-template-columns:1fr 1fr}.admin-activity-log{grid-column:1/-1}}
+@media(max-width:650px){.admin-cabinet-backdrop{padding:7px!important}.admin-cabinet-window{width:100%!important;max-height:calc(100vh - 14px)!important;padding:16px 12px!important;border-radius:18px!important}.admin-cabinet-grid,.admin-tools-grid,.admin-activity-grid{grid-template-columns:1fr!important}.admin-activity-hub,.admin-activity-log{grid-column:auto!important}.admin-cabinet-window .admin-inline-actions>*{width:100%;flex:1 1 100%}.admin-cabinet-window .admin-tools-head input{width:100%;margin:0}.admin-cabinet-window button{min-height:42px!important}}
+</style>
+
 </head>
 <body>
 <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
@@ -2779,7 +2820,6 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
    <article class="admin-cabinet-card"><h3>Розыгрыш</h3><p>Настройка и контроль новогоднего розыгрыша.</p><button type="button" id="miracleAdminBtn">Управление розыгрышем</button></article>
    <article class="admin-cabinet-card"><h3>Экспорт</h3><p>Выгрузка текущих данных участников.</p><button type="button" id="exportBtn">Экспорт данных</button></article>
    <article class="admin-cabinet-card"><h3>Общее количество баллов</h3><strong class="admin-stat-number" id="adminTotalPoints">0</strong><p>Сумма всех билетов, начисленных участникам по всем шарам.</p><div class="admin-score-list" id="adminScoreList">Нет данных.</div></article>
-   <article class="admin-cabinet-card"><h3>Посещения сайта</h3><strong class="admin-stat-number" id="adminVisitCount">—</strong><p>Общее число загрузок сайта с момента включения счётчика.</p><button type="button" id="refreshAdminVisits">Обновить статистику</button></article>
    <article class="admin-cabinet-card"><h3>Таймер обмена билетами</h3><p>Задайте дату и время окончания обмена. Можно скрыть таймер от посетителей.</p>
     <label><input type="checkbox" id="exchangeTimerEnabled"> Показывать таймер на сайте</label>
     <label for="exchangeTimerAdminLabel">Подпись таймера</label><input type="text" id="exchangeTimerAdminLabel" maxlength="100" value="До окончания обмена билетами осталось">
@@ -2792,8 +2832,31 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
    <div class="admin-tools-head"><h3>Центр управления</h3><input id="adminToolSearch" type="search" placeholder="Поиск по функциям кабинета…" aria-label="Поиск по функциям кабинета"></div>
    <div class="admin-tools-grid">
     <article class="admin-cabinet-card admin-tool" data-tool="participants"><h3>Участники и дубликаты</h3><p>Фильтр VK/OK, поиск повторяющихся ID между шарами, проверка подозрительных записей.</p><div class="admin-inline-actions"><button type="button" id="adminDuplicatesBtn">Найти дубликаты</button><button type="button" id="adminIntegrityBtn">Проверить целостность</button><button type="button" id="adminHistoryBtn">История начислений</button></div><div id="adminDuplicateResults" class="admin-tool-results" aria-live="polite"></div></article>
-    <article class="admin-cabinet-card admin-tool" data-tool="history"><h3>Журнал действий</h3><p>История изменений участников и товаров: кто, когда и что изменил.</p><div class="admin-inline-actions"><input type="date" id="adminHistoryDate"><button type="button" id="adminLoadHistory">Показать за день</button><button type="button" id="adminLoadAudit">Последние действия</button></div><div id="adminHistoryResults" class="admin-tool-results" aria-live="polite"></div></article>
-    <article class="admin-cabinet-card admin-tool" data-tool="statistics"><h3>Статистика посещений</h3><p>Посещения за сегодня, неделю и месяц, пиковые интервалы и просмотры новостей.</p><div class="admin-stat-strip"><span>Сегодня <b id="adminVisitsToday">—</b></span><span>7 дней <b id="adminVisitsWeek">—</b></span><span>30 дней <b id="adminVisitsMonth">—</b></span></div><button type="button" id="adminLoadAnalytics">Обновить аналитику</button><div id="adminAnalyticsResults" class="admin-tool-results"></div></article>
+    <article class="admin-cabinet-card admin-tool admin-activity-hub" data-tool="посещения статистика журнал действий активность">
+     <h3>Посещения и журнал активности</h3>
+     <p>Общая посещаемость сайта, подробная статистика и история действий администраторов — в одном разделе.</p>
+     <div class="admin-activity-grid">
+      <section class="admin-activity-panel">
+       <h4>Посещения сайта</h4>
+       <strong class="admin-stat-number" id="adminVisitCount">—</strong>
+       <p>Общее число загрузок сайта с момента включения счётчика.</p>
+       <button type="button" id="refreshAdminVisits">Обновить посещения</button>
+      </section>
+      <section class="admin-activity-panel">
+       <h4>Статистика посещений</h4>
+       <p>Посещения за сегодня, неделю и месяц, пиковые интервалы и просмотры новостей.</p>
+       <div class="admin-stat-strip"><span>Сегодня <b id="adminVisitsToday">—</b></span><span>7 дней <b id="adminVisitsWeek">—</b></span><span>30 дней <b id="adminVisitsMonth">—</b></span></div>
+       <button type="button" id="adminLoadAnalytics">Обновить аналитику</button>
+       <div id="adminAnalyticsResults" class="admin-tool-results"></div>
+      </section>
+      <section class="admin-activity-panel admin-activity-log">
+       <h4>Журнал действий</h4>
+       <p>История изменений участников и товаров: кто, когда и что изменил.</p>
+       <div class="admin-inline-actions"><input type="date" id="adminHistoryDate"><button type="button" id="adminLoadHistory">Показать за день</button><button type="button" id="adminLoadAudit">Последние действия</button></div>
+       <div id="adminHistoryResults" class="admin-tool-results" aria-live="polite"></div>
+      </section>
+     </div>
+    </article>
     <article class="admin-cabinet-card admin-tool" data-tool="globes"><h3>Таймеры и доступность шаров</h3><p>Управление сроками испытаний. Можно закрыть шар вручную или снова открыть его.</p><div id="adminOrbControls" class="admin-orb-controls"></div><div class="orb-status-admin"><label>Текст для завершённых испытаний<input id="orbClosedText" type="text" maxlength="70" value="Испытания завершены" placeholder="Например, Испытания завершены"></label><label>Цвет свечения<select id="orbClosedGlow"><option value="rose">Розовый</option><option value="red">Красный</option><option value="orange">Оранжевый</option><option value="gold">Золотой</option><option value="lime">Лаймовый</option><option value="green">Зелёный</option><option value="cyan">Бирюзовый</option><option value="blue">Голубой</option><option value="violet">Фиолетовый</option><option value="white">Белый</option></select></label><button type="button" id="saveOrbClosedStyle">Сохранить оформление</button></div><p id="orbClosedStyleNote" class="admin-cabinet-note" aria-live="polite"></p><p id="adminOrbNote" class="admin-cabinet-note" aria-live="polite"></p></article>
     <article class="admin-cabinet-card admin-tool" data-tool="google sheets"><h3>Отчёт в Google Таблицы</h3><p>Создаёт таблицу с участниками, соцсетями, игровыми ID, шарами, билетами и итогами.</p><label for="googleSheetsEndpoint">Адрес Google Apps Script</label><input type="url" id="googleSheetsEndpoint" placeholder="https://script.google.com/macros/s/…/exec"><div class="admin-inline-actions"><button type="button" id="saveGoogleSheetsEndpoint">Сохранить адрес</button><button type="button" id="exportGoogleSheets">Создать Google Таблицу</button></div><p id="googleSheetsNote" class="admin-cabinet-note" aria-live="polite"></p></article>
     <article class="admin-cabinet-card admin-tool" data-tool="greeting contest"><h3>Конкурс поздравлений</h3><p>Просмотр писем, текстов и изображений участников. Настройки приёма и текста подсказки находятся в блоке активности на сайте.</p><div class="admin-stat-strip"><span>Получено писем <b id="greetingAdminCount">—</b></span></div><button type="button" id="openGreetingAdminList">Открыть конкурс поздравлений</button><div id="greetingAdminCabinetList" class="admin-tool-results" aria-live="polite"></div></article>
