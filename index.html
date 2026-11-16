@@ -2460,6 +2460,10 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
             <label class="full">Статус при открытом приёме<input id="greetingSectionOpenStatusEdit" maxlength="220"></label>
             <label class="full">Статус при закрытом приёме<input id="greetingSectionClosedStatusEdit" maxlength="220"></label>
           </div>
+          <div class="greeting-section-copy-actions">
+            <button type="button" id="saveGreetingSectionCopy">Сохранить текст блока</button>
+            <span id="greetingSectionCopyNote" aria-live="polite"></span>
+          </div>
         </details>
         <label class="greeting-toggle"><input type="checkbox" id="greetingAdminAccepting"> Приём поздравлений открыт — разрешить отправку</label>
         <div class="greeting-timer-fields"><label><span><input type="checkbox" id="greetingTimerEnabled"> Показывать таймер посетителям</span></label><label>Дата и время окончания<input type="datetime-local" id="greetingTimerDeadline"></label></div>
@@ -4908,6 +4912,10 @@ body.task-modal-open{overflow:hidden}
 .greeting-bauble-photo{pointer-events:none}
 .greeting-section-copy-editor{margin:14px 0;padding:12px;border:1px solid rgba(143,199,226,.22);border-radius:12px;background:rgba(5,22,36,.32)}
 .greeting-section-copy-editor summary{cursor:pointer;color:#f3d7a7;font-weight:800}
+.greeting-section-copy-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.greeting-section-copy-actions button{border:1px solid rgba(150,216,241,.35);border-radius:999px;padding:11px 20px;background:linear-gradient(135deg,#28617d,#347f9b);color:#f3f9ff;font:inherit;font-weight:800;cursor:pointer}
+.greeting-section-copy-actions button:disabled{opacity:.55;cursor:wait}
+.greeting-section-copy-actions span{color:#a9c1d1;font-size:12px;font-weight:700}
 .greeting-section-copy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
 .greeting-section-copy-grid label{display:grid;gap:5px;color:#b9cbd8;font-size:11px;font-weight:800}
 .greeting-section-copy-grid label.full{grid-column:1/-1}
@@ -5254,12 +5262,15 @@ body.task-modal-open{overflow:hidden}
     const accepting=$('greetingAdminAccepting').checked,timer_enabled=$('greetingTimerEnabled').checked;
     const timer_deadline=$('greetingTimerDeadline').value?new Date($('greetingTimerDeadline').value).toISOString():null;
     if(timer_enabled&&!timer_deadline){text('greetingSettingsNote','Укажи дату и время окончания таймера.');return;}
-    $('saveGreetingSettings').disabled=true;text('greetingSettingsNote','Сохраняем…');
+    const saveButtons=[$('saveGreetingSettings'),$('saveGreetingSectionCopy')].filter(Boolean);
+    saveButtons.forEach(button=>button.disabled=true);
+    text('greetingSettingsNote','Сохраняем…');
+    if($('greetingSectionCopyNote'))text('greetingSectionCopyNote','Сохраняем текст блока…');
     const payload={id:true,title,description,accepting,timer_enabled,timer_deadline,section_kicker,section_title,section_description,section_badge_one,section_badge_two,section_form_button,section_details_button,section_open_status,section_closed_status,updated_at:new Date().toISOString()};
     const {error}=await supabaseClient.from(settingsTable).upsert(payload,{onConflict:'id'});
-    $('saveGreetingSettings').disabled=false;
-    if(error){console.error(error);text('greetingSettingsNote','Ошибка сохранения: '+error.message+' — проверь SQL-обновление.');return;}
-    settings={...settings,...payload};renderSettings();text('greetingSettingsNote','Настройки сохранены.');
+    saveButtons.forEach(button=>button.disabled=false);
+    if(error){console.error(error);const message='Ошибка сохранения: '+error.message+' — проверь SQL-обновление.';text('greetingSettingsNote',message);if($('greetingSectionCopyNote'))text('greetingSectionCopyNote',message);return;}
+    settings={...settings,...payload};renderSettings();text('greetingSettingsNote','Настройки сохранены.');if($('greetingSectionCopyNote'))text('greetingSectionCopyNote','Текст блока сохранён и опубликован.');
   }
   async function loadCropper(){
     if(window.Cropper)return;
@@ -5485,6 +5496,7 @@ body.task-modal-open{overflow:hidden}
   ['greetingSocial','greetingGameId','greetingCategory','greetingMessage'].forEach(id=>$(id).addEventListener('input',updateForm));
   $('greetingMessage').addEventListener('input',()=>text('greetingMessageCounter',`${$('greetingMessage').value.length} / 3000`));
   $('saveGreetingSettings').addEventListener('click',saveSettings);
+  $('saveGreetingSectionCopy').addEventListener('click',saveSettings);
   $('openGreetingAdminList').addEventListener('click',loadAdminSubmissions);
   $('greetingAdminCabinetList').addEventListener('click',async e=>{
     const b=e.target.closest('[data-delete-greeting]');if(!b||!admin()||!confirm('Удалить это поздравление и изображение?'))return;
