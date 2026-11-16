@@ -2245,6 +2245,15 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 .greeting-results-image{border-radius:18px!important;box-shadow:0 8px 22px rgba(0,0,0,.16)}
 .greeting-results-image img{border-radius:17px 17px 0 0}
 @media(max-width:650px){.greeting-results-modal{padding:10px!important}.greeting-results-modal .greeting-modal-card{width:100%!important;max-height:94vh!important;padding:17px!important;border-radius:21px!important}.greeting-results-winners{padding-inline:8px!important}.greeting-results-winner{min-height:50px;padding-left:52px!important;font-size:14px}.greeting-results-copy{padding:14px;border-radius:15px;font-size:14px}.greeting-results-modal .greeting-modal-close{width:40px;height:40px}}
+/* Итоги: внутренние карточки располагаются в безопасной зоне подсветки. */
+.greeting-results-content{box-sizing:border-box;width:100%;min-width:0;padding:0 18px 8px!important;}
+.greeting-results-content>h2{padding:0;margin:0 0 2px!important;}
+.greeting-results-copy{box-sizing:border-box;width:100%;min-width:0;margin:0!important;padding:15px 18px!important;border-radius:17px!important;background:linear-gradient(110deg,rgba(8,34,54,.88),rgba(17,48,69,.72))!important;border:1px solid rgba(143,205,232,.25)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 5px 14px rgba(0,0,0,.10);overflow-wrap:anywhere;}
+.greeting-results-winners{box-sizing:border-box;width:100%;min-width:0;padding:0!important;margin:0!important;}
+.greeting-results-winner{width:100%;min-width:0;}
+.greeting-results-images{min-width:0;}
+@media(max-width:650px){.greeting-results-content{padding-inline:8px!important}.greeting-results-copy{padding:13px 14px!important}}
+
 </style>
 </head>
 <body>
@@ -4978,7 +4987,7 @@ body.task-modal-open{overflow:hidden}
     const fx=greetingResults.effects||{};box.className='greeting-results-content greeting-results-effects'+(fx.glow?' glow':'')+(fx.animate?' animate':'')+(fx.decor?' decor':'');
     const images=(greetingResults.images||[]).map(im=>`<figure class="greeting-results-image"><img src="${esc(im.url)}" alt="${esc(im.caption||'Изображение к итогам')}" style="object-position:${Number(im.x??50)}% ${Number(im.y??50)}%"><figcaption>${esc(im.caption||'')}</figcaption></figure>`).join('');
     const ids=(greetingResults.winner_ids||[]).map(v=>String(v).trim()).filter(Boolean).map(v=>`<div class="greeting-results-winner">${esc(v)}</div>`).join('');
-    box.innerHTML=`<h2>${esc(greetingResults.title||'Итоги конкурса')}</h2><div class="greeting-results-copy">${esc(greetingResults.text||'')}</div>${ids?`<section class="greeting-results-winners"><h3>Победители</h3>${ids}</section>`:''}${images?`<div class="greeting-results-images">${images}</div>`:''}`;
+    box.innerHTML=`<h2>Встречаем победителей:</h2><div class="greeting-results-copy">${esc(greetingResults.text||'')}</div>${ids?`<section class="greeting-results-winners"><h3>Победители</h3>${ids}</section>`:''}${images?`<div class="greeting-results-images">${images}</div>`:''}`;
   }
   async function loadGreetingResults(){
     if(!connected())return;
