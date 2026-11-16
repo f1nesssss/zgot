@@ -6293,13 +6293,13 @@ body.task-modal-open{overflow:hidden}
 .admin-cabinet-backdrop{isolation:isolate!important;overflow:hidden!important}
 .admin-cabinet-window{position:relative!important;z-index:3!important}
 .admin-cabinet-flying-marks{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
-.admin-cabinet-flying-marks img{position:absolute;width:42px;height:auto;object-fit:contain;opacity:.88;filter:drop-shadow(0 0 9px rgba(111,195,232,.55));animation:adminMarkFloat var(--float-time,9s) ease-in-out infinite alternate;}
-.admin-cabinet-flying-marks img:nth-child(1){left:1.2%;top:14%;--float-time:8.2s;--dy:-18px;--rot:-9deg}
-.admin-cabinet-flying-marks img:nth-child(2){right:1.1%;top:23%;--float-time:9.4s;--dy:16px;--rot:8deg}
-.admin-cabinet-flying-marks img:nth-child(3){left:1.8%;top:68%;--float-time:10.2s;--dy:14px;--rot:12deg}
-.admin-cabinet-flying-marks img:nth-child(4){right:1.6%;top:72%;--float-time:8.8s;--dy:-16px;--rot:-12deg}
-.admin-cabinet-flying-marks img:nth-child(5){left:19%;top:2%;width:34px;--float-time:11s;--dy:12px;--rot:15deg}
-.admin-cabinet-flying-marks img:nth-child(6){right:19%;bottom:2%;width:36px;--float-time:9.8s;--dy:-14px;--rot:-8deg}
+.admin-cabinet-flying-marks img{position:absolute;width:50px;height:auto;object-fit:contain;opacity:.88;filter:drop-shadow(0 0 9px rgba(111,195,232,.55));animation:adminMarkFloat var(--float-time,9s) ease-in-out infinite alternate;}
+.admin-cabinet-flying-marks img:nth-child(1){left:.35%;top:14%;--float-time:8.2s;--dy:-18px;--rot:-9deg}
+.admin-cabinet-flying-marks img:nth-child(2){right:.35%;top:23%;--float-time:9.4s;--dy:16px;--rot:8deg}
+.admin-cabinet-flying-marks img:nth-child(3){left:.55%;top:68%;--float-time:10.2s;--dy:14px;--rot:12deg}
+.admin-cabinet-flying-marks img:nth-child(4){right:.55%;top:72%;--float-time:8.8s;--dy:-16px;--rot:-12deg}
+.admin-cabinet-flying-marks img:nth-child(5){left:19%;top:2%;width:40px;--float-time:11s;--dy:12px;--rot:15deg}
+.admin-cabinet-flying-marks img:nth-child(6){right:19%;bottom:2%;width:42px;--float-time:9.8s;--dy:-14px;--rot:-8deg}
 @keyframes adminMarkFloat{from{transform:translate3d(0,0,0) rotate(calc(var(--rot,0deg) - 5deg))}to{transform:translate3d(0,var(--dy,14px),0) rotate(calc(var(--rot,0deg) + 5deg))}}
 /* Телефон: композиция ярмарки перестраивается, декор не перекрывает ёлку и ларьки. */
 @media(max-width:650px){
@@ -6333,7 +6333,7 @@ body.task-modal-open{overflow:hidden}
  .market-prize-image,.market-prize-image.size-full{width:clamp(76px,24vw,100px)!important;height:clamp(76px,24vw,100px)!important;margin:6px auto!important}
  .market-prize strong{font-size:13px!important;overflow-wrap:anywhere}
  .market-prize small{font-size:10px!important;line-height:1.35!important}
- .admin-cabinet-flying-marks img{width:28px!important;opacity:.72!important}
+ .admin-cabinet-flying-marks img{width:32px!important;opacity:.78!important}
  .admin-cabinet-flying-marks img:nth-child(5),.admin-cabinet-flying-marks img:nth-child(6){display:none!important}
 }
 @media(max-width:390px){
@@ -6342,6 +6342,19 @@ body.task-modal-open{overflow:hidden}
  .market-prize-image,.market-prize-image.size-full{width:76px!important;height:76px!important}
  .market-prize{padding:8px 5px!important}
 }
+/* Значки стали немного крупнее и расположены ближе к краям окна. */
+/* В списке писем оставляем один скроллбар: прокручивается сам список, а не его внешний контейнер. */
+.admin-cabinet-window #greetingAdminCabinetList{max-height:none!important;overflow:visible!important}
+.admin-cabinet-window #greetingAdminCabinetList>.greeting-admin-list{
+  max-height:440px!important;overflow-y:auto!important;overflow-x:hidden!important;
+  scrollbar-width:thin!important;scrollbar-color:#55a6c8 rgba(8,30,47,.45)!important;
+  padding-right:7px;overscroll-behavior:contain;
+}
+.admin-cabinet-window #greetingAdminCabinetList>.greeting-admin-list::-webkit-scrollbar{width:10px!important}
+.admin-cabinet-window #greetingAdminCabinetList>.greeting-admin-list::-webkit-scrollbar-track{background:rgba(8,30,47,.5)!important;border:1px solid rgba(116,177,207,.18)!important;border-radius:999px!important}
+.admin-cabinet-window #greetingAdminCabinetList>.greeting-admin-list::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#79c6e2,#347f9f)!important;border:2px solid rgba(8,30,47,.5)!important;border-radius:999px!important}
+.admin-cabinet-window #greetingAdminCabinetList>.greeting-admin-list::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#a0def2,#438eae)!important}
+@media(max-width:650px){.admin-cabinet-window #greetingAdminCabinetList>.greeting-admin-list{max-height:55vh!important}}
 </style>
 
 <script id="zgot-admin-floating-marks">
