@@ -2255,6 +2255,10 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 @media(max-width:650px){.greeting-results-content{padding-inline:8px!important}.greeting-results-copy{padding:13px 14px!important}}
 
 </style>
+<style id="greeting-results-stars-spacing-fix">
+/* Чуть опускаем декоративные звёзды от верхнего края внутреннего блока итогов. */
+.greeting-results-effects.decor:before{transform:translateY(9px)!important;}
+</style>
 </head>
 <body>
 <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
