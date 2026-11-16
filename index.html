@@ -2300,6 +2300,125 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 @media(max-width:650px){.admin-cabinet-backdrop{padding:7px!important}.admin-cabinet-window{width:100%!important;max-height:calc(100vh - 14px)!important;padding:16px 12px!important;border-radius:18px!important}.admin-cabinet-grid,.admin-tools-grid,.admin-activity-grid{grid-template-columns:1fr!important}.admin-activity-hub,.admin-activity-log{grid-column:auto!important}.admin-cabinet-window .admin-inline-actions>*{width:100%;flex:1 1 100%}.admin-cabinet-window .admin-tools-head input{width:100%;margin:0}.admin-cabinet-window button{min-height:42px!important}}
 </style>
 
+
+<style id="admin-cabinet-layout-final-fix">
+/* Админка: карточка таймеров шаров занимает отдельную широкую строку,
+   а Google-отчёт располагается непосредственно под ней. */
+.admin-cabinet-window .admin-tools-grid > article[data-tool="globes"]{
+  grid-column:1 / -1 !important;
+  width:100% !important;
+}
+.admin-cabinet-window .admin-tools-grid > article[data-tool="google sheets"]{
+  grid-column:1 / -1 !important;
+  width:100% !important;
+}
+.admin-cabinet-window .admin-orb-row{
+  display:grid !important;
+  grid-template-columns:minmax(150px,1.05fr) minmax(220px,1.35fr) minmax(190px,1.1fr) 46px minmax(125px,.8fr) !important;
+  align-items:center !important;
+  gap:10px !important;
+  min-width:0 !important;
+}
+.admin-cabinet-window .admin-orb-row > *{min-width:0 !important;max-width:100% !important;}
+.admin-cabinet-window .admin-orb-row .orb-admin-fields{min-width:0 !important;overflow:hidden !important;}
+.admin-cabinet-window .admin-orb-row input{min-width:0 !important;max-width:100% !important;}
+
+/* В шапке оставляем только крестик: заголовок и кнопку выхода убираем.
+   Крестик закреплён в правом верхнем углу окна при прокрутке содержимого. */
+.admin-cabinet-window{position:relative !important;}
+.admin-cabinet-window .admin-cabinet-head{
+  position:sticky !important;top:0 !important;z-index:30 !important;
+  display:block !important;height:0 !important;min-height:0 !important;
+  margin:0 !important;padding:0 !important;border:0 !important;
+  background:transparent !important;overflow:visible !important;
+}
+.admin-cabinet-window .admin-cabinet-head h2,
+.admin-cabinet-window #adminLogoutBtn{display:none !important;}
+.admin-cabinet-window .admin-cabinet-actions{
+  position:absolute !important;top:0 !important;right:0 !important;
+  display:block !important;margin:0 !important;padding:0 !important;
+}
+.admin-cabinet-window #closeAdminCabinet{
+  display:grid !important;place-items:center !important;
+  width:44px !important;height:44px !important;min-height:44px !important;
+  margin:0 !important;padding:0 !important;font-size:27px !important;line-height:1 !important;
+}
+
+/* Жёстко переопределяем старые коричневые правила тёмной темы.
+   Палитра самого окна, карточек, полей и полосы прокрутки — холодная синяя. */
+body[data-theme="dark"] .admin-cabinet-backdrop,
+.admin-cabinet-backdrop{
+  background:rgba(2,10,19,.80) !important;
+  -webkit-backdrop-filter:blur(10px) !important;backdrop-filter:blur(10px) !important;
+}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window,
+.admin-cabinet-backdrop .admin-cabinet-window{
+  background:linear-gradient(145deg,#173a54 0%,#102b42 56%,#091d30 100%) !important;
+  color:#eaf4fb !important;
+  border:1px solid rgba(145,202,231,.48) !important;
+  box-shadow:0 28px 90px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.12) !important;
+  scrollbar-color:#397d9a #0b2235 !important;
+}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-cabinet-card,
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-tool,
+.admin-cabinet-backdrop .admin-cabinet-window .admin-cabinet-card,
+.admin-cabinet-backdrop .admin-cabinet-window .admin-tool{
+  background:linear-gradient(150deg,rgba(23,55,79,.98),rgba(8,29,47,.98)) !important;
+  color:#eaf4fb !important;border-color:rgba(137,192,222,.30) !important;
+}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window h3,
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window h4,
+.admin-cabinet-backdrop .admin-cabinet-window h3,
+.admin-cabinet-backdrop .admin-cabinet-window h4{color:#f0f7fc !important;}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window p,
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window label,
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window small,
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-score-list,
+.admin-cabinet-backdrop .admin-cabinet-window p,
+.admin-cabinet-backdrop .admin-cabinet-window label,
+.admin-cabinet-backdrop .admin-cabinet-window small,
+.admin-cabinet-backdrop .admin-cabinet-window .admin-score-list{color:#a9c2d3 !important;}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window input:not([type=checkbox]):not([type=radio]),
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window select,
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window textarea,
+.admin-cabinet-backdrop .admin-cabinet-window input:not([type=checkbox]):not([type=radio]),
+.admin-cabinet-backdrop .admin-cabinet-window select,
+.admin-cabinet-backdrop .admin-cabinet-window textarea{
+  background:#0b2235 !important;color:#eaf4fb !important;
+  border:1px solid rgba(130,186,216,.34) !important;
+}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window button,
+.admin-cabinet-backdrop .admin-cabinet-window button{
+  background:linear-gradient(110deg,#28627f,#347f9b) !important;
+  color:#f5fbff !important;border:1px solid rgba(147,207,235,.42) !important;
+}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-cabinet-close,
+.admin-cabinet-backdrop .admin-cabinet-window .admin-cabinet-close{
+  background:#286783 !important;color:#fff !important;
+}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-stat-strip span,
+.admin-cabinet-backdrop .admin-cabinet-window .admin-stat-strip span{
+  background:rgba(7,27,43,.82) !important;color:#dcecf6 !important;
+  border-color:rgba(137,192,222,.28) !important;
+}
+body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-activity-panel,
+.admin-cabinet-backdrop .admin-cabinet-window .admin-activity-panel{
+  background:rgba(6,25,41,.72) !important;border-color:rgba(137,192,222,.25) !important;
+}
+@media(max-width:1050px){
+  .admin-cabinet-window .admin-orb-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;}
+  .admin-cabinet-window .admin-orb-row > strong,
+  .admin-cabinet-window .admin-orb-row .orb-admin-fields{grid-column:1/-1 !important;}
+}
+@media(max-width:650px){
+  .admin-cabinet-window .admin-tools-grid > article[data-tool="globes"],
+  .admin-cabinet-window .admin-tools-grid > article[data-tool="google sheets"]{grid-column:auto !important;}
+  .admin-cabinet-window .admin-orb-row{grid-template-columns:1fr !important;}
+  .admin-cabinet-window .admin-orb-row > strong,
+  .admin-cabinet-window .admin-orb-row .orb-admin-fields{grid-column:auto !important;}
+}
+</style>
+
 </head>
 <body>
 <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
