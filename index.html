@@ -2110,6 +2110,26 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
  .task-backdrop .help-butterfly.b5{top:2%!important;width:28px!important}
 }
 
+
+/* Финальные исправления редактора ярмарки и верхнего свечения почты */
+.market-editor-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;min-width:0}
+.market-editor-heading strong{font-size:18px;line-height:1.3}
+.market-editor-close{flex:0 0 40px;width:40px;height:40px;border:1px solid rgba(177,225,246,.55);border-radius:50%;background:linear-gradient(145deg,#347f9d,#1e5874);color:#fff;font-size:27px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 0 14px rgba(120,210,245,.2)}
+.market-editor-close:hover{filter:brightness(1.16);transform:scale(1.04)}
+.market-color-swatches{align-items:flex-start;gap:14px;padding-bottom:2px}
+.market-color-swatch{background-color:var(--swatch)!important;background-image:none!important;border:2px solid rgba(230,246,255,.78);box-shadow:0 0 0 2px rgba(4,22,36,.88),0 0 13px color-mix(in srgb,var(--swatch) 62%,transparent)!important}
+.market-color-swatch[title]{position:relative;margin-bottom:22px}.market-color-swatch[title]::after{content:attr(title);position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;font-weight:750;line-height:1;color:#c5d9e7;text-shadow:0 1px 3px #061827;pointer-events:none}
+.market-color-swatch:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.market-crop-image-wrap .cropper-container{max-width:100%;max-height:100%}
+.market-crop-image-wrap .cropper-view-box{border-radius:50%;outline:2px solid rgba(104,198,255,.98);box-shadow:0 0 0 1px rgba(3,20,35,.75),0 0 14px rgba(104,198,255,.2)}
+.market-crop-image-wrap .cropper-face{border-radius:50%;background:transparent!important}
+.market-crop-image-wrap .cropper-line,.market-crop-image-wrap .cropper-point{background-color:#58b9ff}
+.market-crop-image-wrap .cropper-point{width:9px;height:9px;opacity:1}
+.market-crop-image-wrap .cropper-center{opacity:.9}
+.market-opening-status{font-variant-numeric:tabular-nums}
+.greeting-card:before{content:"";position:absolute;z-index:2;pointer-events:none;left:18px;right:18px;top:0;height:2px;border-radius:50%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.22) 8%,rgba(255,255,255,.9) 50%,rgba(255,255,255,.22) 92%,transparent 100%);box-shadow:0 0 5px rgba(255,255,255,.72),0 0 13px rgba(207,242,255,.48),0 0 24px rgba(160,220,245,.22)}
+@media(max-width:650px){.market-editor-heading strong{font-size:16px}.market-editor-close{width:36px;height:36px;flex-basis:36px}}
+
 </style>
 
 <style id="music-modal-centered-butterflies">
@@ -2468,7 +2488,6 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 
       <div class="market-stall market-stall-left" aria-hidden="true"><div class="market-stall-roof"></div><div class="market-stall-awning"></div><div class="market-stall-counter"><i></i><i></i><i></i></div><div class="market-stall-garland"></div></div>
       <div class="market-tree-stage">
-        <button type="button" class="greeting-admin-open market-tree-admin-open" id="openMarketTreeAdmin" hidden>Украшение ёлки</button>
         <svg class="market-greeting-tree" viewBox="0 0 420 500" role="img" aria-label="Новогодняя ёлка с пустыми ёлочными шарами">
         <defs>
           <linearGradient id="market_treeNeedles" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b987e"/><stop offset=".48" stop-color="#17634f"/><stop offset="1" stop-color="#0b382f"/></linearGradient>
@@ -2512,7 +2531,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
     </div>
     <div class="market-opening-status" id="marketOpeningStatus" aria-live="polite" hidden></div>
     <div class="market-opening-admin" id="marketOpeningAdmin" hidden>
-      <strong>Управление временем работы ярмарки</strong>
+      <div class="market-editor-heading"><strong>Управление временем работы ярмарки</strong><button type="button" class="market-editor-close" id="closeMarketOpeningAdmin" aria-label="Закрыть редактор">×</button></div>
       <label class="market-admin-check"><input type="checkbox" id="marketTimerEnabled"> Показывать таймер посетителям</label>
       <label class="market-admin-field">Какой таймер показывать посетителям
         <select id="marketTimerMode"><option value="opening">До открытия ярмарки</option><option value="closing">До закрытия ярмарки</option></select>
@@ -2526,7 +2545,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
       <strong>Отдельное оформление ёлки ярмарки</strong>
       <p class="market-editor-hint">Для каждого шара можно загрузить картинку, выбрать область кадрирования или вернуть исходное оформление.</p>
       <div class="market-tree-edit-grid"><div class="market-bauble-editor" data-slot="1"><strong>Шар 1</strong><img id="marketBaublePreview1" alt="Предпросмотр шара 1" hidden><input type="file" accept="image/png,image/jpeg,image/webp" id="marketBaubleFile1" hidden><button type="button" class="market-editor-button" data-pick="1">Выбрать картинку</button><button type="button" class="market-editor-button secondary" data-reset="1">Сбросить оформление</button></div><div class="market-bauble-editor" data-slot="2"><strong>Шар 2</strong><img id="marketBaublePreview2" alt="Предпросмотр шара 2" hidden><input type="file" accept="image/png,image/jpeg,image/webp" id="marketBaubleFile2" hidden><button type="button" class="market-editor-button" data-pick="2">Выбрать картинку</button><button type="button" class="market-editor-button secondary" data-reset="2">Сбросить оформление</button></div><div class="market-bauble-editor" data-slot="3"><strong>Шар 3</strong><img id="marketBaublePreview3" alt="Предпросмотр шара 3" hidden><input type="file" accept="image/png,image/jpeg,image/webp" id="marketBaubleFile3" hidden><button type="button" class="market-editor-button" data-pick="3">Выбрать картинку</button><button type="button" class="market-editor-button secondary" data-reset="3">Сбросить оформление</button></div><div class="market-bauble-editor" data-slot="4"><strong>Шар 4</strong><img id="marketBaublePreview4" alt="Предпросмотр шара 4" hidden><input type="file" accept="image/png,image/jpeg,image/webp" id="marketBaubleFile4" hidden><button type="button" class="market-editor-button" data-pick="4">Выбрать картинку</button><button type="button" class="market-editor-button secondary" data-reset="4">Сбросить оформление</button></div><div class="market-bauble-editor" data-slot="5"><strong>Шар 5</strong><img id="marketBaublePreview5" alt="Предпросмотр шара 5" hidden><input type="file" accept="image/png,image/jpeg,image/webp" id="marketBaubleFile5" hidden><button type="button" class="market-editor-button" data-pick="5">Выбрать картинку</button><button type="button" class="market-editor-button secondary" data-reset="5">Сбросить оформление</button></div><div class="market-bauble-editor" data-slot="6"><strong>Шар 6</strong><img id="marketBaublePreview6" alt="Предпросмотр шара 6" hidden><input type="file" accept="image/png,image/jpeg,image/webp" id="marketBaubleFile6" hidden><button type="button" class="market-editor-button" data-pick="6">Выбрать картинку</button><button type="button" class="market-editor-button secondary" data-reset="6">Сбросить оформление</button></div></div>
-      <div class="market-glow-picker"><strong>Цвет свечения шаров</strong><div class="market-color-swatches"><button type="button" class="market-color-swatch" data-glow="#9deaff" style="--swatch:#9deaff" aria-label="Цвет #9deaff"></button><button type="button" class="market-color-swatch" data-glow="#b9a7ff" style="--swatch:#b9a7ff" aria-label="Цвет #b9a7ff"></button><button type="button" class="market-color-swatch" data-glow="#ffd98e" style="--swatch:#ffd98e" aria-label="Цвет #ffd98e"></button><button type="button" class="market-color-swatch" data-glow="#ffb4cf" style="--swatch:#ffb4cf" aria-label="Цвет #ffb4cf"></button><button type="button" class="market-color-swatch" data-glow="#b9f0c8" style="--swatch:#b9f0c8" aria-label="Цвет #b9f0c8"></button><button type="button" class="market-color-swatch" data-glow="#ffffff" style="--swatch:#ffffff" aria-label="Цвет #ffffff"></button></div><span id="marketGlowColorLabel">Голубое сияние</span></div>
+      <div class="market-glow-picker"><strong>Цвет свечения шаров</strong><div class="market-color-swatches"><button type="button" class="market-color-swatch" data-glow="#9deaff" style="--swatch:#9deaff" title="Голубой" aria-label="Голубой (#9deaff)"></button><button type="button" class="market-color-swatch" data-glow="#b9a7ff" style="--swatch:#b9a7ff" title="Лавандовый" aria-label="Лавандовый (#b9a7ff)"></button><button type="button" class="market-color-swatch" data-glow="#ffd98e" style="--swatch:#ffd98e" title="Золотой" aria-label="Золотой (#ffd98e)"></button><button type="button" class="market-color-swatch" data-glow="#ffb4cf" style="--swatch:#ffb4cf" title="Розовый" aria-label="Розовый (#ffb4cf)"></button><button type="button" class="market-color-swatch" data-glow="#b9f0c8" style="--swatch:#b9f0c8" title="Мятный" aria-label="Мятный (#b9f0c8)"></button><button type="button" class="market-color-swatch" data-glow="#ffffff" style="--swatch:#ffffff" title="Белый" aria-label="Белый (#ffffff)"></button></div><span id="marketGlowColorLabel">Голубое сияние</span></div>
       <div class="market-crop-backdrop" id="marketBaubleCropModal" hidden><div class="market-crop-window"><h3>Выбрать область фотографии</h3><p>Выдели нужную область изображения, затем нажми «Обрезать».</p><div class="market-crop-image-wrap"><img id="marketBaubleCropImage" alt="Кадрирование изображения"></div><div class="market-crop-actions"><button type="button" class="market-editor-button secondary" id="cancelMarketCrop">Отмена</button><button type="button" class="market-editor-button" id="applyMarketCrop">Обрезать фотографию</button></div></div></div>
       <button type="button" id="saveMarketOpeningSettings" class="market-save-settings">Сохранить настройки</button>
       <span id="marketOpeningNote" aria-live="polite"></span>
@@ -5415,7 +5434,6 @@ body.task-modal-open{overflow:hidden}
   $('openGreetingForm').addEventListener('click',()=>{if(settings.accepting)openModal('greetingFormModal');});
   $('greetingMoreBtn').addEventListener('click',()=>openModal('greetingDetailsModal'));
   $('openGreetingAdminSettings').addEventListener('click',()=>{if(admin()){fillAdmin();const cfg=treeBaubles[Number($('greetingBaubleSlot').value)]||{};document.querySelectorAll('#greetingGlowPalette input').forEach(x=>x.checked=(cfg.glow||[]).includes(x.value));updateBaublePreview();openModal('greetingAdminModal');}});
-  $('openMarketTreeAdmin')?.addEventListener('click',()=>{if(admin()){const box=$('marketOpeningAdmin');if(box)box.hidden=false;box?.scrollIntoView({behavior:'smooth',block:'center'});}});
   $('closeGreetingForm').addEventListener('click',()=>closeModal('greetingFormModal'));
   $('greetingSubmissionForm').addEventListener('submit',submitLetter);
   $('previewGreetingLetter').addEventListener('click',previewLetter);
@@ -5717,7 +5735,7 @@ body.task-modal-open{overflow:hidden}
  const $=id=>document.getElementById(id);
  const card=document.querySelector('.market-card');
  const status=$('marketOpeningStatus'),adminBox=$('marketOpeningAdmin');
- const toggle=$('toggleMarketOpeningAdmin'),treeAdmin=$('openMarketTreeAdmin');
+ const toggle=$('toggleMarketOpeningAdmin');
  if(!card||!status)return;
  const table='site_market_settings';
  let cfg={timer_enabled:false,timer_mode:'opening',opens_at:null,closes_at:null,text_glow:false};
@@ -5731,10 +5749,10 @@ body.task-modal-open{overflow:hidden}
    let label='';
    if(cfg.timer_mode==='closing'){
      if(!close){status.hidden=true;return;}
-     label=now<close?'Ярмарка закроется через '+count(close-now)+' · '+fmt(cfg.closes_at):'Ярмарка закрыта';
+     label=now<close?'Ярмарка закроется через '+count(close-now):'Ярмарка закрыта';
    }else{
      if(!open){status.hidden=true;return;}
-     label=now<open?'Ярмарка откроется через '+count(open-now)+' · '+fmt(cfg.opens_at):'Ярмарка уже открыта';
+     label=now<open?'Ярмарка откроется через '+count(open-now):'Ярмарка уже открыта';
    }
    status.textContent=label;
  }
@@ -5750,6 +5768,7 @@ body.task-modal-open{overflow:hidden}
  }
  toggle?.addEventListener('click',()=>{if(isSiteAdmin()){adminBox.hidden=!adminBox.hidden;fill();}});
  treeAdmin?.addEventListener('click',()=>{if(isSiteAdmin()){adminBox.hidden=false;fill();adminBox.scrollIntoView({behavior:'smooth',block:'center'});}});
+ $('closeMarketOpeningAdmin')?.addEventListener('click',()=>{adminBox.hidden=true;});
  $('saveMarketOpeningSettings')?.addEventListener('click',async()=>{
    const db=()=>typeof supabaseClient!=='undefined'?supabaseClient:window.supabaseClient;
    if(!isSiteAdmin()||!db())return;
