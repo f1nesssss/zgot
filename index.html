@@ -2379,7 +2379,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
             <label class="greeting-full">Изображение к письму <span>JPG, PNG или WebP, до 5 МБ</span><input id="greetingImage" type="file" accept="image/jpeg,image/png,image/webp" required></label>
           </div>
           <div class="greeting-form-actions"><button type="button" class="greeting-more" id="previewGreetingLetter">Показать письмо</button><button type="submit" class="greeting-submit" id="submitGreeting" disabled>Отправить письмо</button></div>
-          <p class="greeting-form-note" id="greetingFormNote" aria-live="polite"></p>
+          <p class="greeting-form-note" id="greetingFormNote" aria-live="polite" hidden></p>
         </form>
       </div>
 
@@ -2445,7 +2445,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
         <g id="greetingBaubleImages" pointer-events="none" style="display:none"></g>
         <g class="greeting-lights"><circle cx="185" cy="149" r="4"/><circle cx="225" cy="180" r="4"/><circle cx="177" cy="218" r="4"/><circle cx="230" cy="251" r="4"/><circle cx="190" cy="291" r="4"/><circle cx="245" cy="326" r="4"/></g><g fill="#f7dfaa"><circle cx="160" cy="150" r="3"/><circle cx="255" cy="220" r="3"/><circle cx="150" cy="264" r="2.5"/><circle cx="270" cy="330" r="3"/><circle cx="215" cy="112" r="2.5"/></g>
       </svg>
-      <div class="greeting-tree-caption">Каждое письмо — маленькое чудо</div>
+      
     </div>
 
     <aside class="greeting-tooltip" id="greetingTooltip" aria-hidden="true">
@@ -2461,6 +2461,20 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
       <div class="market-kicker">✦ Особенная часть праздника ✦</div>
       <h2 id="marketTitle">Новогодняя ярмарка наград</h2>
       <p>Загляни в праздничную ярмарку и познакомься с наградами новогоднего события.</p>
+    </div>
+    <div class="market-winter-art" aria-hidden="true">
+      <svg viewBox="0 0 620 300" role="img">
+        <defs>
+          <linearGradient id="mwTree" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#54bd91"/><stop offset="1" stop-color="#12624f"/></linearGradient>
+          <linearGradient id="mwRoof" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d88f68"/><stop offset="1" stop-color="#96516a"/></linearGradient>
+        </defs>
+        <ellipse cx="310" cy="272" rx="245" ry="17" fill="#020d19" opacity=".38"/>
+        <g class="mw-snow-dots" fill="#eaf8ff"><circle cx="64" cy="42" r="3"/><circle cx="125" cy="18" r="2"/><circle cx="525" cy="35" r="3"/><circle cx="570" cy="100" r="2"/><circle cx="78" cy="160" r="2"/><circle cx="475" cy="12" r="2.5"/></g>
+        <g class="mw-tree"><path d="M296 158h28v104h-28z" fill="#8d593b"/><path d="M310 14 250 105h34l-66 75h184l-66-75h34z" fill="url(#mwTree)" stroke="#8dd9b7" stroke-opacity=".5" stroke-width="2"/><path d="M310 4 320 24 342 27 326 42 330 63 310 51 290 63 294 42 278 27 300 24z" fill="#ffe39a" stroke="#fff4d2" stroke-width="2" class="mw-star"/><g fill="#f7d88e"><circle cx="282" cy="108" r="4"/><circle cx="337" cy="126" r="4"/><circle cx="300" cy="158" r="3"/><circle cx="352" cy="173" r="3"/></g><g class="mw-baubles"><circle cx="260" cy="137" r="9"/><circle cx="355" cy="145" r="8"/><circle cx="310" cy="190" r="10"/></g></g>
+        <g class="mw-stall mw-stall-left" transform="translate(42 160)"><path d="M0 44h142v66H0z" fill="#234b62" stroke="#9ccfe0" stroke-width="2"/><path d="M-8 42 16 0h104l24 42z" fill="url(#mwRoof)" stroke="#f2c79a" stroke-width="2"/><path d="M16 42h104v15H16z" fill="#f1d59d"/><path d="M24 58h34v52H24zM84 58h28v52H84z" fill="#f6cf83" opacity=".9"/><path d="M66 42v68" stroke="#f4dcae" stroke-width="8"/><path d="M55 0q11-20 22 0q11-20 22 0" fill="none" stroke="#f8e6bd" stroke-width="4"/></g>
+        <g class="mw-stall mw-stall-right" transform="translate(438 164)"><path d="M0 40h132v66H0z" fill="#315c6b" stroke="#a5d5df" stroke-width="2"/><path d="M-8 39 14 0h96l22 39z" fill="url(#mwRoof)" stroke="#f2c79a" stroke-width="2"/><path d="M14 39h96v14H14z" fill="#f1d59d"/><path d="M24 53h30v53H24zM78 53h27v53H78z" fill="#f6cf83" opacity=".9"/><path d="M64 39v67" stroke="#f4dcae" stroke-width="8"/></g>
+        <g class="mw-sparkles" fill="#ffe7a8"><path d="M190 76v13m-6-6h12"/><path d="M430 83v12m-6-6h12"/><path d="M390 218v14m-7-7h14"/></g>
+      </svg>
     </div>
     <button class="market-visit" id="visitMarketBtn" type="button">Посетить
       <span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
@@ -2570,6 +2584,7 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
           <label>Статус товара<select id="marketProductStatus"><option value="available">Доступен</option><option value="sold_out">Закончился</option><option value="coming_soon">Скоро появится</option><option value="temporarily_unavailable">Временно недоступен</option></select></label>
           <div class="market-editor-grid"><label>Отметка товара<input id="marketProductBadge" type="text" maxlength="30" placeholder="Новинка / Эксклюзив"></label><label class="market-visibility-option"><input id="marketProductBadgeVisible" type="checkbox"> Показывать отметку</label></div>
           <label class="market-visibility-option"><input id="marketProductVisible" type="checkbox" checked> Отображать награду в списке для посетителей</label>
+          <label class="market-visibility-option"><input id="marketProductShowQuantity" type="checkbox" checked> Показывать посетителям общий тираж и остаток товара</label>
           <label>Изображение товара<input id="marketProductImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
           <label class="market-visibility-option"><input id="marketProductRemoveImage" type="checkbox"> Убрать изображение у товара</label>
           <div class="market-crop-tools" id="marketCropTools" hidden>
@@ -4235,7 +4250,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
    ${p.status&&p.status!=='available'?`<span class="market-product-status">${({sold_out:'Закончился',coming_soon:'Скоро появится',temporarily_unavailable:'Временно недоступен'})[p.status]||''}</span>`:''}
    ${p.price?`<div class="market-price">${esc(p.price)}</div>`:''}
    <small>${esc((p.description||'Скоро здесь появится описание').replace(/<[^>]*>/g,'').slice(0,100))}</small>
-   <div class="market-stock">${Number(p.remaining_quantity)>0?`Осталось: ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)}`:(Number(p.total_quantity)>0?'Тираж закончился':'Тираж пока не указан')}</div>
+   ${p.show_quantity!==false?`<div class="market-stock">${Number(p.remaining_quantity)>0?`Осталось: ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)}`:(Number(p.total_quantity)>0?'Тираж закончился':'Тираж пока не указан')}</div>`:''}
    ${p.is_visible===false&&admin()?'<span class="market-hidden-label">Скрыто от посетителей</span>':''}
    <div class="market-prize-actions"><button type="button" class="market-view-btn" data-market-view="${p.id}">Посмотреть<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>${admin()?`<button type="button" class="market-edit-btn" data-market-edit="${p.id}">Изменить</button>`:''}</div>
   </article>`).join('');
@@ -4258,7 +4273,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
    <h3 id="marketDetailTitle">${esc(p.title)}</h3>
    <div class="market-detail-description">${esc(p.description||'Описание скоро появится')}</div>
    ${p.price?`<div class="market-detail-price">Цена: ${esc(p.price)}</div>`:''}
-   <div class="market-detail-stock">${Number(p.total_quantity)>0?`Осталось ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)} шт.`:'Информация о тираже скоро появится'}</div>
+   ${p.show_quantity!==false?`<div class="market-detail-stock">${Number(p.total_quantity)>0?`Осталось ${Number(p.remaining_quantity)} из ${Number(p.total_quantity)} шт.`:'Информация о тираже скоро появится'}</div>`:''}
    <button type="button" class="market-buy-btn" id="marketBuyBtn">Оставить заявку →<span class="market-fireworks-layer" aria-hidden="true"></span></button>
   </div>`;
   detailBg.classList.add('open');detailBg.setAttribute('aria-hidden','false');
@@ -4306,6 +4321,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
   $m('marketProductPrice').value=p.price||'';
   $m('marketProductStatus').value=p.status||'available';$m('marketProductBadge').value=p.badge||'';$m('marketProductBadgeVisible').checked=!!p.badge_visible;
   $m('marketProductVisible').checked=p.is_visible!==false;
+  $m('marketProductShowQuantity').checked=p.show_quantity!==false;
   $m('marketProductImageSize').value=p.image_size||'medium';
   $m('marketProductImage').value='';
   $m('marketProductRemoveImage').checked=false;
@@ -4378,7 +4394,7 @@ prizeResultBackdrop.addEventListener('click', (event) => {
    if(upErr){note.textContent='Не удалось загрузить изображение: '+upErr.message;return;}
    const {data:pub}=supabaseClient.storage.from('zgot-market-images').getPublicUrl(path);imageUrl=pub.publicUrl;
   }
-  const payload={id,title:$m('marketProductTitle').value.trim(),description:$m('marketProductDescription').value.trim(),total_quantity:total,remaining_quantity:remaining,price:$m('marketProductPrice').value.trim(),status:$m('marketProductStatus').value,badge:$m('marketProductBadge').value.trim(),badge_visible:$m('marketProductBadgeVisible').checked,is_visible:$m('marketProductVisible').checked,image_url:imageUrl,image_size:$m('marketProductImageSize').value,updated_at:new Date().toISOString()};
+  const payload={id,title:$m('marketProductTitle').value.trim(),description:$m('marketProductDescription').value.trim(),total_quantity:total,remaining_quantity:remaining,price:$m('marketProductPrice').value.trim(),status:$m('marketProductStatus').value,badge:$m('marketProductBadge').value.trim(),badge_visible:$m('marketProductBadgeVisible').checked,is_visible:$m('marketProductVisible').checked,show_quantity:$m('marketProductShowQuantity').checked,image_url:imageUrl,image_size:$m('marketProductImageSize').value,updated_at:new Date().toISOString()};
   const {error}=await supabaseClient.from('market_products').upsert(payload,{onConflict:'id'});
   if(error){note.textContent='Не удалось сохранить: '+error.message;return;}
   products=products.map(p=>Number(p.id)===id?{...p,...payload}:p);
@@ -5555,6 +5571,37 @@ body.task-modal-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){
  .market-detail-float-item.item-9{animation:none!important}
 }
+</style>
+
+
+<style id="zgot-nov16-requested-adjustments">
+#modalBackdrop.modal-backdrop.open{display:flex!important;align-items:center!important;justify-content:center!important;padding:24px!important}
+#modalBackdrop .modal{position:relative!important;margin:auto!important;transform:none!important;max-height:calc(100vh - 48px)!important;overflow:auto!important}
+#greetingFormNote{display:none!important}
+.greeting-tree-caption{display:none!important}
+.market-card{min-height:500px!important;padding:34px 28px 30px!important;flex-direction:column!important;justify-content:flex-start!important;align-items:center!important;gap:12px!important;text-align:center!important;background:radial-gradient(ellipse at 50% 62%,rgba(65,151,174,.18),transparent 48%),linear-gradient(145deg,#17364e,#0b2034)!important;border-color:rgba(145,199,228,.28)!important}
+.market-copy{max-width:900px!important;width:100%;text-align:center!important}
+.market-copy .market-kicker{color:#e8bd72!important}
+.market-card p{color:#a9c1d2!important}
+.market-winter-art{position:relative;width:min(620px,90%);height:270px;margin:0 auto;display:grid;place-items:center;filter:drop-shadow(0 0 16px rgba(103,194,220,.16))}
+.market-winter-art svg{width:100%;height:100%;overflow:visible}
+.market-winter-art .mw-tree{transform-origin:310px 260px;animation:mwTreeFloat 4.8s ease-in-out infinite}
+.market-winter-art .mw-star{filter:drop-shadow(0 0 9px rgba(255,220,139,.9));animation:mwStarPulse 2.8s ease-in-out infinite}
+.market-winter-art .mw-baubles circle{fill:rgba(196,238,250,.38);stroke:#d9f6ff;stroke-width:2;filter:drop-shadow(0 0 5px rgba(151,224,246,.7))}
+.market-winter-art .mw-stall{transform-box:fill-box;transform-origin:center bottom}
+.market-winter-art .mw-stall-left{animation:mwStallFloat 5.4s ease-in-out infinite}
+.market-winter-art .mw-stall-right{animation:mwStallFloat 5.8s ease-in-out -1.8s infinite}
+.market-winter-art .mw-snow-dots circle{animation:mwSnow 3.6s ease-in-out infinite alternate}
+.market-winter-art .mw-snow-dots circle:nth-child(even){animation-delay:-1.7s}
+.market-winter-art .mw-sparkles{filter:drop-shadow(0 0 6px rgba(255,229,166,.95));animation:mwSparkle 2.4s ease-in-out infinite alternate}
+.market-visit{align-self:center!important;margin-top:0!important}
+@keyframes mwTreeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes mwStallFloat{0%,100%{translate:0 0}50%{translate:0 -4px}}
+@keyframes mwStarPulse{0%,100%{opacity:.85;filter:drop-shadow(0 0 5px rgba(255,220,139,.65))}50%{opacity:1;filter:drop-shadow(0 0 15px rgba(255,220,139,1))}}
+@keyframes mwSnow{from{opacity:.35;transform:translateY(-3px)}to{opacity:1;transform:translateY(7px)}}
+@keyframes mwSparkle{from{opacity:.45}to{opacity:1}}
+@media(max-width:700px){.market-card{min-height:0!important;padding:26px 18px!important}.market-winter-art{width:100%;height:205px}.market-copy{text-align:left!important}.market-visit{align-self:center!important}}
+@media(prefers-reduced-motion:reduce){.market-winter-art *{animation:none!important}}
 </style>
 
 </body>
