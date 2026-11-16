@@ -5764,10 +5764,20 @@ body.task-modal-open{overflow:hidden}
    const {data,error}=await db().from(table).select('timer_enabled,timer_mode,opens_at,closes_at,text_glow').eq('id',true).maybeSingle();
    if(error){console.warn('Market settings:',error.message);return;}
    if(data)cfg={...cfg,...data};
-   paint();if(isSiteAdmin()){toggle.hidden=false;treeAdmin.hidden=false;fill();}
+   paint();
+   syncAdminToggle();
+   if(isSiteAdmin()) fill();
  }
- toggle?.addEventListener('click',()=>{if(isSiteAdmin()){adminBox.hidden=!adminBox.hidden;fill();}});
- treeAdmin?.addEventListener('click',()=>{if(isSiteAdmin()){adminBox.hidden=false;fill();adminBox.scrollIntoView({behavior:'smooth',block:'center'});}});
+ // Кнопка редактора остаётся единственной точкой входа — «Настройки ярмарки».
+ // Проверяем права после авторизации: при первой загрузке isAdmin ещё может быть false.
+ function syncAdminToggle(){
+   if(toggle) toggle.hidden=!isSiteAdmin();
+ }
+ toggle?.addEventListener('click',()=>{
+   if(!isSiteAdmin()) return;
+   adminBox.hidden=!adminBox.hidden;
+   if(!adminBox.hidden){fill();adminBox.scrollIntoView({behavior:'smooth',block:'center'});}
+ });
  $('closeMarketOpeningAdmin')?.addEventListener('click',()=>{adminBox.hidden=true;});
  $('saveMarketOpeningSettings')?.addEventListener('click',async()=>{
    const db=()=>typeof supabaseClient!=='undefined'?supabaseClient:window.supabaseClient;
@@ -5779,7 +5789,8 @@ body.task-modal-open{overflow:hidden}
    $('marketOpeningNote').textContent=error?'Ошибка сохранения: '+error.message:'Настройки сохранены.';
    if(!error){cfg={...cfg,...payload};paint();}
  });
- load();setInterval(paint,1000);
+ load();
+ setInterval(()=>{paint();syncAdminToggle();},1000);
 })();
 </script>
 
