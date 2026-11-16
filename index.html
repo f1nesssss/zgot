@@ -2237,13 +2237,14 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 .greeting-results-content>h2{margin:0;color:#f3f8ff;font:700 clamp(24px,3vw,32px)/1.2 Georgia,serif;letter-spacing:-.02em}
 .greeting-results-copy{padding:17px 19px;border:1px solid rgba(143,205,232,.18);border-radius:18px;background:rgba(5,23,38,.32);font-size:16px;line-height:1.75}
 .greeting-results-winners{gap:10px!important;margin-top:2px}
+.greeting-results-winners{padding-inline:18px!important;box-sizing:border-box;width:100%;min-width:0}
 .greeting-results-winners h3{margin:0 0 2px;color:#eaf5fc;font-size:20px;font-weight:800}
 .greeting-results-winner{position:relative;display:flex;align-items:center;min-height:54px;box-sizing:border-box;padding:13px 18px 13px 58px!important;border:1px solid rgba(143,205,232,.25)!important;border-radius:17px!important;background:linear-gradient(110deg,rgba(8,34,54,.88),rgba(17,48,69,.72))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 5px 14px rgba(0,0,0,.10);font-size:16px;line-height:1.4;overflow-wrap:anywhere}
 .greeting-results-winners{counter-reset:result-winner}
 .greeting-results-winner:before{counter-increment:result-winner;content:counter(result-winner);position:absolute;left:15px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:linear-gradient(145deg,#3a819f,#245a76);border:1px solid rgba(174,225,246,.38);color:#f5fbff;font-size:13px;font-weight:900}
 .greeting-results-image{border-radius:18px!important;box-shadow:0 8px 22px rgba(0,0,0,.16)}
 .greeting-results-image img{border-radius:17px 17px 0 0}
-@media(max-width:650px){.greeting-results-modal{padding:10px!important}.greeting-results-modal .greeting-modal-card{width:100%!important;max-height:94vh!important;padding:17px!important;border-radius:21px!important}.greeting-results-winner{min-height:50px;padding-left:52px!important;font-size:14px}.greeting-results-copy{padding:14px;border-radius:15px;font-size:14px}.greeting-results-modal .greeting-modal-close{width:40px;height:40px}}
+@media(max-width:650px){.greeting-results-modal{padding:10px!important}.greeting-results-modal .greeting-modal-card{width:100%!important;max-height:94vh!important;padding:17px!important;border-radius:21px!important}.greeting-results-winners{padding-inline:8px!important}.greeting-results-winner{min-height:50px;padding-left:52px!important;font-size:14px}.greeting-results-copy{padding:14px;border-radius:15px;font-size:14px}.greeting-results-modal .greeting-modal-close{width:40px;height:40px}}
 </style>
 </head>
 <body>
