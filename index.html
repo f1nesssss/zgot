@@ -4981,12 +4981,14 @@ body.task-modal-open{overflow:hidden}
   };
   const openModal=id=>{const el=$(id);if(el){el.classList.add('is-open');el.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}};
   const closeModal=id=>{const el=$(id);if(el){el.classList.remove('is-open');el.setAttribute('aria-hidden','true');document.body.style.overflow='';}};
-  let greetingResults={title:'Итоги конкурса',text:'Итоги конкурса скоро появятся.',winner_ids:[],images:[],effects:{glow:true,animate:true,decor:true}};
+  let greetingResults={title:'Итоги конкурса',text:'Итоги конкурса скоро появятся.',winner_ids:[],images:[],effects:{glow:true,animate:true,decor:true,showButton:true}};
   let resultsNewFiles=[];
   function resultsModal(id,title,wide=true){
     let el=$(id);if(!el){el=document.createElement('div');el.id=id;el.className='greeting-modal greeting-results-modal';el.innerHTML=`<div class="greeting-modal-card ${wide?'greeting-modal-wide':''}" role="dialog" aria-modal="true"><div class="greeting-modal-head"><div><h3>${esc(title)}</h3><p></p></div><button type="button" class="greeting-modal-close" aria-label="Закрыть">×</button></div><div class="greeting-modal-body"></div></div>`;document.body.append(el);el.addEventListener('click',e=>{if(e.target===el||e.target.closest('.greeting-modal-close'))closeModal(id);});}return el;
   }
   function renderResults(){
+    const publicButton=$('openGreetingResults');
+    if(publicButton)publicButton.hidden=(greetingResults.effects?.showButton===false);
     const box=$('greetingResultsPublic');if(!box)return;
     const fx=greetingResults.effects||{};box.className='greeting-results-content greeting-results-effects'+(fx.glow?' glow':'')+(fx.animate?' animate':'')+(fx.decor?' decor':'');
     const images=(greetingResults.images||[]).map(im=>`<figure class="greeting-results-image"><img src="${esc(im.url)}" alt="${esc(im.caption||'Изображение к итогам')}" style="object-position:${Number(im.x??50)}% ${Number(im.y??50)}%"><figcaption>${esc(im.caption||'')}</figcaption></figure>`).join('');
@@ -4997,7 +4999,7 @@ body.task-modal-open{overflow:hidden}
     if(!connected())return;
     const {data,error}=await supabaseClient.from(resultsTable).select('*').eq('id',true).maybeSingle();
     if(error){console.warn('Не удалось загрузить итоги:',error.message);return;}
-    if(data)greetingResults={title:data.title||'Итоги конкурса',text:data.content_text||'',winner_ids:Array.isArray(data.winner_ids)?data.winner_ids:[],images:Array.isArray(data.images)?data.images:[],effects:data.effects||{}};
+    if(data)greetingResults={title:data.title||'Итоги конкурса',text:data.content_text||'',winner_ids:Array.isArray(data.winner_ids)?data.winner_ids:[],images:Array.isArray(data.images)?data.images:[],effects:{glow:true,animate:true,decor:true,showButton:true,...(data.effects||{})}};
     renderResults();
   }
   function renderResultsEditor(){
@@ -5008,6 +5010,7 @@ body.task-modal-open{overflow:hidden}
     box.querySelector('#resultsGlow').checked=!!greetingResults.effects?.glow;
     box.querySelector('#resultsAnimate').checked=!!greetingResults.effects?.animate;
     box.querySelector('#resultsDecor').checked=!!greetingResults.effects?.decor;
+    box.querySelector('#resultsButtonVisible').checked=greetingResults.effects?.showButton!==false;
     const list=box.querySelector('#greetingResultsImageControls');
     list.innerHTML=(greetingResults.images||[]).map((im,i)=>`<div class="greeting-results-upload-card" data-existing-image="${i}"><img src="${esc(im.url)}" alt="" style="object-position:${Number(im.x??50)}% ${Number(im.y??50)}%"><label>Подпись<input type="text" data-caption value="${esc(im.caption||'')}"></label><label>Область по горизонтали <input type="range" min="0" max="100" value="${Number(im.x??50)}" data-x></label><label>Область по вертикали <input type="range" min="0" max="100" value="${Number(im.y??50)}" data-y></label><button type="button" class="greeting-more" data-remove-existing="${i}">Убрать изображение</button></div>`).join('');
   }
@@ -5028,7 +5031,7 @@ body.task-modal-open{overflow:hidden}
         const url=supabaseClient.storage.from(bucket).getPublicUrl(path).data.publicUrl;
         images.push({url,path,caption:card.querySelector('[data-caption]').value.trim(),x:Number(card.querySelector('[data-x]').value),y:Number(card.querySelector('[data-y]').value)});
       }
-      const payload={id:true,title:box.querySelector('#greetingResultsTitle').value.trim()||'Итоги конкурса',content_text:box.querySelector('#greetingResultsText').value.trim(),winner_ids:box.querySelector('#greetingResultsIds').value.split(/\n+/).map(v=>v.trim()).filter(Boolean),images,effects:{glow:box.querySelector('#resultsGlow').checked,animate:box.querySelector('#resultsAnimate').checked,decor:box.querySelector('#resultsDecor').checked},updated_at:new Date().toISOString()};
+      const payload={id:true,title:box.querySelector('#greetingResultsTitle').value.trim()||'Итоги конкурса',content_text:box.querySelector('#greetingResultsText').value.trim(),winner_ids:box.querySelector('#greetingResultsIds').value.split(/\n+/).map(v=>v.trim()).filter(Boolean),images,effects:{glow:box.querySelector('#resultsGlow').checked,animate:box.querySelector('#resultsAnimate').checked,decor:box.querySelector('#resultsDecor').checked,showButton:box.querySelector('#resultsButtonVisible').checked},updated_at:new Date().toISOString()};
       const {error}=await supabaseClient.from(resultsTable).upsert(payload,{onConflict:'id'});if(error)throw error;
       greetingResults={title:payload.title,text:payload.content_text,winner_ids:payload.winner_ids,images:payload.images,effects:payload.effects};renderResults();note.textContent='Итоги сохранены и опубликованы.';closeModal('greetingResultsEditorModal');
     }catch(err){console.error(err);note.textContent='Ошибка: '+(err.message||'не удалось сохранить');}
@@ -5038,7 +5041,7 @@ body.task-modal-open{overflow:hidden}
     const pub=resultsModal('greetingResultsModal','Итоги конкурса',true);pub.querySelector('.greeting-modal-head p').textContent='Результаты и победители конкурса';
     const pubContent=document.createElement('div');pubContent.id='greetingResultsPublic';pubContent.className='greeting-results-content';pub.querySelector('.greeting-modal-body').append(pubContent);
     const edit=resultsModal('greetingResultsEditorModal','Редактирование итогов',true);edit.querySelector('.greeting-modal-head p').textContent='Добавляй текст, ID победителей, изображения и настрой оформление окна.';
-    const editor=document.createElement('div');editor.id='greetingResultsEditor';editor.className='greeting-results-editor';editor.innerHTML=`<label>Заголовок окна<input id="greetingResultsTitle" type="text" maxlength="140"></label><label>Текст итогов<textarea id="greetingResultsText" maxlength="12000" placeholder="Напиши итоги конкурса..."></textarea></label><label>ID победителей (каждый с новой строки)<textarea id="greetingResultsIds" maxlength="5000" placeholder="Например: VK — 123456789"></textarea></label><label>Изображения к итогам<input id="greetingResultsFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><div class="greeting-results-upload-preview" id="greetingResultsImageControls"></div><div class="greeting-results-options"><label><input type="checkbox" id="resultsGlow"> Подсветка и свечение</label><label><input type="checkbox" id="resultsAnimate"> Анимация появления</label><label><input type="checkbox" id="resultsDecor"> Декоративные элементы</label></div><button type="button" class="greeting-primary greeting-results-save" id="saveGreetingResults">Сохранить и опубликовать</button><p class="greeting-results-note" id="greetingResultsEditorNote" aria-live="polite"></p>`;
+    const editor=document.createElement('div');editor.id='greetingResultsEditor';editor.className='greeting-results-editor';editor.innerHTML=`<label>Заголовок окна<input id="greetingResultsTitle" type="text" maxlength="140"></label><label>Текст итогов<textarea id="greetingResultsText" maxlength="12000" placeholder="Напиши итоги конкурса..."></textarea></label><label>ID победителей (каждый с новой строки)<textarea id="greetingResultsIds" maxlength="5000" placeholder="Например: VK — 123456789"></textarea></label><label>Изображения к итогам<input id="greetingResultsFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><div class="greeting-results-upload-preview" id="greetingResultsImageControls"></div><div class="greeting-results-options"><label><input type="checkbox" id="resultsGlow"> Подсветка и свечение</label><label><input type="checkbox" id="resultsAnimate"> Анимация появления</label><label><input type="checkbox" id="resultsDecor"> Декоративные элементы</label><label><input type="checkbox" id="resultsButtonVisible" checked> Показывать кнопку «Итоги» посетителям</label></div><button type="button" class="greeting-primary greeting-results-save" id="saveGreetingResults">Сохранить и опубликовать</button><p class="greeting-results-note" id="greetingResultsEditorNote" aria-live="polite"></p>`;
     edit.querySelector('.greeting-modal-body').append(editor);
     $('openGreetingResults').addEventListener('click',async()=>{await loadGreetingResults();renderResults();openModal('greetingResultsModal');});
     $('editGreetingResults').addEventListener('click',async()=>{await loadGreetingResults();openResultsEditor();});
