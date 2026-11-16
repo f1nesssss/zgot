@@ -2219,6 +2219,31 @@ button:not(.close):not(.market-close):not(.admin-cabinet-close):not(.task-orb-ta
 .greeting-results-effects.animate{animation:greetingResultsIn .65s ease both}@keyframes greetingResultsIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
 .greeting-results-editor{display:grid;gap:12px}.greeting-results-editor label{display:grid;gap:6px;color:#b6cad8;font-size:12px;font-weight:800}.greeting-results-editor input[type=text],.greeting-results-editor textarea{width:100%;box-sizing:border-box;border:1px solid rgba(143,199,226,.25);border-radius:10px;padding:11px 12px;background:#0b2033;color:#eff8ff;font:inherit}.greeting-results-editor textarea{min-height:110px;resize:vertical}.greeting-results-options{display:flex;gap:14px;flex-wrap:wrap}.greeting-results-options label{display:flex;align-items:center;gap:7px}.greeting-results-upload-preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.greeting-results-upload-card{padding:10px;border:1px solid rgba(143,205,232,.22);border-radius:12px;background:rgba(4,19,33,.45);display:grid;gap:8px}.greeting-results-upload-card img{width:100%;height:150px;object-fit:cover;border-radius:8px}.greeting-results-upload-card input[type=range]{width:100%;accent-color:#75b8d5}.greeting-results-editor .greeting-results-save{justify-self:end}.greeting-results-note{margin:0;color:#a9c1d1;font-size:11px;min-height:16px}
 @media(max-width:650px){.greeting-results-images{grid-template-columns:1fr 1fr}.greeting-results-image img{height:170px}.greeting-results-modal .greeting-modal-card{padding:16px}}
+/* Более аккуратное оформление публичного окна итогов */
+.greeting-results-modal{padding:22px!important;backdrop-filter:blur(12px)}
+.greeting-results-modal .greeting-modal-card{
+  width:min(860px,94vw)!important;max-height:88vh!important;padding:clamp(20px,3vw,32px)!important;
+  border-radius:28px!important;border:1px solid rgba(151,207,232,.42)!important;
+  background:linear-gradient(145deg,rgba(25,62,88,.98),rgba(9,31,49,.985))!important;
+  box-shadow:0 30px 100px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.13),0 0 34px rgba(92,183,221,.12)!important;
+}
+.greeting-results-modal .greeting-modal-head{align-items:center;margin-bottom:22px;padding-bottom:15px;border-bottom:1px solid rgba(157,207,231,.16)}
+.greeting-results-modal .greeting-modal-head h3{font-size:clamp(23px,3vw,30px)!important;letter-spacing:-.02em}
+.greeting-results-modal .greeting-modal-head p{font-size:13px!important;line-height:1.5}
+.greeting-results-modal .greeting-modal-close{width:46px;height:46px;border-radius:50%;border:1px solid rgba(145,207,232,.4);background:linear-gradient(145deg,#347b9a,#20536e);color:#f4fbff;font-size:27px;box-shadow:0 5px 16px rgba(0,0,0,.2);transition:transform .2s,filter .2s}
+.greeting-results-modal .greeting-modal-close:hover{transform:scale(1.06);filter:brightness(1.12)}
+.greeting-results-modal .greeting-modal-body{padding:0 2px 2px}
+.greeting-results-content{gap:19px!important}
+.greeting-results-content>h2{margin:0;color:#f3f8ff;font:700 clamp(24px,3vw,32px)/1.2 Georgia,serif;letter-spacing:-.02em}
+.greeting-results-copy{padding:17px 19px;border:1px solid rgba(143,205,232,.18);border-radius:18px;background:rgba(5,23,38,.32);font-size:16px;line-height:1.75}
+.greeting-results-winners{gap:10px!important;margin-top:2px}
+.greeting-results-winners h3{margin:0 0 2px;color:#eaf5fc;font-size:20px;font-weight:800}
+.greeting-results-winner{position:relative;display:flex;align-items:center;min-height:54px;box-sizing:border-box;padding:13px 18px 13px 58px!important;border:1px solid rgba(143,205,232,.25)!important;border-radius:17px!important;background:linear-gradient(110deg,rgba(8,34,54,.88),rgba(17,48,69,.72))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 5px 14px rgba(0,0,0,.10);font-size:16px;line-height:1.4;overflow-wrap:anywhere}
+.greeting-results-winners{counter-reset:result-winner}
+.greeting-results-winner:before{counter-increment:result-winner;content:counter(result-winner);position:absolute;left:15px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:linear-gradient(145deg,#3a819f,#245a76);border:1px solid rgba(174,225,246,.38);color:#f5fbff;font-size:13px;font-weight:900}
+.greeting-results-image{border-radius:18px!important;box-shadow:0 8px 22px rgba(0,0,0,.16)}
+.greeting-results-image img{border-radius:17px 17px 0 0}
+@media(max-width:650px){.greeting-results-modal{padding:10px!important}.greeting-results-modal .greeting-modal-card{width:100%!important;max-height:94vh!important;padding:17px!important;border-radius:21px!important}.greeting-results-winner{min-height:50px;padding-left:52px!important;font-size:14px}.greeting-results-copy{padding:14px;border-radius:15px;font-size:14px}.greeting-results-modal .greeting-modal-close{width:40px;height:40px}}
 </style>
 </head>
 <body>
