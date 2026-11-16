@@ -3035,7 +3035,7 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
      </div>
     </article>
     <article class="admin-cabinet-card admin-tool" data-tool="globes"><h3>Таймеры и доступность шаров</h3><p>Управление сроками испытаний. Можно закрыть шар вручную или снова открыть его.</p><div id="adminOrbControls" class="admin-orb-controls"></div><div class="orb-status-admin"><label>Текст для завершённых испытаний<input id="orbClosedText" type="text" maxlength="70" value="Испытания завершены" placeholder="Например, Испытания завершены"></label><label>Цвет свечения<select id="orbClosedGlow"><option value="rose">Розовый</option><option value="red">Красный</option><option value="orange">Оранжевый</option><option value="gold">Золотой</option><option value="lime">Лаймовый</option><option value="green">Зелёный</option><option value="cyan">Бирюзовый</option><option value="blue">Голубой</option><option value="violet">Фиолетовый</option><option value="white">Белый</option></select></label><button type="button" id="saveOrbClosedStyle">Сохранить оформление</button></div><p id="orbClosedStyleNote" class="admin-cabinet-note" aria-live="polite"></p><p id="adminOrbNote" class="admin-cabinet-note" aria-live="polite"></p></article>
-    <article class="admin-cabinet-card admin-tool" data-tool="google sheets"><h3>Отчёт в Google Таблицы</h3><p>Создаёт таблицу с участниками, соцсетями, игровыми ID, шарами, билетами и итогами.</p><label for="googleSheetsEndpoint">Адрес Google Apps Script</label><input type="url" id="googleSheetsEndpoint" placeholder="https://script.google.com/macros/s/…/exec"><div class="admin-inline-actions"><button type="button" id="saveGoogleSheetsEndpoint">Сохранить адрес</button><button type="button" id="exportGoogleSheets">Создать Google Таблицу</button></div><p id="googleSheetsNote" class="admin-cabinet-note" aria-live="polite"></p></article>
+    
     <article class="admin-cabinet-card admin-tool" data-tool="greeting contest"><h3>Конкурс поздравлений</h3><p>Просмотр писем, текстов и изображений участников. Настройки приёма и текста подсказки находятся в блоке активности на сайте.</p><div class="admin-stat-strip"><span>Получено писем <b id="greetingAdminCount">—</b></span></div><button type="button" id="openGreetingAdminList">Открыть конкурс поздравлений</button><div id="greetingAdminCabinetList" class="admin-tool-results" aria-live="polite"></div></article>
     <article class="admin-cabinet-card admin-tool" data-tool="settings"><h3>Настройки кабинета</h3><p>Быстрый поиск по функциям и избранные действия сохраняются в этом браузере.</p><label><input type="checkbox" id="adminNotifyLowStock" checked> Показывать предупреждения о низком остатке наград</label><div id="adminSystemStatus" class="admin-tool-results">Проверка состояния разделов…</div></article>
    </div>
@@ -4210,12 +4210,11 @@ function initAdminTools(){
  if(!isAdmin)return;
  if(adminToolsInitialized){loadAdminOrbControls();loadAdminAnalytics();loadAdminAudit();return;}
  adminToolsInitialized=true;
- try{$('googleSheetsEndpoint').value=localStorage.getItem('zgot-google-sheets-endpoint')||'';$('adminNotifyLowStock').checked=localStorage.getItem('zgot-admin-low-stock')!=='false';}catch(e){}
+ try{$('adminNotifyLowStock').checked=localStorage.getItem('zgot-admin-low-stock')!=='false';}catch(e){}
 
  $('saveOrbClosedStyle').onclick=saveOrbClosedStyle;$('adminDuplicatesBtn').onclick=findAdminDuplicates;$('adminIntegrityBtn').onclick=checkAdminIntegrity;$('adminHistoryBtn').onclick=()=>loadAdminAudit();$('adminLoadHistory').onclick=()=>loadAdminAudit($('adminHistoryDate').value||null);$('adminLoadAudit').onclick=()=>loadAdminAudit();$('adminLoadAnalytics').onclick=loadAdminAnalytics;
  $('adminNotifyLowStock').onchange=()=>{try{localStorage.setItem('zgot-admin-low-stock',String($('adminNotifyLowStock').checked));}catch(e){}};
- $('saveGoogleSheetsEndpoint').onclick=()=>{const url=$('googleSheetsEndpoint').value.trim();try{if(url&&!new URL(url).hostname.endsWith('google.com')&&!new URL(url).hostname.endsWith('googleusercontent.com'))throw new Error();localStorage.setItem('zgot-google-sheets-endpoint',url);$('googleSheetsNote').textContent='Адрес сохранён в этом браузере.';}catch(e){$('googleSheetsNote').textContent='Укажите корректный URL опубликованного Google Apps Script.';}};
- $('exportGoogleSheets').onclick=exportToGoogleSheets;
+ 
  loadAdminOrbControls();loadAdminAnalytics();loadAdminAudit();
  $('adminSystemStatus').innerHTML='<div class="audit-row">Участники: подключены</div><div class="audit-row">Розыгрыш: '+(supabaseClient?'подключён':'нет подключения')+'</div><div class="audit-row">Ярмарка: проверяется при открытии</div><div class="audit-row">Новости: подключены</div>';
 }
@@ -6091,6 +6090,49 @@ body.task-modal-open{overflow:hidden}
  setInterval(()=>{paint();syncAdminToggle();},1000);
 })();
 </script>
+
+
+<style id="zgot-final-market-layout-and-admin-marks">
+/* Значки M: четыре боковых значка увеличены и смещены ближе к краям окна. */
+.admin-cabinet-flying-marks img:nth-child(1){left:20%!important;top:14%!important;width:75px!important}
+.admin-cabinet-flying-marks img:nth-child(2){right:20%!important;top:23%!important;width:75px!important}
+.admin-cabinet-flying-marks img:nth-child(3){left:20%!important;top:68%!important;width:75px!important}
+.admin-cabinet-flying-marks img:nth-child(4){right:20%!important;top:72%!important;width:75px!important}
+.admin-cabinet-flying-marks img:nth-child(5){left:19%!important;top:2%!important;width:40px!important}
+.admin-cabinet-flying-marks img:nth-child(6){right:19%!important;bottom:2%!important;width:42px!important}
+/* Ярмарка: иллюстрация слева, текстовый блок компактно в правом верхнем углу. */
+#marketSection .market-card{
+ display:grid!important;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr)!important;
+ grid-template-areas:"scene copy"!important;align-items:start!important;gap:18px!important;
+ min-height:390px!important;padding:28px 34px!important;box-sizing:border-box!important;
+}
+#marketSection .market-fair-scene{
+ grid-area:scene!important;order:0!important;width:100%!important;max-width:100%!important;
+ height:350px!important;margin:0!important;transform:scale(.88)!important;transform-origin:left top!important;
+ justify-self:start!important;align-self:center!important;overflow:visible!important;
+}
+#marketSection .market-tree-stage{left:50%!important;bottom:0!important;width:320px!important;height:340px!important}
+#marketSection .market-stall{width:230px!important;height:150px!important;bottom:26px!important}
+#marketSection .market-stall-left{left:0!important}
+#marketSection .market-stall-right{right:0!important}
+#marketSection .market-copy{
+ grid-area:copy!important;order:0!important;align-self:start!important;justify-self:stretch!important;
+ width:100%!important;max-width:520px!important;text-align:right!important;padding-top:8px!important;
+ display:flex!important;flex-direction:column!important;align-items:flex-end!important;
+}
+#marketSection .market-kicker{width:100%;text-align:right!important}
+#marketSection .market-copy h2,#marketSection .market-copy p{width:100%;text-align:right!important}
+#marketSection .market-copy p{max-width:500px;margin-left:auto!important}
+#marketSection .market-opening-admin-toggle{margin:0 0 12px auto!important}
+@media(max-width:700px){
+ #marketSection .market-card{display:flex!important;flex-direction:column!important;gap:10px!important;padding:20px 14px!important;min-height:0!important}
+ #marketSection .market-copy{order:0!important;width:100%!important;max-width:none!important;text-align:center!important;align-items:center!important;padding:0!important}
+ #marketSection .market-kicker,#marketSection .market-copy h2,#marketSection .market-copy p{text-align:center!important}
+ #marketSection .market-fair-scene{order:1!important;width:100%!important;height:clamp(260px,78vw,340px)!important;transform:none!important;margin:0 auto!important;overflow:hidden!important}
+ #marketSection .market-tree-stage{width:clamp(205px,62vw,255px)!important;height:clamp(260px,78vw,320px)!important;left:50%!important;bottom:0!important}
+ #marketSection .market-stall{width:37%!important;height:clamp(92px,28vw,118px)!important;bottom:22px!important}
+}
+</style>
 
 </body>
 </html>
