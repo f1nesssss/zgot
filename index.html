@@ -6141,6 +6141,111 @@ body.task-modal-open{overflow:hidden}
 }
 </style>
 
+
+<style id="zgot-market-layout-and-floating-marks-v3">
+/* Ярмарка: композиция повторяет почтовый блок — текст слева, иллюстрация справа. */
+#marketSection .market-card{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr)!important;
+  grid-template-areas:"copy scene" "status scene" "visit scene" "admin admin"!important;
+  align-items:start!important;justify-content:stretch!important;
+  gap:12px 28px!important;
+  min-height:390px!important;height:auto!important;
+  padding:34px 36px!important;box-sizing:border-box!important;
+  text-align:left!important;
+}
+#marketSection .market-copy{
+  grid-area:copy!important;order:0!important;align-self:start!important;justify-self:stretch!important;
+  width:100%!important;max-width:680px!important;padding:0!important;
+  display:block!important;text-align:left!important;align-items:initial!important;
+}
+#marketSection .market-copy .market-kicker{
+  display:block!important;width:auto!important;text-align:left!important;
+  color:#e7b66b!important;font-size:10px!important;font-weight:900!important;
+  letter-spacing:.23em!important;margin:0 0 8px!important;
+}
+#marketSection .market-copy h2{
+  width:auto!important;text-align:left!important;margin:10px 0 12px!important;
+  font:500 clamp(29px,3.6vw,43px)/1.1 Georgia,serif!important;color:#f0f7ff!important;
+}
+#marketSection .market-copy p{
+  width:auto!important;max-width:680px!important;margin:0!important;text-align:left!important;
+  color:#afc4d4!important;font-size:14px!important;line-height:1.75!important;font-weight:400!important;
+}
+#marketSection .market-opening-admin-toggle{margin:0 0 12px!important}
+#marketSection .market-fair-scene{
+  grid-area:scene!important;order:0!important;justify-self:stretch!important;align-self:center!important;
+  width:100%!important;max-width:100%!important;height:370px!important;margin:0!important;
+  transform:none!important;transform-origin:center!important;overflow:hidden!important;
+}
+#marketSection .market-tree-stage{
+  left:50%!important;bottom:0!important;width:270px!important;height:340px!important;
+}
+#marketSection .market-stall{
+  width:clamp(125px,27%,165px)!important;height:132px!important;bottom:22px!important;
+}
+#marketSection .market-stall-left{left:0!important}
+#marketSection .market-stall-right{right:0!important}
+#marketSection .market-stall-roof{height:39px!important}
+#marketSection .market-stall-awning{top:38px!important;height:18px!important}
+#marketSection .market-stall-counter{top:56px!important;height:68px!important}
+#marketSection .market-stall-counter i{width:23px!important;height:37px!important}
+#marketSection .market-stall-garland{top:56px!important}
+#marketSection .market-stall-small{width:105px!important;height:76px!important;bottom:12px!important}
+#marketSection .market-stall-back{left:17%!important}
+#marketSection .market-stall-mid{right:17%!important}
+#marketSection .market-stall-small .market-stall-roof{height:26px!important}
+#marketSection .market-stall-small .market-stall-awning{top:25px!important;height:12px!important}
+#marketSection .market-stall-small .market-stall-counter{top:37px!important;height:36px!important}
+#marketSection .market-stall-small .market-stall-garland{top:37px!important}
+#marketSection .market-opening-status{grid-area:status!important;justify-self:start!important;margin:0!important;text-align:left!important;width:max-content;max-width:100%;box-sizing:border-box}
+#marketSection .market-visit{grid-area:visit!important;justify-self:start!important;align-self:start!important;margin:2px 0 0!important;width:auto!important}
+#marketSection .market-opening-admin{grid-area:admin!important;justify-self:center!important;margin:10px auto!important}
+/* Боковые значки M остаются за пределами панели, с небольшим зазором. */
+.admin-cabinet-flying-marks img:nth-child(1),
+.admin-cabinet-flying-marks img:nth-child(3){left:.3%!important;right:auto!important;width:60px!important}
+.admin-cabinet-flying-marks img:nth-child(2),
+.admin-cabinet-flying-marks img:nth-child(4){right:.3%!important;left:auto!important;width:60px!important}
+@media(max-width:700px){
+ #marketSection .market-card{
+   display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+   grid-template-areas:"copy" "status" "scene" "visit" "admin"!important;
+   gap:10px!important;padding:24px 17px 20px!important;min-height:0!important;
+   text-align:left!important;align-items:start!important;
+ }
+ #marketSection .market-copy{width:100%!important;max-width:none!important;text-align:left!important}
+ #marketSection .market-copy .market-kicker,
+ #marketSection .market-copy h2,
+ #marketSection .market-copy p{text-align:left!important}
+ #marketSection .market-copy h2{font-size:clamp(29px,8vw,38px)!important;line-height:1.1!important}
+ #marketSection .market-copy p{font-size:14px!important;line-height:1.65!important}
+ #marketSection .market-fair-scene{
+   width:100%!important;height:clamp(270px,78vw,340px)!important;
+   margin:0 auto!important;overflow:hidden!important;
+ }
+ #marketSection .market-tree-stage{width:clamp(205px,62vw,245px)!important;height:clamp(250px,73vw,315px)!important;left:50%!important;bottom:0!important}
+ #marketSection .market-stall{width:27%!important;height:clamp(88px,27vw,112px)!important;bottom:18px!important}
+ #marketSection .market-stall-left{left:1%!important}
+ #marketSection .market-stall-right{right:1%!important}
+ #marketSection .market-stall-roof{height:30%!important}
+ #marketSection .market-stall-awning{top:29%!important;height:15%!important}
+ #marketSection .market-stall-counter{top:43%!important;height:53%!important}
+ #marketSection .market-stall-counter i{width:22%!important;height:54%!important;margin-top:9px!important}
+ #marketSection .market-stall-garland{top:43%!important}
+ #marketSection .market-stall-small{width:20%!important;height:75px!important;bottom:12px!important}
+ #marketSection .market-stall-back{left:20%!important}
+ #marketSection .market-stall-mid{right:20%!important}
+ #marketSection .market-opening-status{justify-self:start!important;width:max-content!important;max-width:100%!important;font-size:12px!important}
+ #marketSection .market-visit{justify-self:start!important;width:auto!important;min-width:145px!important}
+ .admin-cabinet-flying-marks img:nth-child(1),.admin-cabinet-flying-marks img:nth-child(3){left:0!important;width:52px!important}
+ .admin-cabinet-flying-marks img:nth-child(2),.admin-cabinet-flying-marks img:nth-child(4){right:0!important;width:52px!important}
+}
+@media(max-width:390px){
+ #marketSection .market-fair-scene{height:270px!important}
+ #marketSection .market-tree-stage{width:205px!important;height:250px!important}
+}
+</style>
+
 </body>
 </html>
 
