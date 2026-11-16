@@ -2444,6 +2444,11 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
 .admin-cabinet-window .admin-support-editor label{display:block;margin:10px 0 5px;font-size:13px;font-weight:700}
 .admin-cabinet-window .admin-support-editor textarea,.admin-cabinet-window .admin-support-editor input{width:100%;box-sizing:border-box;min-width:0;padding:11px 12px;border:1px solid rgba(130,186,216,.34);border-radius:11px;background:#0b2235;color:#eaf4fb;font:inherit;resize:vertical}
 .admin-cabinet-window .admin-support-editor textarea{line-height:1.5}
+.admin-cabinet-window .admin-support-editor[hidden]{display:none!important}
+.admin-cabinet-window .admin-support-editor-toggle-row{display:flex;justify-content:flex-start;margin:0 0 12px}
+.admin-cabinet-window .admin-support-edit-toggle{min-height:36px;padding:8px 14px;border:1px solid rgba(151,213,235,.42);border-radius:999px;background:linear-gradient(135deg,#347f9e,#286782);color:#f5fbff;font-weight:750;cursor:pointer}
+.admin-cabinet-window .admin-tool-participants-wide{grid-column:1/-1;width:100%;}
+@media(max-width:650px){.admin-cabinet-window .admin-tool-participants-wide{grid-column:auto}}
 </style>
 
 </head>
@@ -2951,6 +2956,7 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
  <section class="admin-cabinet-window" role="dialog" aria-modal="true" aria-labelledby="adminCabinetTitle">
   <div class="admin-cabinet-head"><h2 id="adminCabinetTitle">Кабинет администратора</h2><div class="admin-cabinet-actions"><button type="button" id="adminLogoutBtn">Выйти из панели</button><button class="admin-cabinet-close" id="closeAdminCabinet" type="button" aria-label="Закрыть">×</button></div></div>
   <article class="admin-support-notice" aria-labelledby="adminSupportTitle">
+   <div class="admin-support-editor-toggle-row"><button type="button" id="toggleAdminSupportEditor" class="admin-support-edit-toggle" aria-expanded="false" aria-controls="adminSupportEditor">Редактировать информацию</button></div>
    <div class="admin-support-copy">
     <h3 id="adminSupportTitle">Поддержка администраторов</h3>
     <p id="adminSupportIntro">Если у вас возник вопрос или проблема с сайтом, процессом проверки либо проведением мероприятия, пожалуйста, сразу обратитесь к куратору.</p>
@@ -2971,7 +2977,7 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
     </div>
    </div>
   </article>
-  <article class="admin-cabinet-card admin-support-editor">
+  <article class="admin-cabinet-card admin-support-editor" id="adminSupportEditor" hidden>
    <h3>Редактирование блока «Поддержка администраторов»</h3>
    <p>Изменения будут опубликованы для всех администраторов после сохранения.</p>
    <label for="adminSupportIntroInput">Основной текст</label><textarea id="adminSupportIntroInput" rows="2" maxlength="1200"></textarea>
@@ -3008,7 +3014,7 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
   <div class="admin-tools-wrap">
    <div class="admin-tools-head"><h3>Центр управления</h3></div>
    <div class="admin-tools-grid">
-    <article class="admin-cabinet-card admin-tool" data-tool="participants"><h3>Участники и дубликаты</h3><p>Фильтр VK/OK, поиск повторяющихся ID между шарами, проверка подозрительных записей.</p><div class="admin-inline-actions"><button type="button" id="adminDuplicatesBtn">Найти дубликаты</button><button type="button" id="adminIntegrityBtn">Проверить целостность</button><button type="button" id="adminHistoryBtn">История начислений</button></div><div id="adminDuplicateResults" class="admin-tool-results" aria-live="polite"></div></article>
+    <article class="admin-cabinet-card admin-tool admin-tool-participants-wide" data-tool="participants"><h3>Участники и дубликаты</h3><p>Фильтр VK/OK, поиск повторяющихся ID между шарами, проверка подозрительных записей.</p><div class="admin-inline-actions"><button type="button" id="adminDuplicatesBtn">Найти дубликаты</button><button type="button" id="adminIntegrityBtn">Проверить целостность</button><button type="button" id="adminHistoryBtn">История начислений</button></div><div id="adminDuplicateResults" class="admin-tool-results" aria-live="polite"></div></article>
     <article class="admin-cabinet-card admin-tool admin-activity-hub" data-tool="посещения статистика журнал действий активность">
      <h3>Посещения и журнал активности</h3>
      <p>Общая посещаемость сайта, подробная статистика и история действий администраторов — в одном разделе.</p>
@@ -4061,6 +4067,7 @@ function renderAdminScoreStats(){
 const ADMIN_SUPPORT_DEFAULTS={intro:'Если у вас возник вопрос или проблема с сайтом, процессом проверки либо проведением мероприятия, пожалуйста, сразу обратитесь к куратору.',lead:'Чтобы мы могли быстрее разобраться в ситуации, пожалуйста:',bullets:['Пишите в любое время суток — куратор ответит, как только сможет.','Сразу прикладывайте скриншоты и/или видеозапись, если они помогут показать проблему.','Кратко и по существу опишите, что произошло и какого результата вы ожидали.','Укажите, в каком разделе сайта и при каких действиях возникла ошибка.','Если проблема повторяется, напишите последовательность действий, после которых она появляется.','Не отправляйте пароли и другие конфиденциальные данные.','Если вопрос уже обсуждается, продолжайте переписку в той же теме, чтобы не терять важные детали.'],footnote:'Чем точнее исходная информация, тем быстрее получится проверить ситуацию и помочь.'};
 function applyAdminSupportContent(data={}){const d={...ADMIN_SUPPORT_DEFAULTS,...(data||{})};$('adminSupportIntro').textContent=d.intro||'';$('adminSupportLead').textContent=d.lead||'';$('adminSupportFootnote').textContent=d.footnote||'';const ul=$('adminSupportBullets');ul.replaceChildren();(Array.isArray(d.bullets)?d.bullets:ADMIN_SUPPORT_DEFAULTS.bullets).filter(x=>String(x).trim()).forEach(line=>{const li=document.createElement('li');li.textContent=String(line);ul.appendChild(li);});}
 async function loadAdminSupportContent(){if(!supabaseClient)return;const {data,error}=await supabaseClient.from('site_admin_support_settings').select('intro,lead,bullets,footnote').eq('id',1).maybeSingle();if(error){console.warn('Support settings load:',error.message);return;}if(data){applyAdminSupportContent(data);$('adminSupportIntroInput').value=data.intro||'';$('adminSupportLeadInput').value=data.lead||'';$('adminSupportBulletsInput').value=(Array.isArray(data.bullets)?data.bullets:[]).join('\n');$('adminSupportFootnoteInput').value=data.footnote||'';}else{$('adminSupportIntroInput').value=ADMIN_SUPPORT_DEFAULTS.intro;$('adminSupportLeadInput').value=ADMIN_SUPPORT_DEFAULTS.lead;$('adminSupportBulletsInput').value=ADMIN_SUPPORT_DEFAULTS.bullets.join('\n');$('adminSupportFootnoteInput').value=ADMIN_SUPPORT_DEFAULTS.footnote;}}
+$('toggleAdminSupportEditor')?.addEventListener('click',()=>{const editor=$('adminSupportEditor'),btn=$('toggleAdminSupportEditor');if(!editor||!btn)return;const opening=editor.hidden;editor.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.textContent=opening?'Скрыть редактор':'Редактировать информацию';if(opening)editor.scrollIntoView({behavior:'smooth',block:'nearest'});});
 $('saveAdminSupportContent')?.addEventListener('click',async()=>{if(!isAdmin||!supabaseClient)return;const btn=$('saveAdminSupportContent'),note=$('adminSupportSaveNote');const payload={id:1,intro:$('adminSupportIntroInput').value.trim(),lead:$('adminSupportLeadInput').value.trim(),bullets:$('adminSupportBulletsInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),footnote:$('adminSupportFootnoteInput').value.trim(),updated_at:new Date().toISOString()};btn.disabled=true;note.textContent='Сохраняем…';const {error}=await supabaseClient.from('site_admin_support_settings').upsert(payload,{onConflict:'id'});btn.disabled=false;if(error){console.error(error);note.textContent='Не удалось сохранить. Проверьте SQL-настройку таблицы и права администратора.';return;}applyAdminSupportContent(payload);note.textContent='Текст поддержки сохранён и опубликован.';});
 const cabinetBackdrop=$('adminCabinetBackdrop');
 $('adminCabinetBtn')?.addEventListener('click',async()=>{if(!isAdmin)return;cabinetBackdrop.classList.add('open');cabinetBackdrop.setAttribute('aria-hidden','false');await loadAdminSupportContent();renderAdminScoreStats();await loadAdminVisitCount();await loadExchangeTimer(true);initAdminTools();await loadAdminRoster();if(adminRosterTimer)clearInterval(adminRosterTimer);adminRosterTimer=setInterval(loadAdminRoster,15000);});
