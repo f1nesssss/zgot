@@ -2419,6 +2419,28 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
 }
 </style>
 
+
+<style id="admin-support-notice-styles">
+.admin-cabinet-window .admin-support-notice{
+  grid-column:1/-1; width:100%; min-width:0; box-sizing:border-box;
+  margin:0 0 16px; padding:22px 24px; border:1px solid rgba(113,177,205,.34);
+  border-radius:18px; color:#e4f1fa;
+  background:linear-gradient(135deg,rgba(28,68,94,.96),rgba(12,37,57,.98));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 26px rgba(0,0,0,.12);
+}
+.admin-cabinet-window .admin-support-notice h3{margin:0 0 10px;color:#f1f7fc;font-size:clamp(18px,2vw,23px);line-height:1.25}
+.admin-cabinet-window .admin-support-notice p{margin:0 0 10px;color:#b8cfdf;line-height:1.55}
+.admin-cabinet-window .admin-support-notice .admin-support-lead{margin-top:14px;color:#e4f1fa;font-weight:700}
+.admin-cabinet-window .admin-support-notice ul{margin:8px 0 14px;padding-left:22px;color:#d5e5ef;line-height:1.6}
+.admin-cabinet-window .admin-support-notice li{padding-left:3px;margin:4px 0}
+.admin-cabinet-window .admin-support-notice .admin-support-footnote{font-size:13px;color:#a9c3d5}
+.admin-cabinet-window .admin-support-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.admin-cabinet-window .admin-support-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;padding:10px 17px;border:1px solid rgba(151,213,235,.42);border-radius:999px;background:linear-gradient(135deg,#347f9e,#286782);color:#f5fbff;text-decoration:none;font-weight:750;text-align:center;line-height:1.25;transition:filter .18s ease,transform .18s ease}
+.admin-cabinet-window .admin-support-button:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.admin-cabinet-window .admin-support-button-secondary{background:rgba(22,55,77,.82)}
+@media(max-width:600px){.admin-cabinet-window .admin-support-notice{padding:18px 16px;border-radius:15px}.admin-cabinet-window .admin-support-actions{flex-direction:column}.admin-cabinet-window .admin-support-button{width:100%}}
+</style>
+
 </head>
 <body>
 <div class="snow-layer" id="snowLayer" aria-hidden="true"></div>
@@ -2923,6 +2945,27 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
 <div class="admin-cabinet-backdrop" id="adminCabinetBackdrop" aria-hidden="true">
  <section class="admin-cabinet-window" role="dialog" aria-modal="true" aria-labelledby="adminCabinetTitle">
   <div class="admin-cabinet-head"><h2 id="adminCabinetTitle">Кабинет администратора</h2><div class="admin-cabinet-actions"><button type="button" id="adminLogoutBtn">Выйти из панели</button><button class="admin-cabinet-close" id="closeAdminCabinet" type="button" aria-label="Закрыть">×</button></div></div>
+  <article class="admin-support-notice" aria-labelledby="adminSupportTitle">
+   <div class="admin-support-copy">
+    <h3 id="adminSupportTitle">Если возник вопрос, проблема или ошибка</h3>
+    <p>Если у вас возник вопрос или проблема с сайтом, процессом проверки либо проведением мероприятия, пожалуйста, сразу обратитесь к куратору.</p>
+    <p class="admin-support-lead">Чтобы мы могли быстрее разобраться в ситуации, пожалуйста:</p>
+    <ul>
+     <li>Пишите в любое время суток — куратор ответит, как только сможет.</li>
+     <li>Сразу прикладывайте скриншоты и/или видеозапись, если они помогут показать проблему.</li>
+     <li>Кратко и по существу опишите, что произошло и какого результата вы ожидали.</li>
+     <li>Укажите, в каком разделе сайта и при каких действиях возникла ошибка.</li>
+     <li>Если проблема повторяется, напишите последовательность действий, после которых она появляется.</li>
+     <li>Не отправляйте пароли и другие конфиденциальные данные.</li>
+     <li>Если вопрос уже обсуждается, продолжайте переписку в той же теме, чтобы не терять важные детали.</li>
+    </ul>
+    <p class="admin-support-footnote">Чем точнее исходная информация, тем быстрее получится проверить ситуацию и помочь.</p>
+    <div class="admin-support-actions">
+     <a class="admin-support-button" href="https://vk.ru/finias_kerroll" target="_blank" rel="noopener noreferrer">Написать напрямую куратору</a>
+     <a class="admin-support-button admin-support-button-secondary" href="https://vk.ru/im/convo/2000000307?entrypoint=list_folder&amp;folder=18&amp;tab=all" target="_blank" rel="noopener noreferrer">Написать в рабочую беседу</a>
+    </div>
+   </div>
+  </article>
   <div class="admin-cabinet-grid">
    <article class="admin-cabinet-card admin-team-card">
     <h3>Команда администраторов</h3>
