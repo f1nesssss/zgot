@@ -2711,9 +2711,9 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
 
 <section class="market-section" id="marketSection" aria-labelledby="marketTitle">
   <div class="market-card">
+    <button type="button" class="market-opening-admin-toggle" id="toggleMarketOpeningAdmin" hidden>Настройки ярмарки</button>
     <div class="market-copy">
       <div class="market-kicker">✦ Особенная часть праздника ✦</div>
-      <button type="button" class="market-opening-admin-toggle" id="toggleMarketOpeningAdmin" hidden>Настройки ярмарки</button>
       <h2 id="marketTitle">Праздничная ярмарка</h2>
       <p id="marketSectionDescriptionText">Загляни в праздничную ярмарку и познакомься с наградами новогоднего события.</p>
     </div>
@@ -6296,8 +6296,6 @@ body.task-modal-open{overflow:hidden}
 /* Кнопка быстрого входа в кабинет администратора удалена по запросу. */
 </style>
 
-</body>
-</html>
 
 
 <style id="zgot-v4-fixes">
@@ -6624,3 +6622,31 @@ body[data-theme="light"] .top-actions .admin-access-button:hover{
   border:1px solid rgba(111,220,255,.85);
   box-shadow:0 0 9px rgba(28,185,255,.85),inset 0 1px 3px rgba(255,255,255,.35);
 }
+
+<style id="zgot-market-admin-button-final-position">
+/* Кнопка настроек ярмарки находится непосредственно в правом верхнем углу всей карточки. */
+#marketSection .market-card{position:relative!important;padding-top:34px!important}
+#marketSection .market-copy{position:static!important}
+#marketSection .market-opening-admin-toggle{
+  position:absolute!important;top:20px!important;right:28px!important;left:auto!important;bottom:auto!important;
+  z-index:20!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:auto!important;min-width:0!important;min-height:30px!important;margin:0!important;
+  padding:8px 13px!important;box-sizing:border-box!important;white-space:nowrap!important;
+  border:1px solid rgba(157,220,244,.42)!important;border-radius:999px!important;
+  background:linear-gradient(135deg,#24536f,#2f7894)!important;color:#f1f9ff!important;
+  font-family:inherit!important;font-size:10px!important;font-weight:850!important;line-height:1.2!important;
+  text-align:center!important;box-shadow:0 5px 16px rgba(0,8,20,.24),inset 0 1px rgba(255,255,255,.08)!important;
+  cursor:pointer!important;
+}
+#marketSection .market-opening-admin-toggle:hover{
+  background:linear-gradient(135deg,#2e6c89,#3b91a8)!important;color:#fff!important;
+  border-color:rgba(157,220,244,.62)!important;transform:translateY(-1px)!important;
+  box-shadow:0 7px 20px rgba(0,8,20,.3),0 0 16px rgba(98,183,220,.2)!important;
+}
+@media(max-width:650px){
+  #marketSection .market-card{padding-top:58px!important}
+  #marketSection .market-opening-admin-toggle{top:14px!important;right:14px!important;padding:8px 12px!important;font-size:10px!important}
+}
+</style>
+
+</body>
