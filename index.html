@@ -2466,7 +2466,6 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
   <button class="ghost-btn" id="musicToggle" type="button" aria-label="Открыть настройки музыки" title="Музыка">Музыка 🎵<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="ghost-btn" id="helpBtn">Помощь<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="ghost-btn admin-access-button" id="adminBtn">Вход для администратора<span class="admin-hover-emojis" aria-hidden="true"><i>🔐</i><i>🔐</i></span></button>
-  <button class="ghost-btn admin-access-button" id="adminCabinetBtn" hidden>Кабинет администратора<span class="admin-hover-emojis" aria-hidden="true"><i>M</i><i>M</i></span></button>
 </div>
 </header>
 
@@ -3382,7 +3381,6 @@ function renderStats(){if(isAdmin)renderAdminScoreStats();}
 function render(){
   renderOrbs();renderRows();renderStats();
   $('adminBtn').hidden=isAdmin;
-  $('adminCabinetBtn').hidden=!isAdmin;
   $('adminBtn').textContent='Вход для администратора';
   if(isAdmin) renderAdminScoreStats();
   if($('announcementForm'))$('announcementForm').hidden=!isAdmin;
@@ -4068,7 +4066,6 @@ async function loadAdminSupportContent(){if(!supabaseClient)return;const {data,e
 $('toggleAdminSupportEditor')?.addEventListener('click',()=>{const editor=$('adminSupportEditor'),btn=$('toggleAdminSupportEditor');if(!editor||!btn)return;const opening=editor.hidden;editor.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.textContent=opening?'Скрыть редактор':'Редактировать информацию';if(opening)editor.scrollIntoView({behavior:'smooth',block:'nearest'});});
 $('saveAdminSupportContent')?.addEventListener('click',async()=>{if(!isAdmin||!supabaseClient)return;const btn=$('saveAdminSupportContent'),note=$('adminSupportSaveNote');const payload={id:1,intro:$('adminSupportIntroInput').value.trim(),lead:$('adminSupportLeadInput').value.trim(),bullets:$('adminSupportBulletsInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),footnote:$('adminSupportFootnoteInput').value.trim(),updated_at:new Date().toISOString()};btn.disabled=true;note.textContent='Сохраняем…';const {error}=await supabaseClient.from('site_admin_support_settings').upsert(payload,{onConflict:'id'});btn.disabled=false;if(error){console.error(error);note.textContent='Не удалось сохранить. Проверьте SQL-настройку таблицы и права администратора.';return;}applyAdminSupportContent(payload);note.textContent='Текст поддержки сохранён и опубликован.';});
 const cabinetBackdrop=$('adminCabinetBackdrop');
-$('adminCabinetBtn')?.addEventListener('click',async()=>{if(!isAdmin)return;cabinetBackdrop.classList.add('open');cabinetBackdrop.setAttribute('aria-hidden','false');await loadAdminSupportContent();renderAdminScoreStats();await loadAdminVisitCount();await loadExchangeTimer(true);initAdminTools();await loadAdminRoster();if(adminRosterTimer)clearInterval(adminRosterTimer);adminRosterTimer=setInterval(loadAdminRoster,15000);});
 function closeAdminCabinet(){cabinetBackdrop?.classList.remove('open');cabinetBackdrop?.setAttribute('aria-hidden','true');if(adminRosterTimer){clearInterval(adminRosterTimer);adminRosterTimer=null;}}
 $('closeAdminCabinet')?.addEventListener('click',closeAdminCabinet);
 $('saveAdminNickname')?.addEventListener('click',saveAdminNickname);
@@ -6250,8 +6247,14 @@ body.task-modal-open{overflow:hidden}
 #marketSection .market-card{position:relative!important;padding-top:42px!important}
 #marketSection .market-opening-admin-toggle{
   position:absolute!important;top:20px!important;right:28px!important;left:auto!important;
-  margin:0!important;z-index:8!important;white-space:nowrap!important;
-}
+  z-index:8!important;white-space:nowrap!important;
+  min-height:0!important;padding:9px 13px!important;
+  border:1px solid rgba(231,182,107,.48)!important;border-radius:999px!important;
+  background:rgba(9,27,42,.82)!important;color:#f6d7a2!important;
+  font-size:10px!important;font-weight:850!important;line-height:1.2!important;
+  box-shadow:0 5px 18px rgba(0,0,0,.2)!important;cursor:pointer!important;
+} 
+#marketSection .market-opening-admin-toggle:hover{background:rgba(115,83,54,.75)!important}
 #marketSection .market-copy{padding-top:0!important}
 /* Убираем второстепенные маленькие ларьки и оставляем два основных. */
 #marketSection .market-stall-small{display:none!important}
@@ -6275,7 +6278,7 @@ body.task-modal-open{overflow:hidden}
 /* На телефонах кнопка не перекрывает заголовок, а подарки остаются компактной линией. */
 @media(max-width:650px){
  #marketSection .market-card{padding-top:58px!important}
- #marketSection .market-opening-admin-toggle{top:14px!important;right:14px!important;font-size:11px!important;padding:7px 11px!important}
+ #marketSection .market-opening-admin-toggle{top:14px!important;right:14px!important;font-size:10px!important;padding:9px 13px!important}
  #marketSection .market-copy{padding-top:0!important}
  #marketSection .market-gift-field{height:55px!important}
  #marketSection .market-gift{bottom:3px!important;transform:scale(.58)!important}
@@ -6286,17 +6289,7 @@ body.task-modal-open{overflow:hidden}
  #marketSection .market-gift.gift-9{left:65%!important}#marketSection .market-gift.gift-10{left:71%!important}
  #marketSection .market-gift.gift-11{left:77%!important}#marketSection .market-gift.gift-12{left:83%!important}
 }
-/* Значок M появляется при наведении только на кнопку открытого кабинета. */
-#adminCabinetBtn .admin-hover-emojis i{
-  width:22px;height:25px;display:grid;place-items:center;border-radius:8px 8px 11px 11px;
-  color:#8feaff;font:900 11px/1 Arial,sans-serif;font-style:normal;
-  background:linear-gradient(145deg,#176c91,#07334e);
-  border:1px solid #35bce9;box-shadow:0 0 8px rgba(32,183,239,.85),inset 0 0 5px rgba(132,232,255,.45);
-  text-shadow:0 0 5px #62dfff;box-sizing:border-box;
-}
-#adminCabinetBtn .admin-hover-emojis i:first-child{left:12%;top:-9px}
-#adminCabinetBtn .admin-hover-emojis i:last-child{right:12%;bottom:-9px}
-#adminCabinetBtn:hover .admin-hover-emojis i,#adminCabinetBtn:focus-visible .admin-hover-emojis i{opacity:1}
+/* Кнопка быстрого входа в кабинет администратора удалена по запросу. */
 </style>
 
 </body>
