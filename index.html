@@ -2465,7 +2465,7 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
   </button>
   <button class="ghost-btn" id="musicToggle" type="button" aria-label="Открыть настройки музыки" title="Музыка">Музыка 🎵<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="ghost-btn" id="helpBtn">Помощь<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
-  <button class="ghost-btn admin-access-button" id="adminBtn">Вход для администратора<span class="admin-hover-emojis" aria-hidden="true"><i>🔐</i><i>🔐</i></span></button>
+  <button class="ghost-btn admin-access-button" id="adminBtn" type="button">Вход для администратора<span class="admin-hover-emojis" aria-hidden="true"><i>А</i><i>А</i></span></button>
 </div>
 </header>
 
@@ -3380,8 +3380,8 @@ function renderRows(){
 function renderStats(){if(isAdmin)renderAdminScoreStats();}
 function render(){
   renderOrbs();renderRows();renderStats();
-  $('adminBtn').hidden=isAdmin;
-  $('adminBtn').textContent='Вход для администратора';
+  $('adminBtn').hidden=false;
+  $('adminBtn').firstChild.textContent=isAdmin?'Кабинет администратора':'Вход для администратора';
   if(isAdmin) renderAdminScoreStats();
   if($('announcementForm'))$('announcementForm').hidden=!isAdmin;
 }
@@ -4023,8 +4023,12 @@ $('exportBtn').addEventListener('click',()=>{
 });
 $('adminBtn').addEventListener('click',async()=>{
   if(isAdmin){
-    await supabaseClient.auth.signOut();
-    await updateSession(null);
+    const backdrop=$('adminCabinetBackdrop');
+    if(!backdrop)return;
+    backdrop.classList.add('open');
+    backdrop.setAttribute('aria-hidden','false');
+    await Promise.allSettled([loadAdminRoster(),loadAdminVisitCount(),loadExchangeTimer(true),loadAdminSupportContent()]);
+    renderAdminScoreStats();
   }else if(!configured){
     alert('Сначала подключи Supabase: заполни config.js по инструкции в README.');
   }else openAuth();
@@ -6592,3 +6596,31 @@ body.task-modal-open{overflow:hidden}
 </script>
 
 
+
+
+/* Финальный цвет кнопки входа/кабинета администратора — единая зимняя палитра сайта */
+.top-actions .admin-access-button,
+body[data-theme="dark"] .top-actions .admin-access-button,
+body[data-theme="light"] .top-actions .admin-access-button{
+  background:linear-gradient(135deg,#24536f,#2f7894)!important;
+  color:#eef8ff!important;
+  border:1px solid rgba(135,194,222,.48)!important;
+  box-shadow:0 5px 16px rgba(0,8,20,.24),inset 0 1px rgba(255,255,255,.08)!important;
+}
+.top-actions .admin-access-button:hover,
+body[data-theme="dark"] .top-actions .admin-access-button:hover,
+body[data-theme="light"] .top-actions .admin-access-button:hover{
+  background:linear-gradient(135deg,#2e6c89,#3b91a8)!important;
+  color:#fff!important;
+  border-color:rgba(157,220,244,.62)!important;
+  transform:translateY(-2px);
+  box-shadow:0 7px 20px rgba(0,8,20,.3),0 0 16px rgba(98,183,220,.2)!important;
+}
+.admin-hover-emojis i{
+  display:grid;place-items:center;width:22px;height:22px;border-radius:8px;
+  font-family:Arial,sans-serif;font-size:13px;font-weight:900;font-style:normal;
+  color:#dff8ff;text-shadow:0 0 5px #29c9ff,0 0 10px #16a9ec;
+  background:linear-gradient(145deg,#0e5277,#087eaa);
+  border:1px solid rgba(111,220,255,.85);
+  box-shadow:0 0 9px rgba(28,185,255,.85),inset 0 1px 3px rgba(255,255,255,.35);
+}
