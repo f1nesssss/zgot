@@ -2466,7 +2466,7 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
   <button class="ghost-btn" id="musicToggle" type="button" aria-label="Открыть настройки музыки" title="Музыка">Музыка 🎵<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="ghost-btn" id="helpBtn">Помощь<span class="button-butterflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>
   <button class="ghost-btn admin-access-button" id="adminBtn">Вход для администратора<span class="admin-hover-emojis" aria-hidden="true"><i>🔐</i><i>🔐</i></span></button>
-  <button class="ghost-btn admin-access-button" id="adminCabinetBtn" hidden>Кабинет администратора<span class="admin-hover-emojis" aria-hidden="true"><i>💼</i><i>💼</i></span></button>
+  <button class="ghost-btn admin-access-button" id="adminCabinetBtn" hidden>Кабинет администратора<span class="admin-hover-emojis" aria-hidden="true"><i>M</i><i>M</i></span></button>
 </div>
 </header>
 
@@ -2760,8 +2760,6 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
       </svg>
       </div>
       <div class="market-stall market-stall-right" aria-hidden="true"><div class="market-stall-roof"></div><div class="market-stall-awning"></div><div class="market-stall-counter"><i></i><i></i><i></i></div><div class="market-stall-garland"></div></div>
-      <div class="market-stall market-stall-small market-stall-back" aria-hidden="true"><div class="market-stall-roof"></div><div class="market-stall-awning"></div><div class="market-stall-counter"><i></i><i></i></div><div class="market-stall-garland"></div></div>
-      <div class="market-stall market-stall-small market-stall-mid" aria-hidden="true"><div class="market-stall-roof"></div><div class="market-stall-awning"></div><div class="market-stall-counter"><i></i><i></i></div><div class="market-stall-garland"></div></div>
       <div class="market-snowman snowman-left" aria-hidden="true"><i></i><b></b><span></span></div><div class="market-snowman snowman-right" aria-hidden="true"><i></i><b></b><span></span></div>
     </div>
     <div class="market-opening-status" id="marketOpeningStatus" aria-live="polite" hidden></div>
@@ -2917,7 +2915,7 @@ body[data-theme="dark"] .admin-cabinet-backdrop .admin-cabinet-window .admin-act
   </section>
 </div>
 
-<footer class="footer"><span class="star">✧</span> Пусть эта зима будет немного волшебнее <span class="star">✧</span></footer>
+
 
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -6244,6 +6242,61 @@ body.task-modal-open{overflow:hidden}
  #marketSection .market-fair-scene{height:270px!important}
  #marketSection .market-tree-stage{width:205px!important;height:250px!important}
 }
+</style>
+
+
+<style id="market-and-admin-final-adjustments">
+/* Кнопка настроек ярмарки — в правом верхнем углу карточки. */
+#marketSection .market-card{position:relative!important;padding-top:42px!important}
+#marketSection .market-opening-admin-toggle{
+  position:absolute!important;top:20px!important;right:28px!important;left:auto!important;
+  margin:0!important;z-index:8!important;white-space:nowrap!important;
+}
+#marketSection .market-copy{padding-top:0!important}
+/* Убираем второстепенные маленькие ларьки и оставляем два основных. */
+#marketSection .market-stall-small{display:none!important}
+/* Подарки стоят одной праздничной линией у основания сцены, без подпрыгивания. */
+#marketSection .market-gift-field{inset:auto 0 0!important;height:74px!important;z-index:6!important}
+#marketSection .market-gift{animation:none!important;bottom:5px!important}
+#marketSection .market-gift.gift-1{left:19%!important;right:auto!important;transform:scale(1.02)!important}
+#marketSection .market-gift.gift-2{left:25%!important;right:auto!important;transform:scale(.82)!important}
+#marketSection .market-gift.gift-3{left:31%!important;right:auto!important;transform:scale(.94)!important}
+#marketSection .market-gift.gift-4{left:37%!important;right:auto!important;transform:scale(.78)!important}
+#marketSection .market-gift.gift-5{left:43%!important;right:auto!important;transform:scale(1.02)!important}
+#marketSection .market-gift.gift-6{left:49%!important;right:auto!important;transform:scale(.86)!important}
+#marketSection .market-gift.gift-7{left:55%!important;right:auto!important;transform:scale(.96)!important}
+#marketSection .market-gift.gift-8{left:61%!important;right:auto!important;transform:scale(.8)!important}
+#marketSection .market-gift.gift-9{left:67%!important;right:auto!important;transform:scale(1.02)!important}
+#marketSection .market-gift.gift-10{left:73%!important;right:auto!important;transform:scale(.84)!important}
+#marketSection .market-gift.gift-11{left:79%!important;right:auto!important;transform:scale(.92)!important}
+#marketSection .market-gift.gift-12{left:85%!important;right:auto!important;transform:scale(.78)!important}
+#marketSection .market-gift.gift-13,#marketSection .market-gift.gift-14,#marketSection .market-gift.gift-15,
+#marketSection .market-gift.gift-16,#marketSection .market-gift.gift-17,#marketSection .market-gift.gift-18{display:none!important}
+/* На телефонах кнопка не перекрывает заголовок, а подарки остаются компактной линией. */
+@media(max-width:650px){
+ #marketSection .market-card{padding-top:58px!important}
+ #marketSection .market-opening-admin-toggle{top:14px!important;right:14px!important;font-size:11px!important;padding:7px 11px!important}
+ #marketSection .market-copy{padding-top:0!important}
+ #marketSection .market-gift-field{height:55px!important}
+ #marketSection .market-gift{bottom:3px!important;transform:scale(.58)!important}
+ #marketSection .market-gift.gift-1{left:17%!important}#marketSection .market-gift.gift-2{left:23%!important}
+ #marketSection .market-gift.gift-3{left:29%!important}#marketSection .market-gift.gift-4{left:35%!important}
+ #marketSection .market-gift.gift-5{left:41%!important}#marketSection .market-gift.gift-6{left:47%!important}
+ #marketSection .market-gift.gift-7{left:53%!important}#marketSection .market-gift.gift-8{left:59%!important}
+ #marketSection .market-gift.gift-9{left:65%!important}#marketSection .market-gift.gift-10{left:71%!important}
+ #marketSection .market-gift.gift-11{left:77%!important}#marketSection .market-gift.gift-12{left:83%!important}
+}
+/* Значок M появляется при наведении только на кнопку открытого кабинета. */
+#adminCabinetBtn .admin-hover-emojis i{
+  width:22px;height:25px;display:grid;place-items:center;border-radius:8px 8px 11px 11px;
+  color:#8feaff;font:900 11px/1 Arial,sans-serif;font-style:normal;
+  background:linear-gradient(145deg,#176c91,#07334e);
+  border:1px solid #35bce9;box-shadow:0 0 8px rgba(32,183,239,.85),inset 0 0 5px rgba(132,232,255,.45);
+  text-shadow:0 0 5px #62dfff;box-sizing:border-box;
+}
+#adminCabinetBtn .admin-hover-emojis i:first-child{left:12%;top:-9px}
+#adminCabinetBtn .admin-hover-emojis i:last-child{right:12%;bottom:-9px}
+#adminCabinetBtn:hover .admin-hover-emojis i,#adminCabinetBtn:focus-visible .admin-hover-emojis i{opacity:1}
 </style>
 
 </body>
