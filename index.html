@@ -6079,6 +6079,7 @@ body.task-modal-open{overflow:hidden}
  function syncAdminToggle(){
    if(toggle) toggle.hidden=!isSiteAdmin();
  }
+ window.addEventListener('zgot-auth-updated',syncAdminToggle);
  toggle?.addEventListener('click',()=>{
    if(!isSiteAdmin()) return;
    adminBox.hidden=!adminBox.hidden;
@@ -6250,53 +6251,22 @@ body.task-modal-open{overflow:hidden}
 
 
 <style id="market-and-admin-final-adjustments">
-/* Кнопка настроек ярмарки — в правом верхнем углу карточки. */
+/* Исправленный блок оформления ярмарки: без незакрытых CSS-правил. */
 #marketSection .market-card{position:relative!important;padding-top:42px!important}
-#marketSection .market-opening-admin-toggle{
-  position:absolute!important;top:20px!important;right:28px!important;left:auto!important;
-  z-index:8!important;white-space:nowrap!important;
-  min-height:0!important;padding:9px 13px!important;
-  border:1px solid rgba(231,182,107,.48)!important;border-radius:999px!important;
-  background:rgba(9,27,42,.82)!important;color:#f6d7a2!important;
-  font-size:10px!important;font-weight:850!important;line-height:1.2!important;
-  box-shadow:0 5px 18px rgba(0,0,0,.2)!important;cursor:pointer!important;
-} 
-#marketSection .market-opening-admin-toggle:hover{background:rgba(115,83,54,.75)!important}
-#marketSection .market-copy{padding-top:0!important}
-/* Убираем второстепенные маленькие ларьки и оставляем два основных. */
-#marketSection .market-stall-small{display:none!important}
-/* Подарки стоят одной праздничной линией у основания сцены, без подпрыгивания. */
-#marketSection .market-gift-field{inset:auto 0 0!important;height:74px!important;z-index:6!important}
-#marketSection .market-gift{animation:none!important;bottom:5px!important}
-#marketSection .market-gift.gift-1{left:19%!important;right:auto!important;transform:scale(1.02)!important}
-#marketSection .market-gift.gift-2{left:25%!important;right:auto!important;transform:scale(.82)!important}
-#marketSection .market-gift.gift-3{left:31%!important;right:auto!important;transform:scale(.94)!important}
-#marketSection .market-gift.gift-4{left:37%!important;right:auto!important;transform:scale(.78)!important}
-#marketSection .market-gift.gift-5{left:43%!important;right:auto!important;transform:scale(1.02)!important}
-#marketSection .market-gift.gift-6{left:49%!important;right:auto!important;transform:scale(.86)!important}
-#marketSection .market-gift.gift-7{left:55%!important;right:auto!important;transform:scale(.96)!important}
-#marketSection .market-gift.gift-8{left:61%!important;right:auto!important;transform:scale(.8)!important}
-#marketSection .market-gift.gift-9{left:67%!important;right:auto!important;transform:scale(1.02)!important}
-#marketSection .market-gift.gift-10{left:73%!important;right:auto!important;transform:scale(.84)!important}
-#marketSection .market-gift.gift-11{left:79%!important;right:auto!important;transform:scale(.92)!important}
-#marketSection .market-gift.gift-12{left:85%!important;right:auto!important;transform:scale(.78)!important}
-#marketSection .market-gift.gift-13,#marketSection .market-gift.gift-14,#marketSection .market-gift.gift-15,
-#marketSection .market-gift.gift-16,#marketSection .market-gift.gift-17,#marketSection .market-gift.gift-18{display:none!important}
-/* На телефонах кнопка не перекрывает заголовок, а подарки остаются компактной линией. */
-@media(max-width:650px){
- #marketSection .market-card{padding-top:58px!important}
- #marketSection .market-opening-admin-toggle{top:14px!important;right:14px!important;font-size:10px!important;padding:9px 13px!important}
- #marketSection .market-copy{padding-top:0!important}
- #marketSection .market-gift-field{height:55px!important}
- #marketSection .market-gift{bottom:3px!important;transform:scale(.58)!important}
- #marketSection .market-gift.gift-1{left:17%!important}#marketSection .market-gift.gift-2{left:23%!important}
- #marketSection .market-gift.gift-3{left:29%!important}#marketSection .market-gift.gift-4{left:35%!important}
- #marketSection .market-gift.gift-5{left:41%!important}#marketSection .market-gift.gift-6{left:47%!important}
- #marketSection .market-gift.gift-7{left:53%!important}#marketSection .market-gift.gift-8{left:59%!important}
- #marketSection .market-gift.gift-9{left:65%!important}#marketSection .market-gift.gift-10{left:71%!important}
- #marketSection .market-gift.gift-11{left:77%!important}#marketSection .market-gift.gift-12{left:83%!important}
-}
-/* Кнопка быстрого входа в кабинет администратора удалена по запросу. */
+#marketSection .market-opening-admin-toggle{position:absolute!important;top:20px!important;right:28px!important;left:auto!important;bottom:auto!important;z-index:20!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:8px 13px!important;border:1px solid rgba(157,220,244,.42)!important;border-radius:999px!important;background:linear-gradient(135deg,#24536f,#2f7894)!important;color:#f1f9ff!important;font:850 10px/1.2 inherit!important;white-space:nowrap!important;box-shadow:0 5px 16px rgba(0,8,20,.24)!important}
+#marketSection .market-opening-admin-toggle[hidden]{display:none!important}
+.market-santa-flight{position:absolute;z-index:6;top:12px;left:-40%;font-size:34px;white-space:nowrap;filter:drop-shadow(0 0 10px rgba(255,230,176,.5));opacity:0;animation:marketSantaFly 22s linear infinite;animation-delay:4s}
+@keyframes marketSantaFly{0%{left:-42%;top:22px;opacity:0;transform:scale(.82)}5%{opacity:1}45%{top:5px}90%{opacity:1}100%{left:110%;top:24px;opacity:0;transform:scale(1.05)}}
+@keyframes marketGiftBob{0%,100%{translate:0 0}50%{translate:0 -7px}}
+.market-opening-status{position:relative;z-index:5;margin:12px auto 0;padding:9px 18px;border:1px solid rgba(155,214,236,.35);border-radius:999px;background:rgba(7,28,44,.65);color:#dff4ff;font-weight:800;box-shadow:0 0 18px rgba(100,190,220,.13)}
+.market-opening-status[hidden],.market-opening-admin[hidden],.market-opening-admin-toggle[hidden],.market-tree-admin-open[hidden]{display:none!important}
+.market-opening-admin{position:relative;z-index:8;width:min(600px,94%);margin:10px auto;padding:14px;border:1px solid rgba(145,205,231,.3);border-radius:14px;background:rgba(5,22,37,.92);text-align:left;display:grid;gap:10px}
+.market-opening-admin label{display:flex;align-items:center;gap:8px;color:#c3d8e6;font-size:13px}
+.market-opening-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.market-opening-fields label{display:grid}
+.market-opening-fields input{width:100%;box-sizing:border-box;padding:9px;border-radius:8px;border:1px solid rgba(145,205,231,.3);background:#0a2235;color:#eff8ff}
+@media(max-width:700px){.market-card{min-height:0!important;padding:25px 14px!important}.market-fair-scene{height:360px;transform:scale(.92);transform-origin:top center;margin-bottom:-25px}.market-tree-stage{height:340px;width:280px}.market-stall{width:190px;height:125px;bottom:30px}.market-stall-sign{font-size:9px}.market-stall-roof{height:38px}.market-stall-awning{top:38px;height:18px}.market-stall-counter{top:56px;height:65px}.market-opening-fields{grid-template-columns:1fr}.market-santa-flight{font-size:25px}}
+@media(prefers-reduced-motion:reduce){.market-fair-scene *{animation:none!important}}
 </style>
 
 
@@ -6621,6 +6591,16 @@ body.task-modal-open{overflow:hidden}
   #marketSection .market-card{padding-top:58px!important}
   #marketSection .market-opening-admin-toggle{top:14px!important;right:14px!important;padding:8px 12px!important;font-size:10px!important}
 }
+</style>
+
+
+<style id="zgot-mobile-visit-center-and-admin-only-toggle">
+/* На телефонах центрируем только кнопку посещения ярмарки; desktop не затрагиваем. */
+@media(max-width:700px){
+  #marketSection .market-visit{justify-self:center!important;align-self:center!important;margin-left:auto!important;margin-right:auto!important;display:flex!important}
+}
+/* CSS не должен переопределять атрибут hidden у кнопки администраторских настроек. */
+#marketSection .market-opening-admin-toggle[hidden]{display:none!important;visibility:hidden!important;pointer-events:none!important}
 </style>
 
 </body>
